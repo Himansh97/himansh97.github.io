@@ -1,0 +1,513 @@
+<title>Himanshu Srivastava</title>
+<style>
+/* Same token system as the two case pages &#8212; three files, one identity. */
+:root{
+  color-scheme:light;
+  --paper:#FAFAF8;
+  --panel:#F2F1EC;
+  --ink:#16161A;
+  --ink-soft:#55554F;
+  --ink-faint:#8C8B84;
+  --rule:#CFCEC4;
+  --rule-soft:#E4E3DB;
+  --red:#D92906;
+  --amber:#8A5D00;
+  --green:#1B6B4C;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E0E12;
+    --panel:#16161C;
+    --ink:#E9E8E2;
+    --ink-soft:#A3A29B;
+    --ink-faint:#6B6A65;
+    --rule:#26262E;
+    --rule-soft:#1C1C23;
+    --red:#FF5232;
+    --amber:#E0A93B;
+    --green:#4FBE8B;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E0E12;
+  --panel:#16161C;
+  --ink:#E9E8E2;
+  --ink-soft:#A3A29B;
+  --ink-faint:#6B6A65;
+  --rule:#26262E;
+  --rule-soft:#1C1C23;
+  --red:#FF5232;
+  --amber:#E0A93B;
+  --green:#4FBE8B;
+}
+:root{
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --gut:clamp(20px,5vw,64px);
+  --rail:clamp(120px,15vw,196px);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--display);
+  font-size:17px;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
+
+/* ------------------------------------------------------------- masthead */
+header.top{
+  border-bottom:1px solid var(--rule);
+  padding-top:clamp(30px,6vw,64px);
+  padding-bottom:clamp(38px,6vw,72px);
+}
+.name{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.24em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:0;
+}
+.role{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.1em;
+  color:var(--ink-faint);
+  margin:6px 0 0;
+}
+h1{
+  font-weight:700;
+  font-size:clamp(31px,5.4vw,62px);
+  line-height:1.02;
+  letter-spacing:-.03em;
+  text-wrap:balance;
+  margin:clamp(28px,4vw,46px) 0 0;
+  max-width:17ch;
+}
+h1 em{font-style:normal;color:var(--red)}
+.standfirst{
+  max-width:60ch;
+  font-size:clamp(17px,1.5vw,20px);
+  line-height:1.6;
+  color:var(--ink-soft);
+  margin:24px 0 0;
+}
+.links{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 14px;
+  margin:30px 0 0;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.11em;
+  text-transform:uppercase;
+}
+.links a{
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:9px 15px;
+  text-decoration:none;
+  color:var(--ink-soft);
+}
+.links a:hover{color:var(--ink);border-color:var(--ink-faint)}
+.links a.primary{border-color:var(--red);color:var(--red)}
+
+/* ------------------------------------------------------------- sections */
+section{
+  border-bottom:1px solid var(--rule);
+  padding:clamp(38px,6vw,72px) 0;
+}
+.section-head{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 20px;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:clamp(26px,4vw,44px);
+}
+h2{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:0;
+}
+.section-note{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  color:var(--ink-faint);
+  margin:0;
+}
+
+/* Each entry leads with the number that defines it. A hiring manager scans
+   the rail, not the prose. */
+.entry{
+  display:grid;
+  grid-template-columns:var(--rail) 1fr;
+  gap:clamp(18px,3vw,40px);
+  padding:clamp(24px,3.4vw,38px) 0;
+  border-top:1px solid var(--rule-soft);
+}
+.entry:first-of-type{border-top:0;padding-top:0}
+.metric{
+  font-family:var(--mono);
+  font-variant-numeric:tabular-nums;
+}
+.metric b{
+  display:block;
+  font-weight:400;
+  font-size:clamp(20px,2.5vw,30px);
+  letter-spacing:-.02em;
+  line-height:1.08;
+}
+.metric span{
+  display:block;
+  margin-top:8px;
+  font-size:10px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  line-height:1.5;
+}
+.entry h3{
+  font-size:clamp(19px,2vw,24px);
+  font-weight:700;
+  letter-spacing:-.015em;
+  margin:0;
+  text-wrap:balance;
+}
+.entry p{margin:12px 0 0;max-width:62ch;color:var(--ink-soft)}
+.entry p.lead{color:var(--ink)}
+.stack{
+  margin:16px 0 0;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.05em;
+  color:var(--ink-faint);
+  line-height:1.7;
+}
+.open{
+  display:inline-block;
+  margin-top:18px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--red);
+  text-decoration:none;
+  border-bottom:1px solid var(--red);
+  padding-bottom:3px;
+}
+.open:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ------------------------------------------------------------ principles */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(228px,1fr));
+  gap:1px;
+  background:var(--rule-soft);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+.cell{background:var(--paper);padding:24px 24px 26px}
+.cell h4{
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:0 0 10px;
+}
+.cell p{margin:0;font-size:15px;line-height:1.5}
+
+/* ----------------------------------------------------------------- prior */
+.prior{
+  display:grid;
+  grid-template-columns:var(--rail) 1fr;
+  gap:clamp(18px,3vw,40px);
+  padding:16px 0;
+  border-top:1px solid var(--rule-soft);
+  font-size:15px;
+}
+.prior:first-of-type{border-top:0}
+.prior dt{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.09em;
+  color:var(--ink);
+  margin:0;
+}
+.prior dd{margin:0;color:var(--ink-soft);max-width:62ch}
+.prior dd .kind{font-style:normal;color:var(--ink-faint);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;margin-top:5px}
+
+footer{
+  padding:clamp(34px,5vw,56px) 0 clamp(48px,8vw,90px);
+}
+footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
+.foot-meta{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 26px;
+  justify-content:space-between;
+  margin-top:34px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  color:var(--ink-faint);
+}
+
+@media (max-width:720px){
+  .entry,.prior{grid-template-columns:1fr;gap:14px}
+  .metric b{font-size:26px}
+  .entry:first-of-type{padding-top:0}
+}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="name">Himanshu Srivastava</p>
+  <p class="role">Data &amp; platform engineering &nbsp;/&nbsp; mortgage technology</p>
+
+  <h1>I build systems that know what they can&rsquo;t prove. <em>And stop.</em></h1>
+
+  <p class="standfirst">
+    Most of my work is automation in places where being wrong is expensive:
+    mortgage GL reconciliation, Ginnie Mae pool delivery, a CI/CD platform at a
+    regulated lender. The through-line is a preference for systems that refuse
+    to guess, and that hand the decision back to a person at exactly the point
+    where a person is needed.
+  </p>
+
+  <p class="links">
+    <a class="primary" href="pipeline-hero.html">See a live one &rarr;</a>
+    <a href="mailto:hsrivast22@gmail.com">hsrivast22@gmail.com</a>
+    <a href="https://www.linkedin.com/in/himanshu-data-engineer/" rel="noopener">LinkedIn</a>
+  </p>
+</header>
+
+<section>
+  <div class="section-head">
+    <h2>CareerOS &mdash; a system I built for myself</h2>
+    <p class="section-note">Personal project &nbsp;&#183;&nbsp; both demos run in your browser</p>
+  </div>
+
+  <div class="entry">
+    <div class="metric">
+      <b>10,034 &rarr; 10</b>
+      <span>one run, 27.7 seconds</span>
+    </div>
+    <div>
+      <h3>The discovery pipeline, in 3D</h3>
+      <p class="lead">
+        CareerOS reads six public job boards, scores every posting against a
+        vault of 38 verified claims about what I have actually done, writes a
+        tailored r&eacute;sum&eacute; for the ones that clear the bar &mdash; and then
+        stops and waits for me. Nothing it produces is ever sent without my
+        reading it first.
+      </p>
+      <p>
+        This page renders one real run as ten thousand particles. Each is a
+        posting; each dies at whichever filter rejected it. The beam&rsquo;s width
+        is the survivor count on a log scale, so the narrowing you watch is the
+        measurement rather than a shape I drew. Raw WebGL2, one draw call, no
+        libraries.
+      </p>
+      <p class="stack">Python &nbsp;&#183; FastAPI &nbsp;&#183; SQLite &nbsp;&#183; Next.js &nbsp;&#183; WebGL2</p>
+      <a class="open" href="pipeline-hero.html">Open the pipeline &rarr;</a>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="metric">
+      <b>3 verdicts</b>
+      <span>pass &nbsp;/&nbsp; review &nbsp;/&nbsp; reject</span>
+    </div>
+    <div>
+      <h3>The containment gate</h3>
+      <p class="lead">
+        A language model writes the r&eacute;sum&eacute; bullets. This is what decides
+        whether they ship. Every figure must appear in the source claim, every
+        proper noun must be a tool or employer already on record, and verbs are
+        treated as equivalence classes so that <em>coordinated</em> &rarr;
+        <em>led</em> is free while <em>applied</em> &rarr; <em>drove</em> is not.
+      </p>
+      <p>
+        It has already earned its place: on a live draft the model invented a
+        35% figure that appears in no claim, and the gate discarded the whole
+        generation. Anything it cannot judge routes to a human rather than
+        guessing &mdash; a gap in the lexicon is the gate&rsquo;s problem, never the
+        writer&rsquo;s. Type your own sentence into it and watch the checks run.
+      </p>
+      <p class="stack">Claude API &nbsp;&#183; lexical + semantic verification &nbsp;&#183; deterministic scoring</p>
+      <a class="open" href="containment-gate.html">Try the gate &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>Supreme Lending &mdash; Everett Financial</h2>
+    <p class="section-note">2026 &mdash; present &nbsp;&#183;&nbsp; production, regulated</p>
+  </div>
+
+  <div class="entry">
+    <div class="metric">
+      <b>2&ndash;3 hrs</b>
+      <span>daily, per specialist &mdash; removed</span>
+    </div>
+    <div>
+      <h3>Mortgage GL reconciliation</h3>
+      <p class="lead">
+        A reconciliation specialist spent two to three hours every day
+        cross-referencing three disconnected systems &mdash; Power BI, the loan
+        origination system, and the A&amp;B ledger &mdash; to classify and route GL
+        discrepancies across more than a hundred open cases. None of it was
+        written down anywhere.
+      </p>
+      <p>
+        Getting it out of one person&rsquo;s head was the actual work: structured
+        interviews and live training sessions, turned into engineering
+        requirements, then into a production pipeline in Python, SQL and
+        PySpark with statistical matching over thousands of transaction records.
+      </p>
+      <p>
+        The data-fetching layer underneath is deliberately LOS-agnostic, with
+        automatic system detection, so the same automation runs identically
+        across Encompass, MeridianLink and Blue Sage. That was not
+        future-proofing for its own sake &mdash; an LOS migration was already in
+        flight, and a rewrite mid-migration was the thing to avoid.
+      </p>
+      <p class="stack">Python &nbsp;&#183; SQL &nbsp;&#183; PySpark &nbsp;&#183; Power BI &nbsp;&#183; Encompass &nbsp;&#183; MeridianLink &nbsp;&#183; Blue Sage</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="metric">
+      <b>$18.2M</b>
+      <span>UPB live at first deployment</span>
+    </div>
+    <div>
+      <h3>Ginnie Mae pool delivery</h3>
+      <p class="lead">
+        SettleDesk went to production for Ginnie Mae pool delivery and was live
+        on its first deployment: 4 pools, 47 loans, $18.2M UPB, with 74 pending
+        final certifications.
+      </p>
+      <p>
+        Underneath it, PoolPath merges ULDD XML loan exports from three
+        different LOS platforms into valid Ginnie Mae PDD XML for SFPDM
+        submission, correcting schema errors automatically instead of bouncing
+        the file back to a person. A separate parser reads settlement and
+        commitment dates out of unstructured warehouse-bank correspondence and
+        populates the post-closing intake pipeline from it.
+      </p>
+      <p class="stack">Claude API &nbsp;&#183; ULDD / PDD &nbsp;&#183; MISMO &nbsp;&#183; XML schema validation &nbsp;&#183; GNMA SFPDM</p>
+    </div>
+  </div>
+
+  <div class="entry">
+    <div class="metric">
+      <b>18 &rarr; 9 min</b>
+      <span>pull-request check time</span>
+    </div>
+    <div>
+      <h3>Enterprise CI/CD platform, security stage</h3>
+      <p class="lead">
+        I own the security stage of a five-stage CI/CD platform at a regulated
+        mortgage lender &mdash; CodeQL, secret scanning and dependency review
+        running in parallel, which halved pull-request check time from 18
+        minutes to 9.
+      </p>
+      <p>
+        The gates are built to prevent rather than report: secret scanning with
+        push protection, a CRITICAL-severity CVE that fails the build, and
+        required-reviewer branch protection. Azure infrastructure is Bicep &mdash;
+        Container Apps, Key Vault, Container Registry, user-assigned managed
+        identity &mdash; authenticated through OIDC federated credentials with no
+        stored secrets, deploying incremental-only to protect brownfield
+        resources.
+      </p>
+      <p>
+        The pipeline holds zero write access to IAM. Humans provision identities
+        and secrets by hand, because a regulated lender will not allow
+        self-service permissions, and the least-privilege model had to be
+        designed around that constraint rather than argued with. Any engineering
+        team onboards to the whole platform by copying three files and raising
+        one pull request &mdash; same day, against an estimated two to three weeks.
+      </p>
+      <p class="stack">GitHub Actions &nbsp;&#183; CodeQL &nbsp;&#183; Azure &nbsp;&#183; Bicep &nbsp;&#183; OIDC &nbsp;&#183; DevSecOps</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>How I work</h2>
+    <p class="section-note">Three rules that hold across all of it</p>
+  </div>
+  <div class="grid">
+    <div class="cell">
+      <h4>Evidence, or it does not ship</h4>
+      <p>Every claim a system of mine makes traces to a record. A number that is not in the record cannot be checked by anyone, so it does not get written.</p>
+    </div>
+    <div class="cell">
+      <h4>Unrecognised means gap</h4>
+      <p>Not knowing what a term means is never a reason to assume it is satisfied. Scoring that flatters itself is worse than no scoring.</p>
+    </div>
+    <div class="cell">
+      <h4>Stop before you commit</h4>
+      <p>The last step before anything irreversible belongs to a person. That is a structural property in what I build, not a setting somebody can switch off.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <h2>Earlier</h2>
+    <p class="section-note">Analytics and data engineering</p>
+  </div>
+  <dl style="margin:0">
+    <div class="prior">
+      <dt>Freyr Solutions</dt>
+      <dd>Consolidated fragmented data across 20+ regional markets into a unified SQL-to-Power BI reporting infrastructure, cutting cycle time by 40%.<span class="kind">Analytics &amp; reporting</span></dd>
+    </div>
+    <div class="prior">
+      <dt>Omnicals Pharma</dt>
+      <dd>Built a standardised data-cleansing pipeline across three inconsistent source systems using statistical modelling and feature engineering, improving data quality by 70%.<span class="kind">Data quality</span></dd>
+    </div>
+    <div class="prior">
+      <dt>Syracuse University</dt>
+      <dd>Ran ETL pipelines in PySpark and Airflow over 1M+ records with multi-layer data-quality controls, and designed the dimensional models downstream reporting sat on.<span class="kind">MS, Business Analytics</span></dd>
+    </div>
+  </dl>
+</section>
+
+<footer>
+  <p>
+    Open to data and platform engineering roles in the United States. The
+    fastest way to reach me is email &mdash; I answer everything.
+  </p>
+  <p class="foot-meta">
+    <span><a href="mailto:hsrivast22@gmail.com">hsrivast22@gmail.com</a> &nbsp;&#183;&nbsp; <a href="https://www.linkedin.com/in/himanshu-data-engineer/" rel="noopener">linkedin.com/in/himanshu-data-engineer</a></span>
+    <span>Every figure on this page comes from a record, not an estimate</span>
+  </p>
+</footer>
+
+</div>
