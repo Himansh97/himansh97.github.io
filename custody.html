@@ -348,9 +348,10 @@ $ <b>custody verify custody.db --public-key ee1ffe7f...</b>
   <h2>Install</h2>
   <p class="head">Two minutes, one dependency.</p>
   <p class="sub">
-    Storage is stdlib SQLite, the review UI is stdlib http.server, and the model
-    adapter is optional. Anything sitting in the call path of a regulated workflow
-    should be something a security review can read in an afternoon.
+    Default storage is stdlib SQLite, the review UI is stdlib http.server, and the
+    model adapters and the Postgres backend are optional extras you install only if
+    you use them. Anything sitting in the call path of a regulated workflow should
+    be something a security review can read in an afternoon.
   </p>
   <pre>$ pip install <b>custody-ledger</b>
 $ custody keygen
@@ -359,6 +360,24 @@ $ custody run --loan 1000254 --principal you@lender.com \
       --doc paystub.txt --doc w2.txt
 $ custody serve            <span class="c"># browse and verify at localhost:8787</span>
 $ custody packet 1000254   <span class="c"># the chain of evidence for one loan</span></pre>
+  <p>
+    SQLite is one file and one process, which is right for a pilot. Run more than
+    one application instance and you want Postgres, where the same guarantees hold
+    and a process lock would not:
+  </p>
+  <pre>$ pip install <b>"custody-ledger[postgres]"</b>
+$ custody run <b>--db postgresql://user:pw@host/custody</b> --loan 1000254 ...</pre>
+  <p>
+    The reason that is a one-line change rather than a rewrite: <strong>the ledger
+    cannot fork because <code>prev_hash</code> is <code>UNIQUE</code></strong>, not
+    because a lock says so. Two writers cannot both chain onto the same predecessor
+    &mdash; the second one is refused and retries, rather than quietly writing a
+    ledger that will not verify. A lock protects one process, which is exactly as
+    far as it goes, and two instances is the whole reason to want Postgres in the
+    first place. Both backends abort <code>UPDATE</code> and <code>DELETE</code> at
+    the database, and one conformance suite runs against both so they cannot drift
+    into disagreeing about what verifies.
+  </p>
   <p>
     Custody does not call your model &mdash; it wraps a call you already make. A
     governance layer that requires you to rewrite your AI does not get adopted.
