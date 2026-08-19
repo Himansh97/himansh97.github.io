@@ -362,6 +362,24 @@ $ custody packet 1000254   <span class="c"># the chain of evidence for one loan<
   <p>
     Custody does not call your model &mdash; it wraps a call you already make. A
     governance layer that requires you to rewrite your AI does not get adopted.
+    Adapters ship for <strong>Azure OpenAI</strong> and Anthropic, and writing
+    your own is about twenty lines.
+  </p>
+  <pre>$ export AZURE_OPENAI_ENDPOINT=https://acme-uw.openai.azure.com/
+$ custody run <b>--provider azure-openai --deployment gpt-4o-prod</b> \
+      --loan 1000254 --principal you@lender.com \
+      --instruction "Extract qualifying monthly income." --doc paystub.txt
+
+<span class="c"># with no API key set, it authenticates with managed identity --
+# nothing stored to leak, rotate, or find in a config file in three years</span></pre>
+  <p>
+    One detail that matters more than it looks: it records the <strong>model
+    version</strong>, not the deployment name. Azure routes on a deployment, and
+    the model behind it can change &mdash; an auto-update policy, someone in the
+    portal &mdash; without a line of your code changing. So the ledger stores
+    <code>azure-openai:acme-uw:gpt-4o-prod:gpt-4o-2024-11-20</code>, not
+    <code>gpt-4o-prod</code>. When an examiner asks which model produced a figure
+    eighteen months ago, that is the difference between an answer and a shrug.
   </p>
 </section>
 
