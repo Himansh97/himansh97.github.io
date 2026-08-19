@@ -350,9 +350,10 @@ $ <b>custody verify custody.db --public-key ee1ffe7f...</b>
   <p class="sub">
     Storage is stdlib SQLite, the review UI is stdlib http.server, and the model
     adapter is optional. Anything sitting in the call path of a regulated workflow
-    should be something a security review can read in an afternoon.
+    should be something a security review can read in an afternoon. Not on PyPI
+    yet &mdash; install straight from the repo.
   </p>
-  <pre>$ pip install custody-ledger
+  <pre>$ pip install <b>"git+https://github.com/Himansh97/custody"</b>
 $ custody keygen
 $ custody run --loan 1000254 --principal you@lender.com \
       --instruction "Extract qualifying monthly income." \
