@@ -429,25 +429,27 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
 
   <div class="entry">
     <div class="metric">
-      <b>8 fields</b>
-      <span>every one LL-2026-04 names</span>
+      <b>6 Aug 2026</b>
+      <span>the day the rules changed</span>
     </div>
     <div>
       <h3>Custody &mdash; proving what an AI did to a loan</h3>
       <p class="lead">
-        Fannie Mae Lender Letter LL-2026-04 took effect on 8 August 2026. Any lender
-        using AI in origination, underwriting, servicing or QC must now keep a
-        per-decision record &mdash; principal, model, endpoint, redacted prompt, response
-        treatment, policy version, outcome, timestamp &mdash; append-only and signed.
-        Enforcement is repurchase risk, and the average repurchase costs $32,288.
+        Fannie Mae Lender Letter LL-2026-04 took effect on 6 August 2026. Any lender
+        using AI in origination or servicing must now govern its use, extend that
+        governance to its vendors, and &mdash; on Fannie Mae&rsquo;s request &mdash; promptly
+        disclose what AI it runs, for what purpose, and what safeguards are in place.
+        You can answer that with a document describing what you intend to happen, or
+        with a record of what did happen that the person asking can verify themselves.
       </p>
       <p>
-        Custody produces that record. The model call <em>is</em> the log entry, so the
-        fields cannot be forgotten; a deterministic gate decides what happens to each
-        output; and the whole thing is hash-chained and Ed25519 signed. The demo runs a
-        synthetic loan through five AI steps &mdash; including one where the model invents
-        an income figure and gets caught &mdash; then lets you tamper with a record and
-        watch your own browser detect it.
+        Custody produces the second. The model call <em>is</em> the log entry, so the
+        record cannot be forgotten; a deterministic gate acts as a live safeguard and
+        records what it concluded; and the whole chain is hash-linked and Ed25519 signed,
+        so a recipient can detect tampering without access to any of the lender&rsquo;s
+        systems. The demo runs a synthetic loan through five AI steps &mdash; including one
+        where the model invents an income figure and gets caught &mdash; then lets you
+        tamper with a record and watch your own browser find it.
       </p>
       <p class="stack">Python &nbsp;&middot; SHA-256 chain &nbsp;&middot; Ed25519 &nbsp;&middot; SQLite &nbsp;&middot; WebCrypto</p>
       <a class="open" href="custody.html">Open the ledger <span class="arw">&rarr;</span></a>
