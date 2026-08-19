@@ -367,6 +367,59 @@ $ custody packet 1000254   <span class="c"># the chain of evidence for one loan<
 </section>
 
 <section>
+  <h2>Two things a security review asks first</h2>
+  <p class="head">Where does the key live, and why should we believe you?</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">Key</div>
+      <div>
+        <h3>Not in a file. In your vault.</h3>
+        <p>
+          Signing is an interface. In production it is an EC P-256 key in Azure Key
+          Vault: Custody sends a digest, the vault returns a signature, and the
+          private key never enters the process. The most a compromised host gets is
+          the ability to sign while it holds the credential &mdash; which the vault logs.
+        </p>
+        <p>
+          Key Vault supports no Ed25519, so the algorithm is a parameter rather than
+          a constant, and it is written inside the hashed body of every record. An
+          attacker cannot claim a record was signed with something weaker than it
+          was: that claim breaks the chain before anyone checks a signature.
+        </p>
+        <pre>$ az keyvault key create --vault-name v --name custody --kty EC --curve P-256
+$ export CUSTODY_KEY_VAULT=https://v.vault.azure.net/ CUSTODY_KEY_NAME=custody</pre>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">Trust</div>
+      <div>
+        <h3>A verifier you can read in five minutes</h3>
+        <p>
+          The rest of this is a library you would have to take on faith.
+          <code>verify_packet.py</code> is deliberately not that: one file, no
+          dependency on the package, nothing outside Python&rsquo;s standard library.
+          Your auditor reads the whole thing and satisfies themselves the
+          cryptography is real. If it ever disagrees with our tooling, believe it.
+        </p>
+        <pre>$ python3 verify_packet.py packet.json
+  OK  hash chain verified across 6 records
+  OK  6 signatures verified (ecdsa-p256-sha256)
+
+  <span class="c">This proves the records have not been altered since they were
+  written. It does not prove they are true, and it cannot show a
+  decision that was never recorded in the first place.</span></pre>
+        <p>
+          That last paragraph is printed by the tool itself. A verifier that only
+          ever says OK teaches people to over-read it.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
   <h2>Being straight about it</h2>
   <div class="two">
     <div class="col is">
