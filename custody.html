@@ -335,6 +335,13 @@ $ <b>custody verify custody.db --public-key ee1ffe7f...</b>
       <span>Below the threshold it goes to a person &mdash; not rejected. Not being sure is not the same as being wrong.</span>
     </div>
   </div>
+  <p>
+    There is a second reason this matters. LL-2026-04 requires you to govern your
+    vendors&rsquo; use of AI/ML &ldquo;no less protective&rdquo; than your own. <strong>Custody
+    uses no AI/ML at all</strong> &mdash; the checks are arithmetic and string
+    comparison, and there is deliberately no model anywhere in the verification
+    path. Adopting it adds nothing new for you to govern.
+  </p>
 </section>
 
 <section id="install">
@@ -376,9 +383,10 @@ $ custody packet 1000254   <span class="c"># the chain of evidence for one loan<
       <ul>
         <li><b>Certify compliance.</b> LL-2026-04 requires governance and disclosure; it names no schema. The record design here is ours, not Fannie Mae's.</li>
         <li><b>Bias or fair-lending testing.</b> A separate obligation with mature vendors already in it.</li>
-        <li><b>Inventory models it never sees.</b> An inventory built only from what happened to be instrumented is worse than none, because it looks complete.</li>
+        <li><b>Inventory models it never sees.</b> A list built only from what happened to be instrumented is worse than none, because it looks complete.</li>
+        <li><b>Answer the InfoSec Supplement.</b> Custody stores redacted prompts and outcomes, so it is in scope of it and has not yet been assessed against it. Ask us about this.</li>
         <li><b>Write to your LOS.</b> It records what you say you wrote.</li>
-        <li><b>Replace your policy.</b> Or review it annually. That part is organisational.</li>
+        <li><b>Replace your policy.</b> The letter wants a named owner reviewing it annually. Custody records which policy version each decision ran under, which makes that review answerable &mdash; it does not perform it.</li>
       </ul>
     </div>
   </div>
