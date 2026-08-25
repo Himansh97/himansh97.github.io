@@ -282,6 +282,27 @@ h2{
 .prior dd{margin:0;color:var(--ink-soft);max-width:62ch}
 .prior dd .kind{font-style:normal;color:var(--ink-faint);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;margin-top:5px}
 
+
+/* ------------------------------------------------------------ prism box
+   The landing-page introduction to Optionora. It argues the product's point
+   with a control rather than a sentence: drag the session and the verdict is
+   NOT READY for most of it, then BLOCKED at the end when the tenth condition
+   fails. Dark on a light page on purpose -- it is a screen, not a paragraph. */
+.prismbox{position:relative;border:1px solid var(--rule);background:#16161A;margin:0 0 clamp(24px,3.4vw,38px);overflow:hidden}
+.prismbox canvas{display:block;width:100%;height:230px}
+.prismbox-hud{position:absolute;top:16px;left:18px;pointer-events:none}
+.pv{display:block;font-family:var(--mono);font-size:clamp(19px,2.6vw,28px);font-weight:600;color:#E0A93B;line-height:1;transition:color .35s ease}
+.pv.ready{color:#4FBE8B}
+.pv.dead{color:#FF5232}
+.ps{display:block;margin-top:8px;font-family:var(--mono);font-size:11px;letter-spacing:.09em;color:#8C8B84}
+.prismbox-scrub{display:flex;align-items:center;gap:13px;padding:12px 18px;border-top:1px solid #26262E;background:#101014}
+.prismbox-scrub label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8C8B84}
+.prismbox-scrub input[type=range]{flex:1;accent-color:#E0A93B;cursor:pointer;min-width:110px}
+.prismbox-scrub output{font-family:var(--mono);font-size:12px;color:#E4E3DB;font-variant-numeric:tabular-nums;min-width:5ch;text-align:right}
+.prismbox-foot{margin:0;padding:12px 18px;border-top:1px solid #26262E;background:#101014;font-family:var(--mono);font-size:10.5px;letter-spacing:.04em;color:#8C8B84;line-height:1.65;max-width:none}
+.prismbox-foot em{font-style:italic;color:#E0A93B}
+.prismbox-foot strong{color:#FF5232;font-weight:400}
+
 footer{
   padding:clamp(34px,5vw,56px) 0 clamp(48px,8vw,90px);
 }
@@ -456,6 +477,59 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
     </div>
   </div>
 
+
+  <div class="entry">
+    <div class="metric">
+      <b>3 verdicts</b>
+      <span>pass &nbsp;/&nbsp; review &nbsp;/&nbsp; reject</span>
+    </div>
+    <div>
+      <h3>The containment gate</h3>
+      <p class="lead">
+        A language model writes the r&eacute;sum&eacute; bullets. This is what decides
+        whether they ship. Every figure must appear in the source claim, every
+        proper noun must be a tool or employer already on record, and verbs are
+        treated as equivalence classes so that <em>coordinated</em> &rarr;
+        <em>led</em> is free while <em>applied</em> &rarr; <em>drove</em> is not.
+      </p>
+      <p>
+        It has already earned its place: on a live draft the model invented a
+        35% figure that appears in no claim, and the gate discarded the whole
+        generation. Anything it cannot judge routes to a human rather than
+        guessing &mdash; a gap in the lexicon is the gate&rsquo;s problem, never the
+        writer&rsquo;s. Type your own sentence into it and watch the checks run.
+      </p>
+      <p class="stack">Claude API &nbsp;&#183; lexical + semantic verification &nbsp;&#183; deterministic scoring</p>
+      <a class="open" href="containment-gate.html">Try the gate <span class="arw">&rarr;</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="optionora">
+  <div class="section-head">
+    <h2>Optionora &mdash; knowing when a trade is actually ready</h2>
+    <p class="section-note">Personal project &nbsp;&#183;&nbsp; drag the session &nbsp;&#183;&nbsp; the app itself runs on its page</p>
+  </div>
+
+  <div class="prismbox">
+    <canvas id="miniPrism" height="230" aria-hidden="true"></canvas>
+    <div class="prismbox-hud">
+      <span class="pv" id="miniVerdict">NOT READY</span>
+      <span class="ps" id="miniSub">2 of 9 conditions met &middot; 10:39</span>
+    </div>
+    <div class="prismbox-scrub">
+      <label for="miniScrub">Session</label>
+      <input id="miniScrub" type="range" min="0" max="100" value="18" step="1"
+             aria-label="Scrub through the trading session" />
+      <output id="miniClock">10:39</output>
+    </div>
+    <p class="prismbox-foot">
+      Ten conditions, one verdict. Most of the session the honest answer is <em>not yet</em>
+      &mdash; and at 15:55 the stop-width limit is breached, so nine of ten is still
+      <strong>blocked</strong>.
+    </p>
+  </div>
+
   <div class="entry">
     <div class="metric">
       <b>0 of 7</b>
@@ -483,32 +557,6 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
       </p>
       <p class="stack">Python &nbsp;&middot; rule engine &nbsp;&middot; 411 tests &nbsp;&middot; React &nbsp;&middot; 5 market-data providers &nbsp;&middot; bootstrap intervals</p>
       <a class="open" href="optionora.html">See Optionora <span class="arw">&rarr;</span></a>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>3 verdicts</b>
-      <span>pass &nbsp;/&nbsp; review &nbsp;/&nbsp; reject</span>
-    </div>
-    <div>
-      <h3>The containment gate</h3>
-      <p class="lead">
-        A language model writes the r&eacute;sum&eacute; bullets. This is what decides
-        whether they ship. Every figure must appear in the source claim, every
-        proper noun must be a tool or employer already on record, and verbs are
-        treated as equivalence classes so that <em>coordinated</em> &rarr;
-        <em>led</em> is free while <em>applied</em> &rarr; <em>drove</em> is not.
-      </p>
-      <p>
-        It has already earned its place: on a live draft the model invented a
-        35% figure that appears in no claim, and the gate discarded the whole
-        generation. Anything it cannot judge routes to a human rather than
-        guessing &mdash; a gap in the lexicon is the gate&rsquo;s problem, never the
-        writer&rsquo;s. Type your own sentence into it and watch the checks run.
-      </p>
-      <p class="stack">Claude API &nbsp;&#183; lexical + semantic verification &nbsp;&#183; deterministic scoring</p>
-      <a class="open" href="containment-gate.html">Try the gate <span class="arw">&rarr;</span></a>
     </div>
   </div>
 </section>
@@ -977,4 +1025,93 @@ var ro = window.ResizeObserver ? new ResizeObserver(function(){ resize(); draw(c
 if (ro) ro.observe(header);
 else window.addEventListener("resize", function(){ resize(); draw(clock); });
 })();
+
+/* ------------------------------------------------------------- mini prism
+   The landing page's Optionora introduction. Same ten conditions as the case
+   page, drawn smaller: beams resolve as the session advances, and the tenth
+   fails on purpose. A demo where everything eventually goes green would argue
+   the opposite of what this product is for. */
+(function(){
+  const cv = document.getElementById("miniPrism");
+  if (!cv) return;
+  const ctx = cv.getContext("2d");
+  const scrub = document.getElementById("miniScrub");
+  const clock = document.getElementById("miniClock");
+  const vEl = document.getElementById("miniVerdict");
+  const sEl = document.getElementById("miniSub");
+
+  const CONDS = [
+    {k:"session open",at:.02},{k:"range fixed 09:45",at:.12},{k:"RVOL > 1.2",at:.20},
+    {k:"price vs VWAP",at:.28},{k:"EMA21 alignment",at:.35},{k:"RSI 35-65",at:.44},
+    {k:"15m MACD > 0",at:.53},{k:"momentum bar",at:.62},{k:"clear of VWAP zone",at:.71},
+    {k:"stop width",at:.80,fails:true}
+  ];
+  const OPEN=570, CLOSE=955;
+  const hhmm=t=>String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W=0,H=0;
+
+  function size(){
+    const dpr=Math.min(devicePixelRatio||1,2);
+    W=cv.clientWidth; H=cv.clientHeight;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function draw(t){
+    const p=Number(scrub.value)/100;
+    const met=CONDS.filter(c=>!c.fails&&p>=c.at).length;
+    const blocked=p>=CONDS[9].at;
+    const complete=met===9&&!blocked;
+    ctx.clearRect(0,0,W,H);
+
+    const cx=W*.44, cy=H/2, r=Math.min(H*.32,70), ph=reduce?0:t/1500;
+
+    CONDS.forEach((c,i)=>{
+      const on=p>=c.at&&!c.fails, bad=c.fails&&p>=c.at;
+      const y=H*.14+(H*.72)*(i/9), wob=reduce?0:Math.sin(ph+i*.7)*1.4;
+      ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(cx-r*.9, cy+(y-cy)*.22+wob);
+      ctx.strokeStyle = bad?"rgba(255,82,50,.55)":on?"rgba(79,190,139,.5)":"rgba(120,118,110,.15)";
+      ctx.lineWidth = (on||bad)?1.5:1; ctx.stroke();
+    });
+
+    ctx.beginPath();
+    ctx.moveTo(cx,cy-r); ctx.lineTo(cx+r*.92,cy+r*.72); ctx.lineTo(cx-r*.92,cy+r*.72); ctx.closePath();
+    const g=ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r);
+    g.addColorStop(0,"rgba(224,169,59,.16)"); g.addColorStop(1,"rgba(79,190,139,.10)");
+    ctx.fillStyle=g; ctx.fill();
+    ctx.strokeStyle="rgba(228,227,219,.32)"; ctx.lineWidth=1.1; ctx.stroke();
+
+    const strength=blocked?0:met/9, spread=complete?4:18;
+    for(let i=0;i<5;i++){
+      const off=(i-2)*spread*(1-strength*.7);
+      ctx.beginPath(); ctx.moveTo(cx+r*.5,cy+r*.2);
+      ctx.lineTo(W, cy+off+(reduce?0:Math.sin(ph*1.3+i)*2));
+      ctx.strokeStyle = blocked?"rgba(255,82,50,"+(.10+i*.02)+")"
+                      : complete?"rgba(79,190,139,"+(.5-Math.abs(i-2)*.09)+")"
+                      : "rgba(224,169,59,"+(.06+strength*.16)+")";
+      ctx.lineWidth=complete?2:1.2; ctx.stroke();
+    }
+
+    const mins=Math.round(OPEN+(CLOSE-OPEN)*p);
+    clock.value=hhmm(mins);
+    vEl.className="pv"+(blocked?" dead":complete?" ready":"");
+    vEl.textContent=blocked?"BLOCKED":complete?"READY":"NOT READY";
+    sEl.textContent=blocked
+      ? "stop width "+Math.round(31+p*9)+"bps exceeds the 30bps limit · "+hhmm(mins)
+      : met+" of 9 conditions met · "+hhmm(mins);
+  }
+
+  let raf=0;
+  const loop=t=>{draw(t); raf=requestAnimationFrame(loop);};
+  size(); addEventListener("resize",size,{passive:true});
+  scrub.addEventListener("input",()=>{if(reduce)draw(0);});
+  if("IntersectionObserver" in window && !reduce){
+    new IntersectionObserver(es=>es.forEach(e=>{
+      if(e.isIntersecting&&!raf) raf=requestAnimationFrame(loop);
+      else if(!e.isIntersecting&&raf){cancelAnimationFrame(raf); raf=0;}
+    }),{threshold:.05}).observe(cv);
+  } else draw(0);
+})();
+
 </script>
