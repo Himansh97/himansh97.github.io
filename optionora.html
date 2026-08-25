@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Optionora</title>
 <style>
 :root{
@@ -135,6 +137,37 @@ pre b{color:#FFFFFF;font-weight:600}
 .unknown{color:var(--ink-faint)}
 .board-foot{padding:13px 18px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);line-height:1.6}
 
+
+/* --------------------------------------------------------------- prism */
+.prism{position:relative;border:1px solid var(--rule);background:var(--term-bg);margin-top:8px;overflow:hidden}
+.prism canvas{display:block;width:100%;height:360px}
+.prism-hud{position:absolute;top:20px;left:22px;pointer-events:none}
+.verdict-big{
+  font-family:var(--mono);font-size:clamp(22px,3.4vw,38px);font-weight:600;letter-spacing:-.01em;
+  color:#E0A93B;transition:color .35s ease;line-height:1;
+}
+.verdict-big.ready{color:#4FBE8B}
+.verdict-big.dead{color:#FF5232}
+.verdict-sub{margin-top:9px;font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--term-faint)}
+.scrub{display:flex;align-items:center;gap:14px;padding:14px 20px;border-top:1px solid #26262E;background:#101014}
+.scrub label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--term-faint)}
+.scrub input[type=range]{flex:1;accent-color:#E0A93B;cursor:pointer;min-width:120px}
+.scrub output{font-family:var(--mono);font-size:12px;color:var(--term-ink);font-variant-numeric:tabular-nums;min-width:5ch;text-align:right}
+.condlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:1px;background:#26262E;border-top:1px solid #26262E}
+.cnd{background:#101014;padding:11px 14px;font-family:var(--mono);font-size:11px;display:flex;justify-content:space-between;gap:8px;align-items:center;color:var(--term-faint);transition:color .3s ease,background .3s ease}
+.cnd.on{color:var(--term-ink);background:#121814}
+.cnd b{font-weight:400;font-size:10px;letter-spacing:.1em;color:#5c5b56}
+.cnd.on b{color:#4FBE8B}
+.prism-foot{margin:0;padding:12px 20px;border-top:1px solid #26262E;background:#101014;font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--term-faint);line-height:1.6}
+
+/* ----------------------------------------------------------- app frame */
+.appframe{border:1px solid var(--rule);background:var(--term-bg);margin-top:8px;overflow:hidden}
+.appframe iframe{display:block;width:100%;height:min(78vh,720px);border:0}
+.applinks{margin:14px 0 0!important}
+.applinks a{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;color:var(--ink-faint);border-bottom:1px solid var(--rule)}
+.applinks a:hover{color:var(--ink)}
+@media (max-width:640px){.appframe iframe{height:72vh}}
+
 footer{padding:clamp(40px,6vw,70px) 0 clamp(50px,7vw,90px)}
 footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
 .backlink{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;color:var(--ink-faint)}
@@ -153,7 +186,8 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
     when the honest answer is that it has not been shown to work.
   </p>
   <p class="cta">
-    <a class="primary" href="#board">Open the readiness board &rarr;</a>
+    <a class="primary" href="#prism">Open the Decision Prism &rarr;</a>
+    <a href="#app">Run the real app</a>
     <a href="#measured">See the measured results</a>
     <a href="#accuracy">How we raise accuracy</a>
   </p>
@@ -189,45 +223,63 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
   </div>
 </section>
 
-<section id="board">
-  <h2>The readiness board</h2>
-  <p class="head">Every state is a different answer, so it gets a different name.</p>
+<section id="prism">
+  <h2>The Decision Prism</h2>
+  <p class="head">A setup is not a signal until every condition has resolved.</p>
   <p class="sub">
-    A range that is still moving is not a level. Showing a provisional high as though
-    it were the trigger invites an entry on a number that changes a minute later — so
-    <em>forming</em> and <em>armed</em> are deliberately separate states, and no levels
-    exist until the range is fixed at 09:45. Click through the session below.
+    Ten conditions feed one verdict. Drag through the session and watch them resolve —
+    the beam only reaches the other side when nothing is still missing. This is the
+    product's whole argument in one control: most of the time, the honest answer is
+    <em>not yet</em>.
   </p>
 
-  <div class="board">
-    <div class="board-top">
-      <span class="sym">SPY &middot; 0DTE &middot; opening-range breakout</span>
-      <span class="modes" role="group" aria-label="Session state">
-        <button type="button" data-state="forming" aria-pressed="true">09:38 forming</button>
-        <button type="button" data-state="armed" aria-pressed="false">09:45 armed</button>
-        <button type="button" data-state="triggered" aria-pressed="false">10:02 triggered</button>
-        <button type="button" data-state="stopped" aria-pressed="false">11:14 stopped</button>
-      </span>
+  <div class="prism">
+    <canvas id="prismCanvas" height="360" aria-hidden="true"></canvas>
+    <div class="prism-hud">
+      <div class="verdict-big" id="verdictBig">NOT READY</div>
+      <div class="verdict-sub" id="verdictSub">6 of 10 conditions met &middot; 09:38</div>
     </div>
-
-    <div class="state">
-      <p class="state-line">
-        <span class="state-name forming" id="stateName">forming</span>
-        <span class="state-note" id="stateNote">Range sets at 09:45, 7 min away — no levels until then.</span>
-      </p>
-      <div class="conds" id="conds"></div>
-      <div class="levels" id="levels"></div>
+    <div class="scrub">
+      <label for="scrubber">Session</label>
+      <input id="scrubber" type="range" min="0" max="100" value="18" step="1"
+             aria-label="Scrub through the trading session" />
+      <output id="clock">09:38</output>
     </div>
-
-    <p class="board-foot" id="boardFoot">
-      Illustrative session on real strategy logic. Levels are shown only once the range is fixed.
+    <div class="condlist" id="condList"></div>
+    <p class="prism-foot">
+      Illustrative conditions on the real rule shape: 49 rules, 45 wired, 4 reported
+      unavailable rather than assumed true.
     </p>
   </div>
+</section>
+
+<section id="app">
+  <h2>The real thing</h2>
+  <p class="head">Not a mockup. The application, with its backend frozen.</p>
+  <p class="sub">
+    Below is the actual React front end running the actual rule engine output &mdash;
+    same components, same rendering, same data shapes &mdash; served from a snapshot of
+    real responses captured on 24 August 2026. Nothing is live and nothing can be
+    written; every non-GET request is refused rather than faked. Open
+    <strong>Results</strong> for the paper journal and the edge estimate.
+  </p>
+
+  <div class="appframe">
+    <iframe src="./optionora-app/" title="Optionora — read-only demo of the live application"
+            loading="lazy" referrerpolicy="no-referrer"></iframe>
+  </div>
+  <p class="applinks">
+    <a href="./optionora-app/" target="_blank" rel="noopener">Open it full screen &rarr;</a>
+  </p>
 
   <p>
-    The board never renders a missing value as zero. When a level does not exist yet it
-    says so in words, because a zero on a price field is indistinguishable from a real
-    number at a glance, and that glance is the whole interaction.
+    The tab worth opening is <strong>Results</strong>. It journals 3,490 decisions
+    including the 451 the rules refused, and reports the edge estimate as
+    <strong>not established</strong> &mdash; win rate 53.3% on an interval of 35.8% to
+    70.8%, expectancy &minus;0.038R, and a stated <strong>57.6% probability there is no
+    edge at all</strong>. A control group of vetoed trades is carried alongside the
+    emitted ones, and both are marked <em>too few</em> below thirty outcomes rather than
+    shown as a rate.
   </p>
 </section>
 
@@ -368,70 +420,144 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
 </div>
 
 <script>
-/* The board is a small state machine over four fixed snapshots of one session.
-   It is illustrative data on real strategy logic — the point being demonstrated
-   is that each state answers a different question and is named differently, and
-   that a level which does not exist yet is never rendered as a number. */
-const SNAPSHOTS = {
-  forming: {
-    note: "Range sets at 09:45, 7 min away — no levels until then.",
-    conds: [["range fixed","no"],["price inside range","—"],["session open","yes"],["flat-by timer","07:17"]],
-    levels: [["—","break above"],["—","break below"],["—","risk"],["$0.00","unrealised"]],
-    unknown: [0,1,2],
-    foot: "A range that is still moving is not a level. No trigger is shown, because showing a provisional high invites an entry on a number that changes a minute later."
-  },
-  armed: {
-    note: "Range set; waiting for a break.",
-    conds: [["range fixed","yes"],["price inside range","yes"],["session open","yes"],["flat-by timer","06:10"]],
-    levels: [["$584.12","break above"],["$582.66","break below"],["25 bps","risk"],["$0.00","unrealised"]],
-    unknown: [],
-    foot: "Levels are fixed and the trade has not triggered. Both sides are live; the first break decides the day."
-  },
-  triggered: {
-    note: "In a long; flat by 15:55 regardless.",
-    conds: [["range fixed","yes"],["break taken","yes"],["stop intact","yes"],["flat-by timer","05:53"]],
-    levels: [["$584.12","entry"],["$582.66","stop"],["25 bps","risk"],["+18 bps","unrealised"]],
-    unknown: [],
-    foot: "Entry and stop are now fixed numbers. Expected win rate here is 37.3% at a payoff of 1.67 — six losses in ten is the shape of this strategy, not a malfunction."
-  },
-  stopped: {
-    note: "Stopped out — done for the day on this symbol.",
-    conds: [["range fixed","yes"],["break taken","yes"],["stop intact","no"],["flat-by timer","04:41"]],
-    levels: [["$584.12","entry"],["$582.66","stop hit"],["25 bps","risk"],["−25 bps","realised"]],
-    unknown: [],
-    foot: "58% of SPY sessions end here. The panel states that in advance so an expected outcome does not read as a surprise."
+
+
+/* ------------------------------------------------------------------ prism
+   Ten conditions refract into one verdict. The beam only reaches the far side
+   when every condition has resolved — which is the product's argument, drawn
+   rather than asserted: for most of the session the honest answer is "not yet".
+
+   Conditions resolve at fixed points in the session and one of them FAILS at
+   the end, because a demo where everything eventually goes green would be
+   making the opposite point to the one this product exists to make. */
+(function(){
+  const canvas = document.getElementById("prismCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const scrub = document.getElementById("scrubber");
+  const clockEl = document.getElementById("clock");
+  const bigEl = document.getElementById("verdictBig");
+  const subEl = document.getElementById("verdictSub");
+  const listEl = document.getElementById("condList");
+
+  // at = fraction of session by which the condition resolves; fails = never true.
+  const CONDS = [
+    {k:"session open",        at:0.02},
+    {k:"range fixed 09:45",   at:0.12},
+    {k:"RVOL > 1.2",          at:0.20},
+    {k:"price vs VWAP",       at:0.28},
+    {k:"EMA21 alignment",     at:0.35},
+    {k:"RSI 35–65",           at:0.44},
+    {k:"15m MACD > 0",        at:0.53},
+    {k:"momentum bar",        at:0.62},
+    {k:"clear of VWAP zone",  at:0.71},
+    {k:"stop width ≤ 30bps",  at:0.80, fails:true}
+  ];
+
+  const OPEN = 9*60+30, CLOSE = 15*60+55;
+  const hhmm = t => String(Math.floor(t/60)).padStart(2,"0")+":"+String(t%60).padStart(2,"0");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let dpr = 1, W = 0, H = 0;
+  function size(){
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W*dpr); canvas.height = Math.round(H*dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
   }
-};
 
-const nameEl = document.getElementById("stateName");
-const noteEl = document.getElementById("stateNote");
-const condsEl = document.getElementById("conds");
-const levelsEl = document.getElementById("levels");
-const footEl = document.getElementById("boardFoot");
-const buttons = Array.from(document.querySelectorAll(".modes button"));
+  const state = () => {
+    const p = Number(scrub.value)/100;
+    const met = CONDS.filter(c => !c.fails && p >= c.at).length;
+    const total = CONDS.length;
+    const blocked = p >= CONDS[CONDS.length-1].at;
+    return {p, met, total, blocked};
+  };
 
-function render(state){
-  const s = SNAPSHOTS[state];
-  nameEl.className = "state-name " + state;
-  nameEl.textContent = state;
-  noteEl.textContent = s.note;
+  function draw(t){
+    const {p, met, total, blocked} = state();
+    ctx.clearRect(0,0,W,H);
 
-  condsEl.innerHTML = s.conds.map(([label, value]) => {
-    const ok = value === "yes";
-    const bad = value === "no";
-    const cls = ok ? "cond ok" : bad ? "cond no" : "cond";
-    return `<div class="${cls}"><i>${label}</i><em>${value}</em></div>`;
-  }).join("");
+    const cx = W*0.44, cy = H/2, r = Math.min(H*0.30, 96);
+    const phase = reduce ? 0 : t/1400;
 
-  levelsEl.innerHTML = s.levels.map(([value, label], i) => {
-    const dim = s.unknown.includes(i) ? " class=\"unknown\"" : "";
-    return `<div class="level"><b${dim}>${value}</b><span>${label}</span></div>`;
-  }).join("");
+    // Incoming beams — one per condition, lit once resolved.
+    CONDS.forEach((c,i) => {
+      const on = p >= c.at && !c.fails;
+      const y = H*0.16 + (H*0.68) * (i/(CONDS.length-1));
+      const wob = reduce ? 0 : Math.sin(phase + i*0.7) * 1.6;
+      ctx.beginPath();
+      ctx.moveTo(0, y);
+      ctx.lineTo(cx - r*0.9, cy + (y-cy)*0.22 + wob);
+      ctx.strokeStyle = c.fails && p >= c.at ? "rgba(255,82,50,.55)"
+                      : on ? "rgba(79,190,139,.5)" : "rgba(120,118,110,.16)";
+      ctx.lineWidth = on || (c.fails && p>=c.at) ? 1.6 : 1;
+      ctx.stroke();
+    });
 
-  footEl.textContent = s.foot;
-  buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
-}
+    // The prism.
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - r);
+    ctx.lineTo(cx + r*0.92, cy + r*0.72);
+    ctx.lineTo(cx - r*0.92, cy + r*0.72);
+    ctx.closePath();
+    const g = ctx.createLinearGradient(cx-r, cy-r, cx+r, cy+r);
+    g.addColorStop(0, "rgba(224,169,59,.16)");
+    g.addColorStop(1, "rgba(79,190,139,.10)");
+    ctx.fillStyle = g; ctx.fill();
+    ctx.strokeStyle = "rgba(228,227,219,.34)"; ctx.lineWidth = 1.2; ctx.stroke();
 
-buttons.forEach(b => b.addEventListener("click", () => render(b.dataset.state)));
-render("forming");
+    // Output beam — full strength only when nothing is missing and nothing failed.
+    const complete = met === total - 1 && !blocked;
+    const strength = blocked ? 0 : met/(total-1);
+    const spread = complete ? 5 : 22;
+    for (let i=0;i<5;i++){
+      const off = (i-2)*spread*(1-strength*0.7);
+      ctx.beginPath();
+      ctx.moveTo(cx + r*0.5, cy + r*0.2);
+      ctx.lineTo(W, cy + off + (reduce?0:Math.sin(phase*1.3 + i)*2));
+      ctx.strokeStyle = blocked ? "rgba(255,82,50,"+(0.10+i*0.02)+")"
+                     : complete ? "rgba(79,190,139,"+(0.5 - Math.abs(i-2)*0.09)+")"
+                     : "rgba(224,169,59,"+(0.06 + strength*0.16)+")";
+      ctx.lineWidth = complete ? 2.2 : 1.2;
+      ctx.stroke();
+    }
+
+    // Session clock.
+    const mins = Math.round(OPEN + (CLOSE-OPEN)*p);
+    clockEl.value = hhmm(mins);
+
+    bigEl.className = "verdict-big" + (blocked ? " dead" : complete ? " ready" : "");
+    bigEl.textContent = blocked ? "BLOCKED" : complete ? "READY" : "NOT READY";
+    subEl.textContent = blocked
+      ? "stop width " + (Math.round(31+p*9)) + "bps exceeds the 30bps limit · " + hhmm(mins)
+      : met + " of " + (total-1) + " conditions met · " + hhmm(mins);
+
+    listEl.innerHTML = CONDS.map(c => {
+      const on = p >= c.at;
+      const bad = c.fails && on;
+      return '<div class="cnd' + (on && !bad ? " on" : "") + '"><span>' + c.k + '</span><b>' +
+             (bad ? "FAIL" : on ? "MET" : "—") + "</b></div>";
+    }).join("");
+  }
+
+  let raf = 0;
+  function loop(t){ draw(t); raf = requestAnimationFrame(loop); }
+
+  size(); addEventListener("resize", size, {passive:true});
+  scrub.addEventListener("input", () => { if (reduce) draw(0); });
+
+  // Only animate while on screen — an off-screen rAF loop is a battery leak.
+  if ("IntersectionObserver" in window && !reduce){
+    new IntersectionObserver(es => {
+      es.forEach(e => {
+        if (e.isIntersecting && !raf) raf = requestAnimationFrame(loop);
+        else if (!e.isIntersecting && raf){ cancelAnimationFrame(raf); raf = 0; }
+      });
+    }, {threshold:0.05}).observe(canvas);
+  } else {
+    draw(0);
+  }
+})();
+
 </script>
