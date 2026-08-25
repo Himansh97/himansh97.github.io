@@ -1,3 +1,5 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Himanshu Srivastava</title>
 <style>
 /* Same token system as the two case pages &#8212; three files, one identity. */
@@ -299,6 +301,52 @@ h2{
 .chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;border:1px solid var(--rule);border-radius:2px;padding:6px 10px;color:var(--ink-soft)}
 @media (max-width:640px){.cv .row{grid-template-columns:1fr;gap:4px}}
 
+/* ------------------------------------------------------------- id card */
+.idcard{display:flex;gap:18px;align-items:center}
+.avatar{border-radius:50%;border:1px solid var(--rule);display:block;width:88px;height:88px;object-fit:cover;background:var(--panel)}
+@media (max-width:520px){.idcard{gap:14px}.avatar{width:64px;height:64px}}
+
+/* -------------------------------------------------------------- about2 */
+.abt{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,3.4vw,44px)}
+.abt h3{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 16px}
+.abt p{margin:0 0 13px;color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:60ch}
+.rec{display:grid;grid-template-columns:clamp(96px,11vw,140px) 1fr;gap:clamp(12px,2vw,26px);padding:15px 0;border-top:1px solid var(--rule-soft)}
+.rec:first-of-type{border-top:0;padding-top:0}
+.rec .yr{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.rec b{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.rec i{font-style:normal;display:block;margin-top:3px;font-size:14px;color:var(--ink-faint)}
+.rec span{display:block;margin-top:7px;font-size:15px;color:var(--ink-soft);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0 0}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;border:1px solid var(--rule);border-radius:2px;padding:6px 10px;color:var(--ink-soft)}
+@media (max-width:560px){.rec{grid-template-columns:1fr;gap:3px}}
+
+/* ---------------------------------------------------------- work panel */
+.work{display:grid;grid-template-columns:clamp(200px,24vw,280px) 1fr;gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.rail2{background:var(--paper);padding:8px 0}
+.rail2 button{
+  display:block;width:100%;text-align:left;background:transparent;border:0;cursor:pointer;
+  padding:13px 18px;border-left:2px solid transparent;color:var(--ink-soft);font:inherit;
+}
+.rail2 button:hover{color:var(--ink);background:var(--panel)}
+.rail2 button[aria-selected="true"]{border-left-color:var(--red);color:var(--ink);background:var(--panel)}
+.rail2 .t{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.rail2 .m{display:block;margin-top:3px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.rail2 .grp{padding:16px 18px 7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+.pane{background:var(--paper);padding:clamp(22px,3vw,34px)}
+.pane .bignum{font-family:var(--mono);font-size:clamp(22px,3vw,32px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.pane .bigsub{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin-top:7px}
+.pane h3{font-size:clamp(20px,2.4vw,27px);font-weight:700;letter-spacing:-.018em;margin:18px 0 12px;text-wrap:balance}
+.pane p{margin:0 0 13px;color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:64ch}
+.pane .stack{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-faint);line-height:1.7;margin:16px 0 0}
+.pane .go{display:flex;flex-wrap:wrap;gap:9px 11px;margin:20px 0 0}
+.pane .go a{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--rule);border-radius:2px;padding:10px 14px;color:var(--ink-soft)}
+.pane .go a:hover{color:var(--ink);border-color:var(--ink-faint)}
+.pane .go a.primary{border-color:var(--red);color:var(--red)}
+.liveframe{margin-top:22px;border:1px solid var(--rule);background:var(--term-bg,#16161A);overflow:hidden}
+.liveframe iframe{display:block;width:100%;height:min(60vh,470px);border:0}
+.liveframe .cap{padding:10px 14px;border-top:1px solid var(--rule);background:var(--panel);font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-faint)}
+@media (max-width:760px){.work{grid-template-columns:1fr}.rail2{display:flex;overflow-x:auto;padding:0}.rail2 .grp{display:none}.rail2 button{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:14px 16px}.rail2 button[aria-selected="true"]{border-bottom-color:var(--red)}.rail2 .m{display:none}}
+
 /* ------------------------------------------------------------ prism box
    The landing-page introduction to Optionora. It argues the product's point
    with a control rather than a sentence: drag the session and the verdict is
@@ -412,8 +460,14 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
 
 <header class="top">
   <canvas id="mast" aria-hidden="true"></canvas>
-  <p class="name">Himanshu Srivastava</p>
-  <p class="role">Data &amp; platform engineering &nbsp;/&nbsp; mortgage technology</p>
+  <div class="idcard">
+    <img class="avatar" src="avatar.jpg" width="88" height="88" alt="Himanshu Srivastava" loading="eager" decoding="async">
+    <div>
+      <p class="name">Himanshu Srivastava</p>
+      <p class="role">Data &amp; platform engineering &nbsp;/&nbsp; mortgage technology</p>
+      <p class="role">Dallas, TX &nbsp;&#183;&nbsp; open to data, analytics and AI engineering roles</p>
+    </div>
+  </div>
 
   <h1>I build systems that know what they can&rsquo;t prove. <em>And stop.</em></h1>
 
@@ -435,315 +489,106 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
 
 <section id="about">
   <div class="section-head">
-    <h2>Who this is</h2>
-    <p class="section-note">Dallas, TX &nbsp;&#183;&nbsp; open to data, analytics and AI engineering roles</p>
+    <h2>About</h2>
+    <p class="section-note">Dallas, TX &nbsp;&#183;&nbsp; two master&rsquo;s degrees &nbsp;&#183;&nbsp; four years across analytics and engineering</p>
   </div>
 
-  <div class="who">
-    <div class="card">
-      <h4>In short</h4>
-      <p>
-        I am a data and platform engineer working in mortgage technology, currently at
-        Supreme Lending, where the systems I build touch loan files that regulators read.
-        That context is most of why I work the way I do: when being wrong is expensive,
-        a system that says &ldquo;I cannot prove this&rdquo; is worth more than one that
-        produces a confident number.
-      </p>
-      <p>
-        Before that I spent four years between analytics delivery and business analysis
-        &mdash; requirements, stakeholders, reporting, and the unglamorous work of making
-        numbers agree across systems that disagreed by design.
-      </p>
-    </div>
-    <div class="card">
-      <h4>What I actually do</h4>
-      <p>
-        Python and SQL end to end: pipelines in PySpark and Airflow, dimensional models,
-        deterministic scoring, and the FastAPI and Next.js services that put the result in
-        front of someone. Recently that has meant AI systems specifically &mdash; and the
-        governance around them, which is the harder half.
-      </p>
-      <p>
-        On the research side, self-supervised contrastive learning: reproducing SimCLR and
-        applying it to a new image dataset during an AI/ML internship at Syracuse.
-      </p>
-    </div>
-  </div>
-
-  <div class="cv" style="margin-top:clamp(26px,4vw,44px)">
-    <div class="row">
-      <div class="when">2026 &mdash; present</div>
-      <div class="what"><b>AI Engineer Intern</b><span>Supreme Lending (Everett Financial, Inc.) &mdash; mortgage technology, production and regulated</span></div>
-    </div>
-    <div class="row">
-      <div class="when">2025 &mdash; 2026</div>
-      <div class="what"><b>AI/ML Intern</b><span>Syracuse University &mdash; contrastive learning research, ETL and analytics engineering</span></div>
-    </div>
-    <div class="row">
-      <div class="when">2022 &mdash; 2023</div>
-      <div class="what"><b>Business Analytics and Reporting Lead</b><span>Freyr Solutions &mdash; 20+ regional markets, a team of four analysts</span></div>
-    </div>
-    <div class="row">
-      <div class="when">2021 &mdash; 2022</div>
-      <div class="what"><b>Business Analyst and Data Analytics Associate</b><span>Omnicals Pharma &mdash; forecasting, dashboards, cross-system data cleansing</span></div>
-    </div>
-    <div class="row">
-      <div class="when">2023 &mdash; 2025</div>
-      <div class="what"><b>MS, Business Analytics</b><span>Syracuse University &mdash; 3.6 GPA</span></div>
-    </div>
-    <div class="row">
-      <div class="when">2020 &mdash; 2022</div>
-      <div class="what"><b>MBA</b><span>Narsee Monjee Institute of Management Studies &mdash; 3.4 GPA</span></div>
-    </div>
-  </div>
-
-  <p class="chips">
-    <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">PySpark</span>
-    <span class="chip">Airflow</span><span class="chip">FastAPI</span><span class="chip">Next.js</span>
-    <span class="chip">TypeScript</span><span class="chip">Tableau</span><span class="chip">Power BI</span>
-    <span class="chip">PostgreSQL</span><span class="chip">TensorFlow</span><span class="chip">PyTorch</span>
-    <span class="chip">Azure</span><span class="chip">CI/CD</span><span class="chip">Lean Six Sigma Green Belt</span>
-  </p>
-</section>
-
-<section>
-  <div class="section-head">
-    <h2>CareerOS &mdash; a system I built for myself</h2>
-    <p class="section-note">Personal project &nbsp;&#183;&nbsp; <a href="careeros.html" style="color:inherit">full case study &#8594;</a></p>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>10,034 &rarr; 10</b>
-      <span>one run, 27.7 seconds</span>
-    </div>
+  <div class="abt">
     <div>
-      <h3>The discovery pipeline, in 3D</h3>
-      <p class="lead">
-        CareerOS reads six public job boards, scores every posting against a
-        vault of 38 verified claims about what I have actually done, writes a
-        tailored r&eacute;sum&eacute; for the ones that clear the bar &mdash; and then
-        stops and waits for me. Nothing it produces is ever sent without my
-        reading it first.
+      <h3>Who I am</h3>
+      <p>
+        I am a data and platform engineer working in mortgage technology. At Supreme
+        Lending the systems I build touch loan files that regulators read, and that
+        context is most of why I work the way I do: where being wrong is expensive, a
+        system that says <em>&ldquo;I cannot prove this&rdquo;</em> is worth more than one
+        that produces a confident number.
       </p>
       <p>
-        This page renders one real run as ten thousand particles. Each is a
-        posting; each dies at whichever filter rejected it. The beam&rsquo;s width
-        is the survivor count on a log scale, so the narrowing you watch is the
-        measurement rather than a shape I drew. Raw WebGL2, one draw call, no
-        libraries.
+        Before the move into engineering I spent four years in analytics delivery and
+        business analysis &mdash; requirements, stakeholders, reporting, and the
+        unglamorous work of making numbers agree across systems that disagreed by design.
+        The two halves are the point: I can sit with the person whose process it is, and
+        then go build the thing.
       </p>
-      <p class="stack">Python &nbsp;&#183; FastAPI &nbsp;&#183; SQLite &nbsp;&#183; Next.js &nbsp;&#183; WebGL2</p>
-      <a class="open" href="pipeline-hero.html">Open the pipeline <span class="arw">&rarr;</span></a>
+      <p>
+        Outside work I build the same way. Everything in the next section is mine,
+        including the parts that did not work &mdash; which are published too.
+      </p>
+      <p class="chips">
+        <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">PySpark</span>
+        <span class="chip">Airflow</span><span class="chip">FastAPI</span><span class="chip">Next.js</span>
+        <span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Tableau</span>
+        <span class="chip">Power BI</span><span class="chip">PostgreSQL</span><span class="chip">TensorFlow</span>
+        <span class="chip">PyTorch</span><span class="chip">Azure</span><span class="chip">CI/CD</span>
+        <span class="chip">Lean Six Sigma Green Belt</span>
+      </p>
     </div>
-  </div>
 
-  <div class="entry">
-    <div class="metric">
-      <b>6 Aug 2026</b>
-      <span>the day the rules changed</span>
-    </div>
     <div>
-      <h3>Custody &mdash; proving what an AI did to a loan</h3>
-      <p class="lead">
-        Fannie Mae Lender Letter LL-2026-04 took effect on 6 August 2026. Any lender
-        using AI in origination or servicing must now govern its use, extend that
-        governance to its vendors, and &mdash; on Fannie Mae&rsquo;s request &mdash; promptly
-        disclose what AI it runs, for what purpose, and what safeguards are in place.
-        You can answer that with a document describing what you intend to happen, or
-        with a record of what did happen that the person asking can verify themselves.
-      </p>
-      <p>
-        Custody produces the second. The model call <em>is</em> the log entry, so the
-        record cannot be forgotten; a deterministic gate acts as a live safeguard and
-        records what it concluded; and the whole chain is hash-linked and Ed25519 signed,
-        so a recipient can detect tampering without access to any of the lender&rsquo;s
-        systems. The demo runs a synthetic loan through five AI steps &mdash; including one
-        where the model invents an income figure and gets caught &mdash; then lets you
-        tamper with a record and watch your own browser find it.
-      </p>
-      <p class="stack">Python &nbsp;&middot; SHA-256 chain &nbsp;&middot; Ed25519 &nbsp;&middot; SQLite / Postgres &nbsp;&middot; WebCrypto &nbsp;&middot; pip installable</p>
-      <a class="open" href="custody.html">See Custody <span class="arw">&rarr;</span></a>
-    </div>
-  </div>
+      <h3>Education</h3>
+      <div class="rec">
+        <div class="yr">2023 &ndash; 2025</div>
+        <div>
+          <b>MS, Business Analytics</b>
+          <i>Syracuse University &mdash; School of Information Studies &middot; GPA 3.6</i>
+          <span>Applied statistics, data engineering and machine learning. Stayed on afterwards as an AI/ML intern doing contrastive-learning research.</span>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="yr">2020 &ndash; 2022</div>
+        <div>
+          <b>Master of Business Administration</b>
+          <i>Narsee Monjee Institute of Management Studies &middot; GPA 3.4</i>
+          <span>The commercial half &mdash; which is why requirements gathering and stakeholder work read as engineering to me rather than as overhead.</span>
+        </div>
+      </div>
 
-
-  <div class="entry">
-    <div class="metric">
-      <b>3 verdicts</b>
-      <span>pass &nbsp;/&nbsp; review &nbsp;/&nbsp; reject</span>
-    </div>
-    <div>
-      <h3>The containment gate</h3>
-      <p class="lead">
-        A language model writes the r&eacute;sum&eacute; bullets. This is what decides
-        whether they ship. Every figure must appear in the source claim, every
-        proper noun must be a tool or employer already on record, and verbs are
-        treated as equivalence classes so that <em>coordinated</em> &rarr;
-        <em>led</em> is free while <em>applied</em> &rarr; <em>drove</em> is not.
-      </p>
-      <p>
-        It has already earned its place: on a live draft the model invented a
-        35% figure that appears in no claim, and the gate discarded the whole
-        generation. Anything it cannot judge routes to a human rather than
-        guessing &mdash; a gap in the lexicon is the gate&rsquo;s problem, never the
-        writer&rsquo;s. Type your own sentence into it and watch the checks run.
-      </p>
-      <p class="stack">Claude API &nbsp;&#183; lexical + semantic verification &nbsp;&#183; deterministic scoring</p>
-      <a class="open" href="containment-gate.html">Try the gate <span class="arw">&rarr;</span></a>
+      <h3 style="margin-top:34px">Experience</h3>
+      <div class="rec">
+        <div class="yr">2026 &ndash; present</div>
+        <div>
+          <b>AI Engineer Intern</b>
+          <i>Supreme Lending (Everett Financial, Inc.)</i>
+          <span>Production systems in a regulated lender: GL reconciliation, Ginnie Mae pool delivery, and the security stage of a five-stage CI/CD platform.</span>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="yr">2025 &ndash; 2026</div>
+        <div>
+          <b>AI/ML Intern</b>
+          <i>Syracuse University</i>
+          <span>Reproduced SimCLR and applied it to a new image dataset, in PyTorch and TensorFlow. Also ETL in PySpark and Airflow over 1M+ records.</span>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="yr">2022 &ndash; 2023</div>
+        <div>
+          <b>Business Analytics and Reporting Lead</b>
+          <i>Freyr Solutions</i>
+          <span>Analytics across 20+ regional markets, leading four junior analysts and setting the data-quality and governance standards.</span>
+        </div>
+      </div>
+      <div class="rec">
+        <div class="yr">2021 &ndash; 2022</div>
+        <div>
+          <b>Business Analyst and Data Analytics Associate</b>
+          <i>Omnicals Pharma</i>
+          <span>Demand forecasting, executive dashboards, and a standardised cleansing pipeline across three inconsistent source systems.</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<section id="optionora">
+<section id="work">
   <div class="section-head">
-    <h2>Optionora &mdash; knowing when a trade is actually ready</h2>
-    <p class="section-note">Personal project &nbsp;&#183;&nbsp; drag the session &nbsp;&#183;&nbsp; the app itself runs on its page</p>
+    <h2>The work</h2>
+    <p class="section-note">Pick one &nbsp;&#183;&nbsp; the demos run in this page</p>
   </div>
 
-  <div class="prismbox">
-    <canvas id="miniPrism" height="230" aria-hidden="true"></canvas>
-    <div class="prismbox-hud">
-      <span class="pv" id="miniVerdict">NOT READY</span>
-      <span class="ps" id="miniSub">2 of 9 conditions met &middot; 10:39</span>
-    </div>
-    <div class="prismbox-scrub">
-      <label for="miniScrub">Session</label>
-      <input id="miniScrub" type="range" min="0" max="100" value="18" step="1"
-             aria-label="Scrub through the trading session" />
-      <output id="miniClock">10:39</output>
-    </div>
-    <p class="prismbox-foot">
-      Ten conditions, one verdict. Most of the session the honest answer is <em>not yet</em>
-      &mdash; and at 15:55 the stop-width limit is breached, so nine of ten is still
-      <strong>blocked</strong>.
-    </p>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>0 of 7</b>
-      <span>strategies cleared zero</span>
-    </div>
-    <div>
-      <h3>Optionora &mdash; knowing when a trade is actually ready</h3>
-      <p class="lead">
-        Short-dated options move fast enough that most of the damage is done before you
-        have finished reading the chart, and the tools built for it either fire alerts
-        with no stated basis or bury the basis where nobody checks. Optionora answers a
-        narrower question instead: is this setup complete, which condition is still
-        missing, and what does the record actually say about the strategy you are about
-        to run?
-      </p>
-      <p>
-        The measured record is published in full, including the rows that did not work.
-        Across 502 sessions of one-minute data, charged 1.3 bps a round trip, <em>not one
-        of seven strategies has a confidence interval that clears zero</em> &mdash; so
-        every one is reported as unproven, including the QQQ breakout that averages
-        +4.45 net bps. A tool that only shows you what worked has told you nothing about
-        what did not, and a trading site advertising an 80% win rate is selling
-        something. The board itself never renders a missing level as zero: a range that
-        is still forming has no trigger, and it says so in words.
-      </p>
-      <p class="stack">Python &nbsp;&middot; rule engine &nbsp;&middot; 411 tests &nbsp;&middot; React &nbsp;&middot; 5 market-data providers &nbsp;&middot; bootstrap intervals</p>
-      <a class="open" href="optionora.html">See Optionora <span class="arw">&rarr;</span></a>
-    </div>
-  </div>
-</section>
-
-<section>
-  <div class="section-head">
-    <h2>Supreme Lending &mdash; Everett Financial</h2>
-    <p class="section-note">2026 &mdash; present &nbsp;&#183;&nbsp; production, regulated</p>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>2&ndash;3 hrs</b>
-      <span>daily, per specialist &mdash; removed</span>
-    </div>
-    <div>
-      <h3>Mortgage GL reconciliation</h3>
-      <p class="lead">
-        A reconciliation specialist spent two to three hours every day
-        cross-referencing three disconnected systems &mdash; Power BI, the loan
-        origination system, and the A&amp;B ledger &mdash; to classify and route GL
-        discrepancies across more than a hundred open cases. None of it was
-        written down anywhere.
-      </p>
-      <p>
-        Getting it out of one person&rsquo;s head was the actual work: structured
-        interviews and live training sessions, turned into engineering
-        requirements, then into a production pipeline in Python, SQL and
-        PySpark with statistical matching over thousands of transaction records.
-      </p>
-      <p>
-        The data-fetching layer underneath is deliberately LOS-agnostic, with
-        automatic system detection, so the same automation runs identically
-        across Encompass, MeridianLink and Blue Sage. That was not
-        future-proofing for its own sake &mdash; an LOS migration was already in
-        flight, and a rewrite mid-migration was the thing to avoid.
-      </p>
-      <p class="stack">Python &nbsp;&#183; SQL &nbsp;&#183; PySpark &nbsp;&#183; Power BI &nbsp;&#183; Encompass &nbsp;&#183; MeridianLink &nbsp;&#183; Blue Sage</p>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>$18.2M</b>
-      <span>UPB live at first deployment</span>
-    </div>
-    <div>
-      <h3>Ginnie Mae pool delivery</h3>
-      <p class="lead">
-        SettleDesk went to production for Ginnie Mae pool delivery and was live
-        on its first deployment: 4 pools, 47 loans, $18.2M UPB, with 74 pending
-        final certifications.
-      </p>
-      <p>
-        Underneath it, PoolPath merges ULDD XML loan exports from three
-        different LOS platforms into valid Ginnie Mae PDD XML for SFPDM
-        submission, correcting schema errors automatically instead of bouncing
-        the file back to a person. A separate parser reads settlement and
-        commitment dates out of unstructured warehouse-bank correspondence and
-        populates the post-closing intake pipeline from it.
-      </p>
-      <p class="stack">Claude API &nbsp;&#183; ULDD / PDD &nbsp;&#183; MISMO &nbsp;&#183; XML schema validation &nbsp;&#183; GNMA SFPDM</p>
-    </div>
-  </div>
-
-  <div class="entry">
-    <div class="metric">
-      <b>18 &rarr; 9 min</b>
-      <span>pull-request check time</span>
-    </div>
-    <div>
-      <h3>Enterprise CI/CD platform, security stage</h3>
-      <p class="lead">
-        I own the security stage of a five-stage CI/CD platform at a regulated
-        mortgage lender &mdash; CodeQL, secret scanning and dependency review
-        running in parallel, which halved pull-request check time from 18
-        minutes to 9.
-      </p>
-      <p>
-        The gates are built to prevent rather than report: secret scanning with
-        push protection, a CRITICAL-severity CVE that fails the build, and
-        required-reviewer branch protection. Azure infrastructure is Bicep &mdash;
-        Container Apps, Key Vault, Container Registry, user-assigned managed
-        identity &mdash; authenticated through OIDC federated credentials with no
-        stored secrets, deploying incremental-only to protect brownfield
-        resources.
-      </p>
-      <p>
-        The pipeline holds zero write access to IAM. Humans provision identities
-        and secrets by hand, because a regulated lender will not allow
-        self-service permissions, and the least-privilege model had to be
-        designed around that constraint rather than argued with. Any engineering
-        team onboards to the whole platform by copying three files and raising
-        one pull request &mdash; same day, against an estimated two to three weeks.
-      </p>
-      <p class="stack">GitHub Actions &nbsp;&#183; CodeQL &nbsp;&#183; Azure &nbsp;&#183; Bicep &nbsp;&#183; OIDC &nbsp;&#183; DevSecOps</p>
-    </div>
+  <div class="work">
+    <div class="rail2" role="tablist" aria-label="Projects" id="rail"></div>
+    <div class="pane" id="pane" role="tabpanel" aria-live="polite"></div>
   </div>
 </section>
 
@@ -1202,6 +1047,93 @@ else window.addEventListener("resize", function(){ resize(); draw(clock); });
       else if(!e.isIntersecting&&raf){cancelAnimationFrame(raf); raf=0;}
     }),{threshold:.05}).observe(cv);
   } else draw(0);
+})();
+
+
+/* --------------------------------------------------------------- work panel
+   A side rail of projects and one detail pane. Demos load in an iframe only
+   when their project is selected — six iframes mounted at once would cost a
+   visitor several megabytes to read a page most of them never click into. */
+(function(){
+  const rail = document.getElementById("rail");
+  const pane = document.getElementById("pane");
+  if (!rail || !pane) return;
+
+  const P = [
+    {g:"Personal", id:"careeros", n:"10,034 → 10", m:"one run, 27.7s", t:"CareerOS",
+     h:"A job search that cannot say anything I have not done",
+     b:["Every tool in this space writes your resume for you, and every one will quietly inflate a number to make a posting fit. CareerOS is the opposite bet: each sentence must trace to a recorded piece of evidence, and what catches an overclaim is a gate that refuses it rather than a disclaimer.",
+        "Scoring and bullet selection are deterministic and model-free by design. Nine job boards are polled; three more — LinkedIn, Indeed, Wellfound — are declined by name because their terms prohibit it, and the reason is served to the interface rather than left looking like an oversight.",
+        "Nothing auto-submits. It prepares an application and stops."],
+     s:"FastAPI · Next.js · SQLite · 236 commits · 421 backend tests",
+     demo:"pipeline-hero.html", cap:"One real discovery run: 10,034 postings narrowing to 10.",
+     go:[["careeros.html","Full case study",1],["containment-gate.html","Try the gate",0],
+         ["https://github.com/Himansh97/careeros-api","Backend source",0]]},
+
+    {g:"Personal", id:"optionora", n:"0 of 7", m:"strategies cleared zero", t:"Optionora",
+     h:"Knowing when a trade is actually ready — and proving why",
+     b:["A decision-readiness layer for short-dated single-leg options: is this setup complete, which condition is still missing, and what does the record actually say about the strategy you are about to run?",
+        "The measured record is published in full, including the rows that did not work. Across 502 sessions charged 1.3 bps a round trip, not one of seven strategies has a confidence interval that clears zero — so every one is reported as unproven, including the QQQ breakout averaging +4.45 net bps.",
+        "The app itself journals 3,490 decisions including the 451 the rules refused, and states a 57.6% probability there is no edge at all."],
+     s:"Python rule engine · 411 tests · React · five market-data providers",
+     demo:"optionora-app/", cap:"The real application, backend frozen. Open Results.",
+     go:[["optionora.html","Full case study",1],["optionora-app/","Open full screen",0]]},
+
+    {g:"Personal", id:"custody", n:"6 Aug 2026", m:"the day the rules changed", t:"Custody",
+     h:"Proving what an AI did to a loan, including when it was wrong",
+     b:["Fannie Mae Lender Letter LL-2026-04 took effect on 6 August 2026: any lender using AI in origination must govern its use and, on request, disclose what it runs and what safeguards are in place. You can answer that with a document describing what you intend to happen, or with a record of what did.",
+        "Custody produces the second. The model call is the log entry, so the record cannot be forgotten; a deterministic gate acts as a live safeguard; and the chain is hash-linked and Ed25519 signed, so a recipient can detect tampering without access to any of the lender's systems.",
+        "Published to PyPI as custody-ledger. 92 tests."],
+     s:"Python · SHA-256 chain · Ed25519 · SQLite / Postgres · WebCrypto · pip installable",
+     demo:"custody.html#demo", cap:"A synthetic loan through five AI steps — one invents an income figure and is caught.",
+     go:[["custody.html","Full case study",1],["https://pypi.org/project/custody-ledger/","On PyPI",0],
+         ["https://github.com/Himansh97/custody","Source",0]]},
+
+    {g:"Supreme Lending", id:"recon", n:"2–3 hrs", m:"daily, per specialist — removed", t:"GL reconciliation",
+     h:"Getting a process out of one person's head",
+     b:["A reconciliation specialist spent two to three hours every day cross-referencing three disconnected systems — Power BI, the loan origination system, and the A&B ledger — to classify and route GL discrepancies across more than a hundred open cases. None of it was written down anywhere.",
+        "Getting it out of one person's head was the actual work: structured interviews and live training sessions turned into rules a system could run. The automation was the easy half."],
+     s:"Python · SQL · PySpark · Power BI · Encompass · MeridianLink · Blue Sage", demo:null, go:[]},
+
+    {g:"Supreme Lending", id:"settle", n:"$18.2M", m:"UPB live at first deployment", t:"Ginnie Mae pool delivery",
+     h:"Live on its first deployment",
+     b:["SettleDesk went to production for Ginnie Mae pool delivery and was live on day one: 4 pools, 47 loans, $18.2M UPB, 74 pending final certifications.",
+        "Underneath it, PoolPath merges ULDD XML loan exports from three different LOS platforms into valid Ginnie Mae PDD XML for SFPDM submission, correcting schema errors automatically instead of bouncing the file back to a person."],
+     s:"Claude API · ULDD / PDD · MISMO · XML schema validation · GNMA SFPDM", demo:null, go:[]},
+
+    {g:"Supreme Lending", id:"cicd", n:"18 → 9 min", m:"pull-request check time", t:"CI/CD security stage",
+     h:"Gates built to prevent, not to report",
+     b:["I own the security stage of a five-stage CI/CD platform at a regulated mortgage lender — CodeQL, secret scanning and dependency review running in parallel, halving pull-request check time from 18 minutes to 9.",
+        "The gates prevent rather than report: secret scanning with push protection, a CRITICAL-severity CVE that fails the build, and required-reviewer branch protection."],
+     s:"GitHub Actions · CodeQL · Azure · Bicep · OIDC · DevSecOps", demo:null, go:[]}
+  ];
+
+  let lastGroup = "";
+  rail.innerHTML = P.map((x,i) => {
+    const grp = x.g !== lastGroup ? (lastGroup = x.g, '<div class="grp">'+x.g+'</div>') : "";
+    return grp + '<button role="tab" data-i="'+i+'" aria-selected="'+(i===0)+'">' +
+           '<span class="t">'+x.t+'</span><span class="m">'+x.n+'</span></button>';
+  }).join("");
+
+  function show(i){
+    const x = P[i];
+    pane.innerHTML =
+      '<div class="bignum">'+x.n+'</div><div class="bigsub">'+x.m+'</div>' +
+      '<h3>'+x.h+'</h3>' +
+      x.b.map(t => "<p>"+t+"</p>").join("") +
+      '<p class="stack">'+x.s+'</p>' +
+      (x.go.length ? '<p class="go">'+x.go.map(g =>
+        '<a href="'+g[0]+'"'+(g[2]?' class="primary"':'')+(g[0].startsWith("http")?' rel="noopener"':'')+'>'+g[1]+'</a>').join("")+'</p>' : "") +
+      (x.demo ? '<div class="liveframe"><iframe src="'+x.demo+'" title="'+x.t+' demo" loading="lazy" referrerpolicy="no-referrer"></iframe><div class="cap">'+x.cap+'</div></div>' : "");
+    rail.querySelectorAll("button").forEach(b =>
+      b.setAttribute("aria-selected", String(Number(b.dataset.i) === i)));
+  }
+
+  rail.addEventListener("click", e => {
+    const b = e.target.closest("button[data-i]");
+    if (b) show(Number(b.dataset.i));
+  });
+  show(0);
 })();
 
 </script>
