@@ -1,0 +1,437 @@
+<title>Optionora</title>
+<style>
+:root{
+  color-scheme:light;
+  --paper:#FAFAF8;
+  --panel:#F3F2ED;
+  --ink:#16161A;
+  --ink-soft:#55554F;
+  --ink-faint:#8C8B84;
+  --rule:#CFCEC4;
+  --rule-soft:#E4E3DB;
+  --red:#D92906;
+  --amber:#8A5D00;
+  --green:#1B6B4C;
+  --green-wash:#E8F1EC;
+  --red-wash:#FBEAE6;
+  --amber-wash:#FBF3E2;
+  --term-bg:#16161A;
+  --term-ink:#E4E3DB;
+  --term-faint:#8C8B84;
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --gut:clamp(20px,5vw,64px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E0E12;
+    --panel:#16161C;
+    --ink:#E9E8E2;
+    --ink-soft:#A3A29B;
+    --ink-faint:#6B6A65;
+    --rule:#26262E;
+    --rule-soft:#1C1C23;
+    --green-wash:#12211A;
+    --red-wash:#2A1310;
+    --amber-wash:#241C0C;
+  }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--display);font-size:17px;line-height:1.55;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin:0}
+
+header.hero{padding:clamp(34px,6vw,76px) 0 clamp(34px,5vw,60px);border-bottom:1px solid var(--rule)}
+h1{font-weight:700;font-size:clamp(34px,6.2vw,68px);line-height:1.02;letter-spacing:-.032em;margin:16px 0 0;max-width:16ch;text-wrap:balance}
+h1 em{font-style:normal;color:var(--red)}
+.lede{max-width:60ch;font-size:clamp(17px,1.6vw,21px);line-height:1.55;color:var(--ink-soft);margin:24px 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:10px 12px;margin:32px 0 0}
+.cta a{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;border:1px solid var(--rule);border-radius:2px;padding:12px 18px;color:var(--ink-soft)}
+.cta a:hover{color:var(--ink);border-color:var(--ink-faint)}
+.cta a.primary{border-color:var(--red);color:var(--red)}
+.hero-note{margin:20px 0 0;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+
+section{padding:clamp(40px,6vw,78px) 0;border-bottom:1px solid var(--rule)}
+h2{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 8px}
+.head{font-size:clamp(24px,3.2vw,36px);font-weight:700;letter-spacing:-.025em;margin:0 0 18px;max-width:24ch;text-wrap:balance}
+.sub{max-width:66ch;color:var(--ink-soft);margin:0 0 30px;font-size:17px}
+section > p{max-width:66ch;margin:18px 0 0;color:var(--ink-soft)}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule)}
+.fact{background:var(--paper);padding:24px 22px 26px}
+.fact b{display:block;font-family:var(--mono);font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact span{display:block;margin-top:10px;font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+.fact cite{display:block;margin-top:10px;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.col{background:var(--paper);padding:26px 24px}
+.col h3{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}
+.col.is h3{color:var(--green)}
+.col.isnt h3{color:var(--red)}
+.col ul{margin:0;padding-left:1.1em;color:var(--ink-soft);font-size:15.5px;line-height:1.6}
+.col li{margin:0 0 9px}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--rule);margin-top:8px}
+table{border-collapse:collapse;width:100%;min-width:660px;font-family:var(--mono);font-size:12.5px;font-variant-numeric:tabular-nums}
+caption{caption-side:bottom;text-align:left;padding:12px 14px;font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);line-height:1.6}
+th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--rule-soft);white-space:nowrap}
+th{font-weight:400;text-transform:uppercase;letter-spacing:.12em;font-size:10px;color:var(--ink-faint);border-bottom:1px solid var(--rule)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:0}
+td.pos{color:var(--green)}
+td.neg{color:var(--red)}
+tr.bench td{color:var(--ink-faint)}
+.verdict{display:inline-block;padding:2px 7px;border-radius:2px;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.verdict.no{background:var(--amber-wash);color:var(--amber)}
+
+.steps{display:grid;gap:clamp(24px,3vw,38px);margin-top:8px}
+.step{display:grid;grid-template-columns:clamp(96px,12vw,150px) 1fr;gap:clamp(18px,3vw,36px);align-items:start}
+.step .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);padding-top:5px}
+.step h3{font-size:20px;font-weight:700;letter-spacing:-.015em;margin:0 0 10px}
+.step p{margin:0 0 12px;color:var(--ink-soft);max-width:62ch;font-size:16px}
+@media (max-width:640px){.step{grid-template-columns:1fr;gap:8px}}
+
+pre{margin:0;padding:18px 20px;background:var(--term-bg);color:var(--term-ink);border-radius:3px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65}
+pre .c{color:var(--term-faint)}
+pre .g{color:#4FBE8B}
+pre .r{color:#FF5232}
+pre .a{color:#E0A93B}
+pre b{color:#FFFFFF;font-weight:600}
+
+/* ------------------------------------------------------- readiness demo */
+.board{border:1px solid var(--rule);background:var(--panel);margin-top:8px}
+.board-top{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.sym{font-family:var(--mono);font-size:13px;letter-spacing:.14em}
+.modes{display:flex;gap:6px}
+.modes button{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;border:1px solid var(--rule);background:transparent;color:var(--ink-faint);border-radius:2px;cursor:pointer}
+.modes button[aria-pressed="true"]{border-color:var(--ink-faint);color:var(--ink)}
+.state{padding:20px 18px}
+.state-line{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.state-name{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:4px 9px;border-radius:2px}
+.state-name.armed{background:var(--amber-wash);color:var(--amber)}
+.state-name.forming{background:var(--rule-soft);color:var(--ink-faint)}
+.state-name.triggered{background:var(--green-wash);color:var(--green)}
+.state-name.stopped{background:var(--red-wash);color:var(--red)}
+.state-note{color:var(--ink-soft);font-size:15px}
+.conds{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule);margin-top:18px}
+.cond{background:var(--paper);padding:13px 15px;font-family:var(--mono);font-size:11.5px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.cond i{font-style:normal;letter-spacing:.06em;color:var(--ink-soft)}
+.cond em{font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase}
+.cond.ok em{color:var(--green)}
+.cond.no em{color:var(--red)}
+.levels{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule);border-top:0}
+.level{background:var(--paper);padding:13px 15px}
+.level b{display:block;font-family:var(--mono);font-size:16px;font-variant-numeric:tabular-nums}
+.level span{display:block;margin-top:5px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.unknown{color:var(--ink-faint)}
+.board-foot{padding:13px 18px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;color:var(--ink-faint);line-height:1.6}
+
+footer{padding:clamp(40px,6vw,70px) 0 clamp(50px,7vw,90px)}
+footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
+.backlink{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;color:var(--ink-faint)}
+.backlink:hover{color:var(--ink)}
+</style>
+
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Optionora</p>
+  <h1>Know when your trade is actually ready. <em>And prove why.</em></h1>
+  <p class="lede">
+    Most trading tools tell you what to buy. Optionora tells you whether the setup
+    you are looking at is complete, which conditions are still missing, and what the
+    historical record actually says about the strategy you are about to run — including
+    when the honest answer is that it has not been shown to work.
+  </p>
+  <p class="cta">
+    <a class="primary" href="#board">Open the readiness board &rarr;</a>
+    <a href="#measured">See the measured results</a>
+    <a href="#accuracy">How we raise accuracy</a>
+  </p>
+  <p class="hero-note">Python rule engine &nbsp;&middot;&nbsp; 411 tests &nbsp;&middot;&nbsp; React front end &nbsp;&middot;&nbsp; five market-data providers</p>
+</header>
+
+<section>
+  <h2>The problem</h2>
+  <p class="head">A signal you cannot audit is a guess with better typography.</p>
+  <p class="sub">
+    Short-dated single-leg options move fast enough that most of the damage is done
+    before you have finished reading the chart. The tools built for this either fire
+    alerts with no stated basis, or bury the basis so deep that nobody checks it.
+    Either way the trader ends up trusting a number whose provenance they cannot see.
+  </p>
+  <div class="two">
+    <div class="col is">
+      <h3>What Optionora is</h3>
+      <ul>
+        <li>A decision-readiness layer: is this setup complete, and which condition is missing?</li>
+        <li>A record of what each strategy actually did, net of costs, with intervals.</li>
+        <li>A hard separation between real, paper, simulated and research state.</li>
+      </ul>
+    </div>
+    <div class="col isnt">
+      <h3>What it is not</h3>
+      <ul>
+        <li>Not a signal seller. It never claims a win rate it has not measured.</li>
+        <li>Not an execution bot. It places no orders; market data is read-only.</li>
+        <li>Not a backtest that flatters itself. Costs are charged on every trade.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="board">
+  <h2>The readiness board</h2>
+  <p class="head">Every state is a different answer, so it gets a different name.</p>
+  <p class="sub">
+    A range that is still moving is not a level. Showing a provisional high as though
+    it were the trigger invites an entry on a number that changes a minute later — so
+    <em>forming</em> and <em>armed</em> are deliberately separate states, and no levels
+    exist until the range is fixed at 09:45. Click through the session below.
+  </p>
+
+  <div class="board">
+    <div class="board-top">
+      <span class="sym">SPY &middot; 0DTE &middot; opening-range breakout</span>
+      <span class="modes" role="group" aria-label="Session state">
+        <button type="button" data-state="forming" aria-pressed="true">09:38 forming</button>
+        <button type="button" data-state="armed" aria-pressed="false">09:45 armed</button>
+        <button type="button" data-state="triggered" aria-pressed="false">10:02 triggered</button>
+        <button type="button" data-state="stopped" aria-pressed="false">11:14 stopped</button>
+      </span>
+    </div>
+
+    <div class="state">
+      <p class="state-line">
+        <span class="state-name forming" id="stateName">forming</span>
+        <span class="state-note" id="stateNote">Range sets at 09:45, 7 min away — no levels until then.</span>
+      </p>
+      <div class="conds" id="conds"></div>
+      <div class="levels" id="levels"></div>
+    </div>
+
+    <p class="board-foot" id="boardFoot">
+      Illustrative session on real strategy logic. Levels are shown only once the range is fixed.
+    </p>
+  </div>
+
+  <p>
+    The board never renders a missing value as zero. When a level does not exist yet it
+    says so in words, because a zero on a price field is indistinguishable from a real
+    number at a glance, and that glance is the whole interaction.
+  </p>
+</section>
+
+<section id="measured">
+  <h2>The measured record</h2>
+  <p class="head">Six in ten of these trades lose. The panel says so.</p>
+  <p class="sub">
+    Two trades a day is roughly 500 round trips a year. At 1.3 bps that is about 6.5% of
+    capital annually before a single decision, so a strategy needs ~2.6 bps per day of pure
+    timing edge merely to break even. Every figure below is <strong>net</strong>, per trade,
+    with a bootstrap 95% interval over 502 sessions of one-minute data.
+  </p>
+
+  <div class="tablewrap">
+    <table>
+      <caption>
+        Source: <code>docs/intraday_bakeoff.csv</code>. Costs charged at 1.3 bps per round trip.
+        A strategy whose interval includes zero has not been shown to work, however good its average looks.
+      </caption>
+      <thead>
+        <tr><th>Strategy</th><th>n</th><th>Win</th><th>Net bps</th><th>95% interval</th><th>Verdict</th></tr>
+      </thead>
+      <tbody>
+        <tr class="bench"><td>SPY open-to-close <i>(benchmark)</i></td><td>502</td><td>51.6%</td><td class="pos">+0.10</td><td>−7.41 … +8.14</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr><td>SPY 15-min ORB</td><td>502</td><td>37.3%</td><td class="neg">−0.11</td><td>−4.21 … +4.31</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr><td>SPY 15-min ORB + trend filter</td><td>407</td><td>39.3%</td><td class="pos">+2.50</td><td>−2.45 … +7.78</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr class="bench"><td>QQQ open-to-close <i>(benchmark)</i></td><td>502</td><td>52.6%</td><td class="neg">−0.34</td><td>−10.07 … +9.63</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr><td>QQQ 15-min ORB</td><td>502</td><td>43.4%</td><td class="pos">+4.45</td><td>−2.29 … +11.88</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr><td>QQQ 15-min ORB + trend filter</td><td>383</td><td>44.1%</td><td class="pos">+3.54</td><td>−3.07 … +10.65</td><td><span class="verdict no">unproven</span></td></tr>
+        <tr><td>IWM 15-min ORB</td><td>502</td><td>41.2%</td><td class="neg">−0.06</td><td>−6.85 … +6.86</td><td><span class="verdict no">unproven</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>
+    <strong>Not one row clears zero.</strong> QQQ's opening-range breakout averages +4.45 bps
+    net per trade and compounds to about +11.9% a year at that frequency — and its interval
+    still runs from −2.29 to +11.88, so the honest verdict is <em>unproven</em>, not
+    <em>profitable</em>. Publishing that is the point. A tool that only ever shows you the
+    strategies that worked is a tool that has told you nothing about the ones that did not.
+  </p>
+  <p>
+    Win rate is also the wrong headline. SPY's breakout wins 37.3% of the time at a payoff
+    ratio of 1.67, and QQQ's wins 43.4% at 1.54 — a run of losses is the expected shape of
+    this strategy, not evidence it has broken. A panel that hides that turns a normal
+    drawdown into a panic.
+  </p>
+</section>
+
+<section id="accuracy">
+  <h2>Raising accuracy</h2>
+  <p class="head">What actually moved the number, and what still has not.</p>
+  <p class="sub">
+    The interesting question is not "can the win rate be pushed to 80%" — nothing in 502
+    sessions of measured data comes close, and any tool advertising that number is selling
+    something. The question is which changes move net expectancy in a way that survives a
+    confidence interval. Three have been tested.
+  </p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="num">Measured</span>
+      <div>
+        <h3>A daily-trend filter, which is the one thing that has worked</h3>
+        <p>
+          Restricting direction to the side of the 200-day average — computed from the
+          previous close, so it is known before the session opens — took SPY's breakout
+          from <strong>−0.11 to +2.50 net bps</strong> per trade and its win rate from
+          37.3% to 39.3%. It is the only modification so far that turned a losing row into
+          a positive one.
+        </p>
+        <p>
+          Note what it does not do: it does not make the result proven. The interval still
+          spans zero. It moved the estimate, not the certainty.
+        </p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">Measured</span>
+      <div>
+        <h3>Instrument selection, which matters more than parameter tuning</h3>
+        <p>
+          The same strategy on the same dates returns +4.45 net bps on QQQ and −0.11 on SPY.
+          Choosing where to run it is worth more than any exit-grid tweak tested so far —
+          and the exit grid was tested: 109 stop and target combinations, none of which
+          produced a subset that cleared zero.
+        </p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">Next</span>
+      <div>
+        <h3>More history, because the intervals are wide for a reason</h3>
+        <p>
+          These figures rest on two years of one-minute bars. The daily strategy bake-off
+          has twenty-five years, and its numbers are roughly twelve times stronger — the two
+          tables must never be read side by side. Widening the intraday sample is the
+          fastest route to a result that clears zero, and it is the honest next step rather
+          than a better-looking parameter set.
+        </p>
+        <p>
+          Session decomposition already explains part of the difficulty: the intraday segment
+          measures +1.31 bps/day with an interval spanning zero, against +6.48 bps overnight.
+          A day trader has excluded the only part of the session with reliable drift, so every
+          basis point has to come from timing.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How it is built</h2>
+  <p class="head">The constraints are in the code, not in the marketing.</p>
+  <div class="facts">
+    <div class="fact"><b>411</b><span>Python tests over the rule engine and analysis layer.</span><cite>45 test files</cite></div>
+    <div class="fact"><b>5</b><span>Market-data providers behind one interface — Tradier, Alpaca, CBOE, Massive, Yahoo.</span><cite>read-only quotes</cite></div>
+    <div class="fact"><b>87</b><span>Commits across the rule engine, API and front end.</span><cite>Python + React</cite></div>
+    <div class="fact"><b>0</b><span>Orders placed. The system reads market data and stops.</span><cite>by design</cite></div>
+  </div>
+  <p>
+    The hand-written ruleset is immutable input: the engine compiles it, and no part of the
+    presentation layer may reinterpret an incomplete setup as a signal. Real, paper, simulated
+    and research states are structurally distinct rather than a label on the same object, so a
+    research result can never be rendered where a live position belongs.
+  </p>
+</section>
+
+<footer>
+  <p>
+    Built by Himanshu Srivastava. The source is private while the underlying method is under
+    review; the measured results above are reproducible from the repository's own bake-off
+    scripts and are published here in full, including the rows that did not work.
+  </p>
+  <a class="backlink" href="./">&larr; Back to portfolio</a>
+</footer>
+
+</div>
+
+<script>
+/* The board is a small state machine over four fixed snapshots of one session.
+   It is illustrative data on real strategy logic — the point being demonstrated
+   is that each state answers a different question and is named differently, and
+   that a level which does not exist yet is never rendered as a number. */
+const SNAPSHOTS = {
+  forming: {
+    note: "Range sets at 09:45, 7 min away — no levels until then.",
+    conds: [["range fixed","no"],["price inside range","—"],["session open","yes"],["flat-by timer","07:17"]],
+    levels: [["—","break above"],["—","break below"],["—","risk"],["$0.00","unrealised"]],
+    unknown: [0,1,2],
+    foot: "A range that is still moving is not a level. No trigger is shown, because showing a provisional high invites an entry on a number that changes a minute later."
+  },
+  armed: {
+    note: "Range set; waiting for a break.",
+    conds: [["range fixed","yes"],["price inside range","yes"],["session open","yes"],["flat-by timer","06:10"]],
+    levels: [["$584.12","break above"],["$582.66","break below"],["25 bps","risk"],["$0.00","unrealised"]],
+    unknown: [],
+    foot: "Levels are fixed and the trade has not triggered. Both sides are live; the first break decides the day."
+  },
+  triggered: {
+    note: "In a long; flat by 15:55 regardless.",
+    conds: [["range fixed","yes"],["break taken","yes"],["stop intact","yes"],["flat-by timer","05:53"]],
+    levels: [["$584.12","entry"],["$582.66","stop"],["25 bps","risk"],["+18 bps","unrealised"]],
+    unknown: [],
+    foot: "Entry and stop are now fixed numbers. Expected win rate here is 37.3% at a payoff of 1.67 — six losses in ten is the shape of this strategy, not a malfunction."
+  },
+  stopped: {
+    note: "Stopped out — done for the day on this symbol.",
+    conds: [["range fixed","yes"],["break taken","yes"],["stop intact","no"],["flat-by timer","04:41"]],
+    levels: [["$584.12","entry"],["$582.66","stop hit"],["25 bps","risk"],["−25 bps","realised"]],
+    unknown: [],
+    foot: "58% of SPY sessions end here. The panel states that in advance so an expected outcome does not read as a surprise."
+  }
+};
+
+const nameEl = document.getElementById("stateName");
+const noteEl = document.getElementById("stateNote");
+const condsEl = document.getElementById("conds");
+const levelsEl = document.getElementById("levels");
+const footEl = document.getElementById("boardFoot");
+const buttons = Array.from(document.querySelectorAll(".modes button"));
+
+function render(state){
+  const s = SNAPSHOTS[state];
+  nameEl.className = "state-name " + state;
+  nameEl.textContent = state;
+  noteEl.textContent = s.note;
+
+  condsEl.innerHTML = s.conds.map(([label, value]) => {
+    const ok = value === "yes";
+    const bad = value === "no";
+    const cls = ok ? "cond ok" : bad ? "cond no" : "cond";
+    return `<div class="${cls}"><i>${label}</i><em>${value}</em></div>`;
+  }).join("");
+
+  levelsEl.innerHTML = s.levels.map(([value, label], i) => {
+    const dim = s.unknown.includes(i) ? " class=\"unknown\"" : "";
+    return `<div class="level"><b${dim}>${value}</b><span>${label}</span></div>`;
+  }).join("");
+
+  footEl.textContent = s.foot;
+  buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.state === state)));
+}
+
+buttons.forEach(b => b.addEventListener("click", () => render(b.dataset.state)));
+render("forming");
+</script>
