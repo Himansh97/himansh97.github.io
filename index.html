@@ -283,6 +283,22 @@ h2{
 .prior dd .kind{font-style:normal;color:var(--ink-faint);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;margin-top:5px}
 
 
+/* --------------------------------------------------------------- about */
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.who .card{background:var(--paper);padding:26px 24px 28px}
+.who h4{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px}
+.who p{margin:0 0 12px;font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:none}
+.who p:last-child{margin-bottom:0}
+.cv{margin:0}
+.cv .row{display:grid;grid-template-columns:var(--rail) 1fr;gap:clamp(14px,2.4vw,32px);padding:14px 0;border-top:1px solid var(--rule-soft)}
+.cv .row:first-child{border-top:0;padding-top:0}
+.cv .when{font-family:var(--mono);font-size:11px;letter-spacing:.07em;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.cv .what b{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.cv .what span{display:block;margin-top:3px;font-size:14.5px;color:var(--ink-soft)}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;border:1px solid var(--rule);border-radius:2px;padding:6px 10px;color:var(--ink-soft)}
+@media (max-width:640px){.cv .row{grid-template-columns:1fr;gap:4px}}
+
 /* ------------------------------------------------------------ prism box
    The landing-page introduction to Optionora. It argues the product's point
    with a control rather than a sentence: drag the session and the verdict is
@@ -410,16 +426,90 @@ footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
   </p>
 
   <p class="links">
-    <a class="primary" href="custody.html">See a live one <span class="arw">&rarr;</span></a>
+    <a class="primary" href="#about">About me <span class="arw">&rarr;</span></a>
+    <a href="custody.html">See a live one</a>
     <a href="mailto:hsrivast22@gmail.com">hsrivast22@gmail.com</a>
     <a href="https://www.linkedin.com/in/himanshu-data-engineer/" rel="noopener">LinkedIn</a>
   </p>
 </header>
 
+<section id="about">
+  <div class="section-head">
+    <h2>Who this is</h2>
+    <p class="section-note">Dallas, TX &nbsp;&#183;&nbsp; open to data, analytics and AI engineering roles</p>
+  </div>
+
+  <div class="who">
+    <div class="card">
+      <h4>In short</h4>
+      <p>
+        I am a data and platform engineer working in mortgage technology, currently at
+        Supreme Lending, where the systems I build touch loan files that regulators read.
+        That context is most of why I work the way I do: when being wrong is expensive,
+        a system that says &ldquo;I cannot prove this&rdquo; is worth more than one that
+        produces a confident number.
+      </p>
+      <p>
+        Before that I spent four years between analytics delivery and business analysis
+        &mdash; requirements, stakeholders, reporting, and the unglamorous work of making
+        numbers agree across systems that disagreed by design.
+      </p>
+    </div>
+    <div class="card">
+      <h4>What I actually do</h4>
+      <p>
+        Python and SQL end to end: pipelines in PySpark and Airflow, dimensional models,
+        deterministic scoring, and the FastAPI and Next.js services that put the result in
+        front of someone. Recently that has meant AI systems specifically &mdash; and the
+        governance around them, which is the harder half.
+      </p>
+      <p>
+        On the research side, self-supervised contrastive learning: reproducing SimCLR and
+        applying it to a new image dataset during an AI/ML internship at Syracuse.
+      </p>
+    </div>
+  </div>
+
+  <div class="cv" style="margin-top:clamp(26px,4vw,44px)">
+    <div class="row">
+      <div class="when">2026 &mdash; present</div>
+      <div class="what"><b>AI Engineer Intern</b><span>Supreme Lending (Everett Financial, Inc.) &mdash; mortgage technology, production and regulated</span></div>
+    </div>
+    <div class="row">
+      <div class="when">2025 &mdash; 2026</div>
+      <div class="what"><b>AI/ML Intern</b><span>Syracuse University &mdash; contrastive learning research, ETL and analytics engineering</span></div>
+    </div>
+    <div class="row">
+      <div class="when">2022 &mdash; 2023</div>
+      <div class="what"><b>Business Analytics and Reporting Lead</b><span>Freyr Solutions &mdash; 20+ regional markets, a team of four analysts</span></div>
+    </div>
+    <div class="row">
+      <div class="when">2021 &mdash; 2022</div>
+      <div class="what"><b>Business Analyst and Data Analytics Associate</b><span>Omnicals Pharma &mdash; forecasting, dashboards, cross-system data cleansing</span></div>
+    </div>
+    <div class="row">
+      <div class="when">2023 &mdash; 2025</div>
+      <div class="what"><b>MS, Business Analytics</b><span>Syracuse University &mdash; 3.6 GPA</span></div>
+    </div>
+    <div class="row">
+      <div class="when">2020 &mdash; 2022</div>
+      <div class="what"><b>MBA</b><span>Narsee Monjee Institute of Management Studies &mdash; 3.4 GPA</span></div>
+    </div>
+  </div>
+
+  <p class="chips">
+    <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">PySpark</span>
+    <span class="chip">Airflow</span><span class="chip">FastAPI</span><span class="chip">Next.js</span>
+    <span class="chip">TypeScript</span><span class="chip">Tableau</span><span class="chip">Power BI</span>
+    <span class="chip">PostgreSQL</span><span class="chip">TensorFlow</span><span class="chip">PyTorch</span>
+    <span class="chip">Azure</span><span class="chip">CI/CD</span><span class="chip">Lean Six Sigma Green Belt</span>
+  </p>
+</section>
+
 <section>
   <div class="section-head">
     <h2>CareerOS &mdash; a system I built for myself</h2>
-    <p class="section-note">Personal project &nbsp;&#183;&nbsp; both demos run in your browser</p>
+    <p class="section-note">Personal project &nbsp;&#183;&nbsp; <a href="careeros.html" style="color:inherit">full case study &#8594;</a></p>
   </div>
 
   <div class="entry">
