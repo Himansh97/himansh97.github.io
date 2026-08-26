@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" role="img" aria-label="Optionora Decision Prism">
+  <g id="prism-shell" fill="none" stroke="#F5F7F3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 12L56 20L63 47L43 62L18 55"/></g>
+  <g id="prism-path" fill="none" stroke="#F5F7F3" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M16 24L37 37"/><path d="M20 46L37 37"/><path d="M46 21L37 37"/></g>
+  <g id="decision-node" fill="#35D07F"><circle cx="37" cy="37" r="6"/></g>
+</svg>

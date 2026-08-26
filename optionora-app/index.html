@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#0b0e13" />
     <title>Optionora — read-only demo</title>
+    <script>
+      // Open on the application. The case study makes the product's argument in
+      // prose above this frame; repeating the landing page inside it would be
+      // the same pitch twice and the working software never.
+      if (!location.hash) location.hash = "#/app";
+    </script>
     <style>
       #ro-banner{
         font:12px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
@@ -14,13 +20,14 @@
       #ro-banner strong{letter-spacing:.12em;text-transform:uppercase;font-weight:600}
       #ro-banner span{color:#b99a5e}
     </style>
-    <script type="module" crossorigin src="/optionora-app/assets/index-DFWCekxS.js"></script>
-    <link rel="stylesheet" crossorigin href="/optionora-app/assets/index-BQRQPbTT.css">
+    <script type="module" crossorigin src="/optionora-app/assets/index-DgcCEqyf.js"></script>
+    <link rel="stylesheet" crossorigin href="/optionora-app/assets/index-XJZirbIK.css">
   </head>
   <body>
-        <div id="ro-banner">
+    <div id="ro-banner">
       <strong>Read-only snapshot</strong>
-      <span>This is the real application with its backend frozen. Market data was captured on 2026-08-24; nothing here is live and nothing can be written.</span>
+      <span>The real application with its backend frozen. Market data captured
+      26 August 2026; nothing here is live and nothing can be written.</span>
     </div>
     <div id="root"></div>
   </body>

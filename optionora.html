@@ -191,7 +191,7 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
     <a href="#measured">See the measured results</a>
     <a href="#accuracy">How we raise accuracy</a>
   </p>
-  <p class="hero-note">Python rule engine &nbsp;&middot;&nbsp; 411 tests &nbsp;&middot;&nbsp; React front end &nbsp;&middot;&nbsp; five market-data providers</p>
+  <p class="hero-note">Python rule engine &nbsp;&middot;&nbsp; 818 tests &nbsp;&middot;&nbsp; React front end &nbsp;&middot;&nbsp; five market-data providers</p>
 </header>
 
 <section>
@@ -259,9 +259,10 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
   <p class="sub">
     Below is the actual React front end running the actual rule engine output &mdash;
     same components, same rendering, same data shapes &mdash; served from a snapshot of
-    real responses captured on 24 August 2026. Nothing is live and nothing can be
+    real responses captured on 26 August 2026. Nothing is live and nothing can be
     written; every non-GET request is refused rather than faked. Open
-    <strong>Results</strong> for the paper journal and the edge estimate.
+    <strong>Journal</strong> for the measured record, or <strong>Home</strong> for the
+    live decision surface.
   </p>
 
   <div class="appframe">
@@ -273,13 +274,32 @@ footer p{max-width:66ch;color:var(--ink-soft);margin:0 0 18px}
   </p>
 
   <p>
-    The tab worth opening is <strong>Results</strong>. It journals 3,490 decisions
-    including the 451 the rules refused, and reports the edge estimate as
+    The tab worth opening is <strong>Journal</strong>. It carries 3,554 decisions
+    including the 455 the rules refused, and reports the edge estimate as
     <strong>not established</strong> &mdash; win rate 53.3% on an interval of 35.8% to
     70.8%, expectancy &minus;0.038R, and a stated <strong>57.6% probability there is no
     edge at all</strong>. A control group of vetoed trades is carried alongside the
     emitted ones, and both are marked <em>too few</em> below thirty outcomes rather than
     shown as a rate.
+  </p>
+
+  <p>
+    It now also answers a question the estimate cannot. That one asks what the mean
+    return is; a trader sizes a position against a different question &mdash; where will
+    the <em>next</em> trade land? Adaptive conformal inference gives an interval for it:
+    <strong>&minus;1.2R to +2.4R</strong>, a 90% target with 87.5% achieved. The method
+    is adaptive rather than the textbook split version because split conformal's
+    guarantee rests on returns being exchangeable, and they are not &mdash; volatility
+    clusters and regimes drift, so a quantile calibrated on a calm fortnight is wrong in
+    a violent one, which is exactly when the interval matters. The adaptive step corrects
+    the level from recent coverage error, so the guarantee survives without that
+    assumption.
+  </p>
+
+  <p>
+    The interval is valid and nearly useless, and that is the point rather than a defect.
+    Its width is a precise statement of how little 28 resolved trades support, and it
+    narrows with sample size, not with cleverness.
   </p>
 </section>
 
