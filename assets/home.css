@@ -1,0 +1,239 @@
+/* Home-page layout. Tokens and chrome live in site.css.
+   A linked file, not an inline block: the first version baked this into
+   the fragment at assembly time, so editing the source stylesheet changed
+   nothing and a spacing fix silently did not ship. */
+
+.stack{
+  margin:16px 0 0;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.05em;
+  color:var(--ink-faint);
+  line-height:1.7;
+}
+.open{
+  display:inline-block;
+  margin-top:18px;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--red);
+  text-decoration:none;
+  border-bottom:1px solid var(--red);
+  padding-bottom:3px;
+}
+.open:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ------------------------------------------------------------ principles */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(228px,1fr));
+  gap:1px;
+  background:var(--rule-soft);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+.cell{background:var(--paper);padding:24px 24px 26px}
+.cell h4{
+  font-family:var(--mono);
+  font-size:10px;
+  font-weight:400;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:0 0 10px;
+}
+.cell p{margin:0;font-size:15px;line-height:1.5}
+
+/* ----------------------------------------------------------------- prior */
+.prior{
+  display:grid;
+  grid-template-columns:var(--rail) 1fr;
+  gap:clamp(18px,3vw,40px);
+  padding:16px 0;
+  border-top:1px solid var(--rule-soft);
+  font-size:15px;
+}
+.prior:first-of-type{border-top:0}
+.prior dt{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.09em;
+  color:var(--ink);
+  margin:0;
+}
+.prior dd{margin:0;color:var(--ink-soft);max-width:62ch}
+.prior dd .kind{font-style:normal;color:var(--ink-faint);display:block;font-family:var(--mono);font-size:10px;letter-spacing:.09em;text-transform:uppercase;margin-top:5px}
+
+/* --------------------------------------------------------------- about */
+.who{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.who .card{background:var(--paper);padding:26px 24px 28px}
+.who h4{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 14px}
+.who p{margin:0 0 12px;font-size:15.5px;line-height:1.6;color:var(--ink-soft);max-width:none}
+.who p:last-child{margin-bottom:0}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:14px 0 0}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;border:1px solid var(--rule);border-radius:2px;padding:6px 10px;color:var(--ink-soft)}
+@media (max-width:640px){.cv .row{grid-template-columns:1fr;gap:4px}}
+
+/* ------------------------------------------------------------- id card */
+.idcard{display:flex;gap:18px;align-items:center}
+.avatar{border-radius:50%;border:1px solid var(--rule);display:block;width:88px;height:88px;object-fit:cover;background:var(--panel)}
+@media (max-width:520px){.idcard{gap:14px}.avatar{width:64px;height:64px}}
+
+/* -------------------------------------------------------------- about2 */
+.abt{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:clamp(24px,3.4vw,44px)}
+.abt h3{font-family:var(--mono);font-size:10px;font-weight:400;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint);margin:0 0 16px}
+.abt p{margin:0 0 13px;color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:60ch}
+.rec{display:grid;grid-template-columns:clamp(96px,11vw,140px) 1fr;gap:clamp(12px,2vw,26px);padding:15px 0;border-top:1px solid var(--rule-soft)}
+.rec:first-of-type{border-top:0;padding-top:0}
+.rec .yr{font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.rec b{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em}
+.rec i{font-style:normal;display:block;margin-top:3px;font-size:14px;color:var(--ink-faint)}
+.rec span{display:block;margin-top:7px;font-size:15px;color:var(--ink-soft);line-height:1.55}
+.chips{display:flex;flex-wrap:wrap;gap:7px;margin:20px 0 0}
+.chip{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;border:1px solid var(--rule);border-radius:2px;padding:6px 10px;color:var(--ink-soft)}
+@media (max-width:560px){.rec{grid-template-columns:1fr;gap:3px}}
+
+/* ---------------------------------------------------------- work panel */
+.work{display:grid;grid-template-columns:clamp(200px,24vw,280px) 1fr;gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.rail2{background:var(--paper);padding:8px 0}
+.rail2 button{
+  display:block;width:100%;text-align:left;background:transparent;border:0;cursor:pointer;
+  padding:13px 18px;border-left:2px solid transparent;color:var(--ink-soft);font:inherit;
+}
+.rail2 button:hover{color:var(--ink);background:var(--panel)}
+.rail2 button[aria-selected="true"]{border-left-color:var(--red);color:var(--ink);background:var(--panel)}
+.rail2 .t{display:block;font-size:15.5px;font-weight:700;letter-spacing:-.01em}
+.rail2 .m{display:block;margin-top:3px;font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+.rail2 .grp{padding:16px 18px 7px;font-family:var(--mono);font-size:9.5px;letter-spacing:.15em;text-transform:uppercase;color:var(--ink-faint)}
+.pane{background:var(--paper);padding:clamp(22px,3vw,34px)}
+.pane .bignum{font-family:var(--mono);font-size:clamp(22px,3vw,32px);font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1.1}
+.pane .bigsub{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-faint);margin-top:7px}
+.pane h3{font-size:clamp(20px,2.4vw,27px);font-weight:700;letter-spacing:-.018em;margin:18px 0 12px;text-wrap:balance}
+.pane p{margin:0 0 13px;color:var(--ink-soft);font-size:16px;line-height:1.6;max-width:64ch}
+.pane .stack{font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-faint);line-height:1.7;margin:16px 0 0}
+.pane .go{display:flex;flex-wrap:wrap;gap:9px 11px;margin:20px 0 0}
+.pane .go a{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--rule);border-radius:2px;padding:10px 14px;color:var(--ink-soft)}
+.pane .go a:hover{color:var(--ink);border-color:var(--ink-faint)}
+.pane .go a.primary{border-color:var(--red);color:var(--red)}
+.liveframe{margin-top:22px;border:1px solid var(--rule);background:var(--term-bg,#16161A);overflow:hidden}
+.liveframe iframe{display:block;width:100%;height:min(60vh,470px);border:0}
+.liveframe .cap{padding:10px 14px;border-top:1px solid var(--rule);background:var(--panel);font-family:var(--mono);font-size:10px;letter-spacing:.08em;color:var(--ink-faint)}
+@media (max-width:760px){.work{grid-template-columns:1fr}.rail2{display:flex;overflow-x:auto;padding:0}.rail2 .grp{display:none}.rail2 button{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:14px 16px}.rail2 button[aria-selected="true"]{border-bottom-color:var(--red)}.rail2 .m{display:none}}
+footer p{margin:0;max-width:56ch;color:var(--ink-soft)}
+
+/* Reveals are gated on `.js` so the page is fully readable with scripting off
+   or broken &#8212; the failure mode of a scroll reveal is invisible content, which
+   is a worse bug than having no animation at all. */
+.js .entry .metric,
+.js .entry > div > *,
+.js .prior > *,
+.js .cell{
+  opacity:0;
+  transform:translateY(10px);
+}
+.js .revealed .metric,
+.js .revealed > div > *,
+.js .prior.revealed > *,
+.js .cell.revealed{
+  opacity:1;
+  transform:none;
+  transition:opacity .55s cubic-bezier(.2,.6,.2,1), transform .55s cubic-bezier(.2,.6,.2,1);
+}
+/* Metric first, then the title, then the prose it explains &#8212; the order a
+   reader takes them in anyway. */
+.js .revealed .metric{transition-delay:0s}
+.js .revealed > div > *:nth-child(1){transition-delay:.06s}
+.js .revealed > div > *:nth-child(2){transition-delay:.12s}
+.js .revealed > div > *:nth-child(3){transition-delay:.17s}
+.js .revealed > div > *:nth-child(n+4){transition-delay:.21s}
+
+/* The rule above each entry draws in rather than being there already. It is
+   the one flourish that is structural: the page is a list of measurements and
+   the rules are what separate them. */
+.js .entry{border-top-color:transparent}
+.js .entry::before{
+  content:"";
+  position:absolute;
+  top:-1px;left:0;
+  height:1px;width:100%;
+  background:var(--rule-soft);
+  transform:scaleX(0);
+  transform-origin:left center;
+}
+.js .entry.revealed::before{
+  transform:scaleX(1);
+  transition:transform .7s cubic-bezier(.2,.6,.2,1);
+}
+.js .entry:first-of-type::before{display:none}
+
+.open{transition:color .2s ease,border-color .2s ease}
+.open .arw{
+  display:inline-block;
+  transition:transform .25s cubic-bezier(.2,.6,.2,1);
+}
+.open:hover .arw{transform:translateX(5px)}
+
+@media (prefers-reduced-motion:reduce){
+  /* Nothing moves, and nothing stays hidden waiting for a move. */
+  .js .entry .metric,
+  .js .entry > div > *,
+  .js .prior > *,
+  .js .cell{opacity:1;transform:none;transition:none}
+  .js .entry{border-top-color:var(--rule-soft)}
+  .js .entry::before{display:none}
+  #mast{transition:none}
+  .open .arw{transition:none}
+}
+
+@media (max-width:720px){
+  .entry,.prior{grid-template-columns:1fr;gap:14px}
+  .metric b{font-size:26px}
+  .entry:first-of-type{padding-top:0}
+}
+/* ------------------------------------------------------ the work, statically
+   This section used to be an empty #rail/#pane pair filled by JavaScript from
+   an array. Three consequences, all bad: `curl` saw one link on the whole page,
+   every link-preview crawler saw an empty section, and the tablist announced
+   role="tab" with no aria-controls, no roving tabindex and no key handler --
+   worse than plain buttons with no roles at all. It is HTML now. */
+.works{display:grid;gap:0;margin:26px 0 0}
+.item{
+  display:grid;
+  grid-template-columns:1fr var(--rail);
+  gap:clamp(16px,3vw,40px);
+  padding:clamp(22px,3vw,32px) 0;
+  border-top:1px solid var(--rule-soft);
+}
+.item:first-child{border-top:0}
+.item h3{
+  font-size:clamp(19px,2.1vw,25px);
+  line-height:1.15;letter-spacing:-.02em;
+  margin:0 0 8px;text-wrap:balance;
+}
+.item h3 a{text-decoration:none}
+.item h3 a:hover{color:var(--red)}
+.item p{margin:0 0 10px;color:var(--ink-soft);max-width:62ch}
+.item .tag{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-faint);margin:0 0 10px;
+}
+/* Evidence column. Figures are the argument, so they get the fixed rail and
+   tabular figures rather than being buried in the prose. */
+/* The action links sat flush and read as one string:
+   "BREAK THE CHAIN YOURSELF -> PYPI CODE". They are separate destinations. */
+.item .go{display:flex;flex-wrap:wrap;gap:10px 24px;margin:16px 0 0}
+
+.ev{margin:0;font-family:var(--mono);font-size:11.5px;line-height:1.5}
+.ev div{
+  display:flex;justify-content:space-between;gap:10px;
+  padding:3px 0;border-bottom:1px solid var(--rule-soft);
+}
+.ev b{font-weight:700;font-variant-numeric:tabular-nums;color:var(--ink)}
+.ev span{color:var(--ink-faint)}
+.ev .note{display:block;border:0;color:var(--ink-faint);padding-top:8px}
+@media (max-width:760px){
+  .item{grid-template-columns:1fr}
+  .ev{max-width:340px}
+}

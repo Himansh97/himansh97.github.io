@@ -1,0 +1,202 @@
+/* One token system, one identity. Six copies of this had drifted:
+   --panel was #F2F1EC here, #F3F2ED on the case pages and #F2F2EF on the
+   containment gate; --red dark was #FF5232 in five files and #FF5B38 in the
+   sixth; --rule was #CFCEC4 and #C9C9CE. Invisible one at a time and fatal
+   together, because it meant there was no source of truth. The index values
+   won, being the ones the home page was designed against. */
+
+:root{
+  color-scheme:light;
+  --paper:#FAFAF8;
+  --panel:#F2F1EC;
+  --ink:#16161A;
+  --ink-soft:#55554F;
+  /* Was #8C8B84, about 2.9:1 on --paper. It set the "open to roles" line and
+     every caption on the site at 11px, so the most important sentence for a
+     recruiter was the least legible thing on the page. #6E6D66 clears 4.5:1. */
+  --ink-faint:#6E6D66;
+  --rule:#CFCEC4;
+  --rule-soft:#E4E3DB;
+  --red:#D92906;
+  --amber:#8A5D00;
+  --green:#1B6B4C;
+  --particle-ink:#20202A;
+  --particle-drop:#D92906;
+  --particle-hold:#B07A0A;
+  --green-wash:#E7F2EC;
+  --red-wash:#FBEAE6;
+  --amber-wash:#F7EFDF;
+  --term-bg:#16161A;
+  --term-ink:#E9E8E2;
+  --term-faint:#8C8B84;
+
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --gut:clamp(20px,5vw,64px);
+  --rail:clamp(120px,15vw,196px);
+}
+
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E0E12;
+    --panel:#16161C;
+    --ink:#E9E8E2;
+    --ink-soft:#A3A29B;
+    --ink-faint:#8A8982;
+    --rule:#26262E;
+    --rule-soft:#1C1C23;
+    --red:#FF5232;
+    --amber:#E0A93B;
+    --green:#4FBE8B;
+    --green-wash:#12211A;
+    --red-wash:#2A1310;
+    --amber-wash:#241C0E;
+    --term-bg:#08080B;
+    --term-ink:#E9E8E2;
+    --term-faint:#6B6A65;
+  }
+}
+
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E0E12;
+  --panel:#16161C;
+  --ink:#E9E8E2;
+  --ink-soft:#A3A29B;
+  --ink-faint:#8A8982;
+  --rule:#26262E;
+  --rule-soft:#1C1C23;
+  --red:#FF5232;
+  --amber:#E0A93B;
+  --green:#4FBE8B;
+  --green-wash:#12211A;
+  --red-wash:#2A1310;
+  --amber-wash:#241C0E;
+  --term-bg:#08080B;
+  --term-ink:#E9E8E2;
+  --term-faint:#6B6A65;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--display);
+  font-size:17px;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
+
+/* Skip link. There was none, and no landmarks on six of seven pages. */
+.skip{
+  position:absolute;left:-9999px;
+  background:var(--ink);color:var(--paper);
+  padding:10px 16px;font-family:var(--mono);font-size:12px;z-index:99;
+}
+.skip:focus{left:var(--gut);top:8px}
+
+/* ------------------------------------------------------------------ nav
+   Every page gets one. containment-gate.html and pipeline-hero.html
+   previously contained zero href attributes and were linked as full-page
+   destinations, so a visitor who arrived had only the back button. */
+.sitenav{
+  border-bottom:1px solid var(--rule-soft);
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.sitenav .wrap{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;padding-top:14px;padding-bottom:14px;
+}
+.sitenav a{text-decoration:none;color:var(--ink-soft)}
+.sitenav a:hover{color:var(--ink)}
+.sitenav .home{color:var(--ink);font-weight:700;letter-spacing:.2em}
+.sitenav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.sitenav [aria-current="page"]{color:var(--red)}
+
+/* ------------------------------------------------------------- masthead */
+header.top{
+  position:relative;
+  border-bottom:1px solid var(--rule);
+  padding-top:clamp(30px,6vw,64px);
+  padding-bottom:clamp(38px,6vw,72px);
+}
+#mast{
+  position:absolute;inset:0;width:100%;height:100%;
+  display:block;pointer-events:none;opacity:0;transition:opacity 1.4s ease;
+}
+#mast.on{opacity:1}
+header.top > *:not(#mast){position:relative;z-index:1}
+.name{
+  font-family:var(--mono);font-size:11px;letter-spacing:.24em;
+  text-transform:uppercase;color:var(--ink);margin:0;
+}
+.role{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
+  color:var(--ink-faint);margin:6px 0 0;
+}
+h1{
+  font-weight:700;
+  font-size:clamp(31px,5.4vw,62px);
+  line-height:1.02;
+  letter-spacing:-.03em;
+  text-wrap:balance;
+  margin:clamp(28px,4vw,46px) 0 0;
+  max-width:17ch;
+}
+h1 em{font-style:normal;color:var(--red)}
+.standfirst{
+  max-width:60ch;
+  font-size:clamp(17px,1.5vw,20px);
+  line-height:1.6;
+  color:var(--ink-soft);
+  margin:24px 0 0;
+}
+.links{display:flex;flex-wrap:wrap;gap:10px 14px;margin:28px 0 0}
+.links a{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;
+  text-transform:uppercase;text-decoration:none;color:var(--ink-soft);
+  border:1px solid var(--rule);padding:10px 14px;
+}
+.links a:hover{border-color:var(--ink);color:var(--ink)}
+.links a.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+
+/* --------------------------------------------------------------- sections */
+section{padding:clamp(38px,6vw,72px) 0;border-bottom:1px solid var(--rule-soft)}
+.section-head{
+  display:flex;flex-wrap:wrap;gap:6px 20px;
+  align-items:baseline;justify-content:space-between;
+  margin-bottom:clamp(26px,4vw,44px);
+}
+h2{
+  font-family:var(--mono);font-size:11px;font-weight:400;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink);margin:0;
+}
+.section-note{
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
+  color:var(--ink-faint);margin:0;
+}
+
+/* ----------------------------------------------------------------- footer */
+.sitefoot{
+  padding:clamp(36px,5vw,64px) 0;
+  font-family:var(--mono);font-size:11.5px;
+  color:var(--ink-faint);
+}
+.sitefoot a{color:var(--ink-soft)}
+.sitefoot p{margin:0 0 8px;max-width:64ch}
+
+@media (prefers-reduced-motion:reduce){
+  *{transition:none !important;animation:none !important;scroll-behavior:auto !important}
+}

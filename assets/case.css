@@ -1,0 +1,60 @@
+/* Case-page layout, shared by the prose case studies.
+   Extracted from careeros.html, which was the tightest of the six and
+   therefore the one worth making canonical. Tokens live in site.css. */
+
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--ink-faint);margin:0}
+
+header.hero{padding:clamp(34px,6vw,76px) 0 clamp(34px,5vw,60px);border-bottom:1px solid var(--rule)}
+.lede{max-width:60ch;font-size:clamp(17px,1.6vw,21px);line-height:1.55;color:var(--ink-soft);margin:24px 0 0}
+.cta{display:flex;flex-wrap:wrap;gap:10px 12px;margin:32px 0 0}
+.cta a{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;border:1px solid var(--rule);border-radius:2px;padding:12px 18px;color:var(--ink-soft)}
+.cta a:hover{color:var(--ink);border-color:var(--ink-faint)}
+.cta a.primary{border-color:var(--red);color:var(--red)}
+.hero-note{margin:20px 0 0;font-family:var(--mono);font-size:11px;color:var(--ink-faint);letter-spacing:.05em}
+.head{font-size:clamp(24px,3.2vw,36px);font-weight:700;letter-spacing:-.025em;margin:0 0 18px;max-width:24ch;text-wrap:balance}
+.sub{max-width:66ch;color:var(--ink-soft);margin:0 0 30px;font-size:17px}
+section > p{max-width:66ch;margin:18px 0 0;color:var(--ink-soft)}
+
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule)}
+.fact{background:var(--paper);padding:24px 22px 26px}
+.fact b{display:block;font-family:var(--mono);font-size:clamp(24px,3vw,34px);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact span{display:block;margin-top:10px;font-size:14.5px;line-height:1.45;color:var(--ink-soft)}
+.fact cite{display:block;margin-top:10px;font-family:var(--mono);font-style:normal;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-faint)}
+
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.col{background:var(--paper);padding:26px 24px}
+.col h3{font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}
+.col.is h3{color:var(--green)}
+.col.isnt h3{color:var(--red)}
+.col ul{margin:0;padding-left:1.1em;color:var(--ink-soft);font-size:15.5px;line-height:1.6}
+.col li{margin:0 0 9px}
+
+.steps{display:grid;gap:clamp(24px,3vw,38px);margin-top:8px}
+.step{display:grid;grid-template-columns:clamp(96px,12vw,150px) 1fr;gap:clamp(18px,3vw,36px);align-items:start}
+.step .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);padding-top:5px}
+.step h3{font-size:20px;font-weight:700;letter-spacing:-.015em;margin:0 0 10px}
+.step p{margin:0 0 12px;color:var(--ink-soft);max-width:62ch;font-size:16px}
+@media (max-width:640px){.step{grid-template-columns:1fr;gap:8px}}
+
+pre{margin:0;padding:18px 20px;background:var(--term-bg);color:var(--term-ink);border-radius:3px;overflow-x:auto;font-family:var(--mono);font-size:12.5px;line-height:1.65}
+pre .c{color:var(--term-faint)}
+pre .g{color:#4FBE8B}
+pre .r{color:#FF5232}
+pre .a{color:#E0A93B}
+pre b{color:#FFFFFF;font-weight:600}
+
+/* --------------------------------------------------------------- demos */
+.demos{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1px;background:var(--rule-soft);border:1px solid var(--rule);margin-top:8px}
+.demo{background:var(--paper);padding:26px 24px 28px;display:flex;flex-direction:column}
+.demo b{display:block;font-family:var(--mono);font-size:clamp(22px,2.6vw,30px);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.demo h3{font-size:19px;font-weight:700;letter-spacing:-.015em;margin:14px 0 10px}
+.demo p{margin:0 0 18px;color:var(--ink-soft);font-size:15.5px;line-height:1.55;flex:1}
+.demo a{align-self:flex-start;font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--red);text-decoration:none;border-bottom:1px solid var(--red);padding-bottom:3px}
+.demo a:hover{color:var(--ink);border-color:var(--ink)}
+
+/* ------------------------------------------------------------- sources */
+.srcs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.src{font-family:var(--mono);font-size:11px;letter-spacing:.08em;border:1px solid var(--rule);border-radius:2px;padding:7px 11px;color:var(--ink-soft)}
+.src.no{border-style:dashed;color:var(--ink-faint);text-decoration:line-through}
+.backlink{font-family:var(--mono);font-size:11px;letter-spacing:.13em;text-transform:uppercase;text-decoration:none;color:var(--ink-faint)}
+.backlink:hover{color:var(--ink)}

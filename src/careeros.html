@@ -1,0 +1,211 @@
+<main id="main">
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">CareerOS</p>
+  <h1>A job search that cannot say anything I have not done. <em>By construction.</em></h1>
+  <p class="lede">
+    Every tool in this space writes your resume for you, and every one of them will
+    quietly inflate a number to make a posting fit. CareerOS is the opposite bet: a
+    pipeline where each sentence on the page must trace to a recorded piece of evidence,
+    and where the thing that catches an overclaim is a gate that refuses it rather than a
+    disclaimer that warns about it.
+  </p>
+  <p class="cta">
+    <a class="primary" href="/work/pipeline-hero.html">Watch 10,034 postings narrow &rarr;</a>
+    <a href="/work/containment-gate.html">Try the containment gate</a>
+    <a href="https://github.com/Himansh97/careeros-api" rel="noopener">Backend source</a>
+    <a href="https://github.com/Himansh97/careeros-web" rel="noopener">Frontend source</a>
+  </p>
+  <p class="hero-note">FastAPI + Next.js &nbsp;&middot;&nbsp; 281 commits &nbsp;&middot;&nbsp; 457 backend tests &nbsp;&middot;&nbsp; nine job boards</p>
+</header>
+
+<section>
+  <h2>The problem</h2>
+  <p class="head">The tools that write your resume are the ones you can least afford to trust.</p>
+  <p class="sub">
+    A resume generator that invents a plausible figure has not made a small error. It has
+    put a sentence in front of a hiring manager that you will be asked about in a room,
+    and you will not know where it came from. The failure is silent at the moment it
+    happens and expensive weeks later.
+  </p>
+  <div class="two">
+    <div class="col is">
+      <h3>What CareerOS does</h3>
+      <ul>
+        <li>Scores a posting against a recorded evidence library, deterministically &mdash; no model in the scoring path.</li>
+        <li>Selects bullets by marginal coverage of that posting&rsquo;s requirements, not by per-bullet score.</li>
+        <li>Refuses generated wording that reaches past the claim behind it.</li>
+        <li>Reports what it did not evaluate, so a ranked list is never mistaken for a complete one.</li>
+      </ul>
+    </div>
+    <div class="col isnt">
+      <h3>What it refuses to do</h3>
+      <ul>
+        <li><strong>Nothing auto-submits.</strong> It prepares an application and stops; the person applies.</li>
+        <li>No scraping of boards whose terms prohibit it &mdash; the gap is named on the page instead.</li>
+        <li>No invented figures, tools or employers, whoever wrote the sentence.</li>
+        <li>No fabricated confidence: an unrecognised requirement is a gap, never a pass.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="demos">
+  <h2>Two demos, both in your browser</h2>
+  <p class="head">The two decisions worth watching happen at opposite ends.</p>
+  <p class="sub">
+    One narrows ten thousand postings to ten. The other decides whether a single sentence
+    is allowed onto the page. Neither needs a backend &mdash; they run entirely in the tab.
+  </p>
+
+  <div class="demos">
+    <div class="demo">
+      <b>10,034 &rarr; 10</b>
+      <h3>Ten thousand postings, in 3D</h3>
+      <p>
+        One real discovery run rendered as it happened: every posting fetched, then
+        eliminated in turn by location, eligibility, title prescreen and evidence score
+        until ten remain. The eliminations are the interesting part &mdash; the scoring
+        budget only reaches 600 of them, and the visualisation shows which ones it never
+        looked at rather than pretending the ranking was exhaustive.
+      </p>
+      <a href="/work/pipeline-hero.html">Open the pipeline &rarr;</a>
+    </div>
+    <div class="demo">
+      <b>3 verdicts</b>
+      <h3>The containment gate</h3>
+      <p>
+        Type a resume bullet and watch the checks run: invented figures, proper nouns the
+        claim never mentioned, substantive words that smuggle in scope, and seniority
+        escalated past the recorded verb. Pass, review or reject &mdash; and the policy is
+        deliberately asymmetric, because a model may not vouch for a claim about someone
+        else&rsquo;s career while the candidate editing their own history always may.
+      </p>
+      <a href="/work/containment-gate.html">Try the gate &rarr;</a>
+    </div>
+  </div>
+</section>
+
+<section id="discovery">
+  <h2>Discovery</h2>
+  <p class="head">Nine boards, and three named refusals.</p>
+  <p class="sub">
+    Every source is a real, publicly documented, unauthenticated API, except Handshake,
+    which publishes a sitemap of public job pages in its own robots.txt with a schema.org
+    block on each &mdash; structured data put out for machines to read, which is the same
+    bargain a board API offers.
+  </p>
+
+  <div class="srcs">
+    <span class="src">Greenhouse</span><span class="src">Ashby</span><span class="src">Lever</span>
+    <span class="src">Workday</span><span class="src">SmartRecruiters</span><span class="src">The Muse</span>
+    <span class="src">Arbeitnow</span><span class="src">RemoteOK</span><span class="src">Handshake</span>
+    <span class="src no">LinkedIn</span><span class="src no">Indeed</span><span class="src no">Wellfound</span>
+  </div>
+
+  <p>
+    The three struck through are not missing &mdash; they are declined, and the reason is
+    served to the interface rather than left to look like an oversight. LinkedIn and
+    Wellfound both prohibit automated access to pages that render publicly; Wellfound&rsquo;s
+    terms name <em>&ldquo;automated or non-automated harvesting, collection or scraping&rdquo;</em>
+    specifically. Most of what Wellfound lists is reachable anyway: on a sampled page, 18
+    of 31 postings were served from the employer&rsquo;s own Greenhouse or Ashby board, so the
+    way to cover it is to add those employers rather than to crawl it.
+  </p>
+</section>
+
+<section id="design">
+  <h2>Decisions that cost real debugging</h2>
+  <p class="head">Every one of these was a bug first.</p>
+
+  <div class="steps">
+    <div class="step">
+      <span class="num">Scoring</span>
+      <div>
+        <h3>An unrecognised requirement is a gap, never a pass</h3>
+        <p>
+          Requirement extraction runs two layers: a canonical vocabulary and open-vocabulary
+          detection of requirement-shaped terms it does not recognise. With only the closed
+          list, anything outside it was not merely unscored but <em>unseen</em>, so it could
+          never be reported as a gap. A mortgage compliance posting requiring HMDA and LOS
+          extracted five generic requirements, matched all five, and scored
+          <strong>98/100 with &ldquo;no gaps&rdquo;</strong> for a job the candidate was not
+          qualified for.
+        </p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">Selection</span>
+      <div>
+        <h3>The budget must be spent on the axis you are sorting by</h3>
+        <p>
+          Full scoring parses whole descriptions, so it cannot run on every posting. Search
+          used to score the first 120 <em>in fetch order</em> and sort those by fit &mdash; a
+          ranked list that was not a ranking, with a 98-scoring role sitting unscored at
+          position 452. Sorting by date had the identical defect one layer up: the budget
+          still selected on title fit, so &ldquo;newest&rdquo; reordered a fit-shaped subset.
+          517 postings were from the last day and past the relevance floor; 441 never
+          reached the scorer.
+        </p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">Writing</span>
+      <div>
+        <h3>Containment is asymmetric on purpose</h3>
+        <p>
+          The same sentence gets three different outcomes depending on who wrote it. From
+          the assistant, any doubt is fatal. From a model proposing a rewrite, a clean one
+          applies and a questionable one queues for review. From the candidate, failures are
+          warnings rather than vetoes &mdash; they know things the evidence file has not
+          caught up with, and refusing their own history would be the wrong call. The text
+          saves, marked unverified, and the resume says so.
+        </p>
+      </div>
+    </div>
+    <div class="step">
+      <span class="num">Honesty</span>
+      <div>
+        <h3>The backend knowing something is not the same as the page saying it</h3>
+        <p>
+          This is the failure that kept recurring. The liveness check knew which postings had
+          closed and wrote it down; nothing read it, so eight &ldquo;ready&rdquo; applications
+          were against postings that no longer existed. The health endpoint&rsquo;s source list
+          was hand-maintained and two adapters out of date. A board filter that ran after
+          the scoring budget would have shown 11 of Handshake&rsquo;s 29 roles and called it
+          all of them. Same shape every time: the system knows, and the surface throws it
+          away.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What is in it</h2>
+  <div class="facts">
+    <div class="fact"><b>236</b><span>Commits across the FastAPI backend and Next.js frontend.</span><cite>180 api &middot; 101 web</cite></div>
+    <div class="fact"><b>421</b><span>Backend tests across 60 files, including the ones that pin past bugs.</span><cite>python</cite></div>
+    <div class="fact"><b>9</b><span>Job boards polled, each isolated so one failure is named rather than silent.</span><cite>+3 declined</cite></div>
+    <div class="fact"><b>0</b><span>Applications submitted automatically. The tool prepares and stops.</span><cite>by design</cite></div>
+  </div>
+  <p>
+    Scoring and bullet selection are deterministic and model-free &mdash; a stated design
+    position, not an omission. A language model touches wording only, and every generated
+    sentence passes the same containment gate before it can reach a document. A missing API
+    key produces today&rsquo;s deterministic resume, not a broken one.
+  </p>
+</section>
+
+<footer>
+  <p>
+    Built by Himanshu Srivastava. The backend and frontend are public; the data repository
+    stays private, because it holds a real evidence library with a real person&rsquo;s
+    history in it &mdash; which is the same reason the demos above run on synthetic data.
+  </p>
+  <a class="backlink" href="/">&larr; Back to portfolio</a>
+</footer>
+
+</div>
+</main>

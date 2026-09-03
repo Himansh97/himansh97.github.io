@@ -1,0 +1,979 @@
+<style>
+/* ---------------------------------------------------------------- tokens
+   Light is the base definition. Dark redefines only the token values,
+   twice: once for the unstamped (system) state, once for an explicit
+   data-theme="dark". Nothing below ever declares a colour outside :root. */
+
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E0E12;
+    --panel:#16161C;
+    --ink:#E9E8E2;
+    --ink-soft:#9C9B95;
+    --ink-faint:#6B6A65;
+    --rule:#26262E;
+    --rule-soft:#1C1C23;
+    --red:#FF5232;
+    --amber:#E0A93B;
+    --green:#4FBE8B;
+    --particle-ink:#D6D5CE;
+    --particle-drop:#FF5232;
+    --particle-hold:#E0A93B;
+    --ring:#3A3A45;
+  }
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--display);
+  font-size:17px;
+  line-height:1.55;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+.eyebrow{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:0;
+}
+
+/* ------------------------------------------------------------- the panel */
+.stage{
+  position:relative;
+  width:100%;
+  height:clamp(440px,80svh,780px);
+  border-bottom:1px solid var(--rule);
+  overflow:hidden;
+  background:var(--paper);
+  touch-action:pan-y;
+}
+#flow{display:block;width:100%;height:100%}
+
+.stage-head{
+  position:absolute;
+  top:clamp(16px,3vw,30px);
+  left:var(--gut);
+  right:var(--gut);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 28px;
+  align-items:baseline;
+  justify-content:space-between;
+  pointer-events:none;
+}
+.wordmark{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--ink);
+  margin:0;
+}
+.runline{
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.09em;
+  color:var(--ink-faint);
+  margin:0;
+  font-variant-numeric:tabular-nums;
+}
+
+/* Labels are absolutely placed each frame from the same projection the
+   shader uses, so they stay welded to their ring but render as real text. */
+.tag{
+  position:absolute;
+  left:0;top:0;
+  transform:translate3d(-50%,0,0);
+  font-family:var(--mono);
+  text-align:center;
+  white-space:nowrap;
+  pointer-events:none;
+  will-change:transform;
+}
+.tag .tick{
+  display:block;
+  width:1px;height:16px;
+  margin:0 auto 7px;
+  background:var(--rule);
+}
+.tag .n{
+  display:block;
+  font-size:clamp(15px,2.1vw,22px);
+  letter-spacing:-.01em;
+  font-variant-numeric:tabular-nums;
+  color:var(--ink);
+}
+.tag .l{
+  display:block;
+  font-size:10px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-top:2px;
+}
+.tag .d{
+  display:block;
+  font-size:10px;
+  letter-spacing:.02em;
+  color:var(--ink-faint);
+  margin-top:3px;
+}
+.tag--gate .n,.tag--gate .l{color:var(--amber)}
+.tag--gate .tick{background:var(--amber)}
+
+.stage-foot{
+  position:absolute;
+  left:var(--gut);
+  right:var(--gut);
+  bottom:clamp(14px,2.4vw,24px);
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px 22px;
+  align-items:center;
+  justify-content:space-between;
+}
+.key{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px 18px;
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:0;
+}
+.key span{display:inline-flex;align-items:center;gap:7px}
+.key i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.i-live{background:var(--particle-ink)}
+.i-drop{background:var(--red)}
+.i-hold{background:var(--amber)}
+
+.ctl{
+  font-family:var(--mono);
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  background:transparent;
+  border:1px solid var(--rule);
+  border-radius:2px;
+  padding:6px 13px;
+  cursor:pointer;
+}
+.ctl:hover{color:var(--ink);border-color:var(--ink-faint)}
+
+/* Shown only when WebGL2 is unavailable. Deliberate, not an error state. */
+.fallback{
+  position:absolute;inset:0;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  gap:clamp(10px,1.6vw,18px);
+  padding:0 var(--gut);
+}
+.fallback.on{display:flex}
+.fb-row{display:grid;grid-template-columns:1fr;gap:5px}
+.fb-bar{height:clamp(16px,3.2vw,30px);background:var(--particle-ink);opacity:.88}
+.fb-row:last-child .fb-bar{background:var(--amber)}
+.fb-meta{
+  font-family:var(--mono);font-size:11px;letter-spacing:.08em;
+  color:var(--ink-soft);font-variant-numeric:tabular-nums;
+}
+
+/* ---------------------------------------------------------------- reading */
+main{
+  max-width:1180px;
+  margin:0 auto;
+  padding:clamp(46px,7vw,92px) var(--gut) clamp(60px,9vw,120px);
+}
+h1{
+  font-family:var(--display);
+  font-weight:700;
+  font-size:clamp(30px,5.2vw,58px);
+  line-height:1.03;
+  letter-spacing:-.028em;
+  text-wrap:balance;
+  margin:14px 0 0;
+  max-width:19ch;
+}
+h1 em{font-style:normal;color:var(--red)}
+.lede{
+  max-width:62ch;
+  font-size:clamp(17px,1.5vw,20px);
+  line-height:1.6;
+  color:var(--ink-soft);
+  margin:22px 0 0;
+}
+h2{
+  font-family:var(--mono);
+  font-size:11px;
+  font-weight:400;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  margin:0;
+  padding-bottom:12px;
+  border-bottom:1px solid var(--rule);
+}
+section{margin-top:clamp(46px,7vw,86px)}
+section > p{max-width:64ch;margin:22px 0 0}
+section > p:first-of-type{margin-top:26px}
+
+.tablewrap{overflow-x:auto;margin-top:26px}
+table{
+  border-collapse:collapse;
+  width:100%;
+  min-width:660px;
+  font-size:15px;
+}
+caption{
+  caption-side:bottom;
+  text-align:left;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.05em;
+  color:var(--ink-faint);
+  padding-top:14px;
+}
+th,td{
+  color:var(--ink);
+  text-align:left;
+  padding:13px 18px 13px 0;
+  border-bottom:1px solid var(--rule-soft);
+  vertical-align:baseline;
+}
+thead th{
+  font-family:var(--mono);
+  font-weight:400;
+  font-size:10px;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+  border-bottom:1px solid var(--rule);
+}
+td.num,th.num{
+  text-align:right;
+  font-family:var(--mono);
+  font-variant-numeric:tabular-nums;
+  padding-right:26px;
+  white-space:nowrap;
+}
+td.drop{color:var(--red)}
+tbody tr:last-child td{border-bottom:1px solid var(--rule)}
+tbody tr:last-child td.num{color:var(--amber)}
+
+.pull{
+  margin:34px 0 0;
+  padding:22px 0 22px 24px;
+  border-left:2px solid var(--amber);
+  max-width:60ch;
+}
+.pull p{margin:0;font-size:clamp(17px,1.5vw,20px);line-height:1.5}
+.pull cite{
+  display:block;
+  margin-top:12px;
+  font-family:var(--mono);
+  font-style:normal;
+  font-size:10px;
+  letter-spacing:.13em;
+  text-transform:uppercase;
+  color:var(--ink-faint);
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(215px,1fr));
+  gap:1px;
+  margin-top:26px;
+  background:var(--rule-soft);
+  border-top:1px solid var(--rule);
+  border-bottom:1px solid var(--rule);
+}
+.cell{background:var(--paper);padding:22px 22px 24px}
+.cell .k{
+  display:block;
+  font-family:var(--mono);
+  font-size:clamp(22px,2.6vw,30px);
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+}
+.cell .v{
+  display:block;
+  margin-top:8px;
+  font-size:14px;
+  line-height:1.45;
+  color:var(--ink-soft);
+}
+
+footer{
+  border-top:1px solid var(--rule);
+  padding:26px var(--gut) 50px;
+  max-width:1180px;
+  margin:0 auto;
+  font-family:var(--mono);
+  font-size:11px;
+  letter-spacing:.06em;
+  color:var(--ink-faint);
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 26px;
+  justify-content:space-between;
+}
+
+.stage.tight .tag .d{display:none}
+.stage.tight .tag .n{font-size:15px}
+.stage.tight .tag .l{font-size:9px;letter-spacing:.1em}
+.stage.tight .tag .tick{height:11px;margin-bottom:5px}
+.stage.tight .key{font-size:9px;gap:4px 12px}
+.stage.tight .ctl{padding:5px 10px;font-size:9px}
+@media (max-aspect-ratio:5/4){
+  .stage{height:min(72svh,96vw)}
+}
+@media (max-width:640px){
+  .stage{min-height:340px}
+  .stage-head{flex-direction:column;gap:4px}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition:none!important}
+}
+</style>
+<main id="main">
+<div class="stage" id="stage">
+  <canvas id="flow" aria-label="Three-dimensional flow of 10,034 job postings narrowing through four filters to ten applications held for review"></canvas>
+
+  <div class="fallback" id="fallback" aria-hidden="true">
+    <div class="fb-row"><div class="fb-bar" style="width:100%"></div><div class="fb-meta">10,034 &nbsp;discovered</div></div>
+    <div class="fb-row"><div class="fb-bar" style="width:72.3%"></div><div class="fb-meta">784 &nbsp;analyzed</div></div>
+    <div class="fb-row"><div class="fb-bar" style="width:50.6%"></div><div class="fb-meta">106 &nbsp;qualified</div></div>
+    <div class="fb-row"><div class="fb-bar" style="width:25%"></div><div class="fb-meta">10 &nbsp;tailored</div></div>
+    <div class="fb-row"><div class="fb-bar" style="width:25%"></div><div class="fb-meta">10 &nbsp;held for review</div></div>
+  </div>
+
+  <div class="stage-head">
+    <p class="wordmark">CareerOS &nbsp;/&nbsp; Discovery Pipeline</p>
+    <p class="runline" id="runline">Run 24 &nbsp;&#183;&nbsp; 18 Aug 2026, 15:11:23 UTC &nbsp;&#183;&nbsp; 27.7 s</p>
+  </div>
+
+  <div id="tags"></div>
+
+  <div class="stage-foot">
+    <p class="key">
+      <span><i class="i-live"></i>in flight</span>
+      <span><i class="i-drop"></i>dropped by a filter</span>
+      <span><i class="i-hold"></i>held for you</span>
+    </p>
+    <button class="ctl" id="toggle" type="button">Pause</button>
+  </div>
+</div>
+
+<main>
+  <p class="eyebrow">One run, start to finish</p>
+  <h1>10,034 postings went in. Ten came out. <em>Nothing sent itself.</em></h1>
+  <p class="lede">
+    Every particle above is one real job posting from the run of 18 August 2026.
+    It enters at the left and dies at whichever filter rejects it. The beam's
+    width is not styling &#8212; it is the survivor count on a log scale, so the
+    narrowing you see is the measurement.
+  </p>
+
+  <section>
+    <h2>Where the ten thousand go</h2>
+    <p>
+      Four things happen in sequence, and each one is cheap enough to run on
+      everything that survived the last. That ordering is the whole trick:
+      full scoring parses an entire job description, so it can never run on ten
+      thousand postings. It runs on 784.
+    </p>
+
+    <div class="tablewrap">
+      <table>
+        <caption>Automation run 24 &#8212; 18 August 2026, 15:11:23 UTC, 27.7 seconds end to end.</caption>
+        <thead>
+          <tr>
+            <th scope="col">Stage</th>
+            <th scope="col" class="num">In</th>
+            <th scope="col" class="num">Out</th>
+            <th scope="col" class="num">Dropped</th>
+            <th scope="col">What decides</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Discover</th>
+            <td class="num">&#8212;</td><td class="num">10,034</td><td class="num">&#8212;</td>
+            <td>Six public job boards, deduplicated on company and title during the fetch.</td>
+          </tr>
+          <tr>
+            <th scope="row">Analyze</th>
+            <td class="num">10,034</td><td class="num">784</td><td class="num drop">9,250</td>
+            <td>Cheap title ranking against target roles. Deliberately runs before anything expensive.</td>
+          </tr>
+          <tr>
+            <th scope="row">Score</th>
+            <td class="num">784</td><td class="num">106</td><td class="num drop">678</td>
+            <td>Deterministic fit against the evidence vault. No model &#8212; a score has to be auditable.</td>
+          </tr>
+          <tr>
+            <th scope="row">Tailor</th>
+            <td class="num">106</td><td class="num">10</td><td class="num drop">96</td>
+            <td>A r&#233;sum&#233; built per posting from claims that already exist. Capped per run, not by luck.</td>
+          </tr>
+          <tr>
+            <th scope="row">Your review</th>
+            <td class="num">10</td><td class="num">0</td><td class="num">0</td>
+            <td>Nothing has left this stage. It is where the pipeline stops on purpose and waits for a person.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Why it stops</h2>
+    <p>
+      The last stage is the only one with no exit condition the software can
+      satisfy. Ten applications sit there until a human opens each one, reads
+      what was written in their name, and sends it. The run log records that
+      state as <em>blocked</em>, which is correct &#8212; it is blocked, and it is
+      supposed to be.
+    </p>
+    <div class="pull">
+      <p>10 awaiting your review &#8212; nothing submits automatically.</p>
+      <cite>Run 24, approval node, verbatim</cite>
+    </div>
+    <p>
+      This is a structural property, not a setting. The component that fills in
+      an application drives a visible browser and has no code path that clicks a
+      submit control. There is no flag that turns that off. Indeed, Greenhouse
+      and Dice all draw the line in roughly the same place, and a system that
+      quietly crossed it would be worth less than one that stops.
+    </p>
+  </section>
+
+  <section>
+    <h2>What the run cost</h2>
+    <div class="grid">
+      <div class="cell"><span class="k">27.7 s</span><span class="v">End to end, from first fetch to ten drafted applications.</span></div>
+      <div class="cell"><span class="k">6</span><span class="v">Sources: Greenhouse, Ashby, Lever, The Muse, Arbeitnow, RemoteOK. Public APIs only.</span></div>
+      <div class="cell"><span class="k">0</span><span class="v">Claims written that do not trace to a line in the evidence vault.</span></div>
+      <div class="cell"><span class="k">1</span><span class="v">Person who decides what actually gets sent.</span></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <span>CareerOS &#8212; discovery pipeline, run 24</span>
+  <span>Figures read from the run log, not estimated</span>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ------------------------------------------------------------------ data
+   These five numbers are the run, and everything geometric is derived from
+   them. Change the run and the picture changes; nothing here is decorative. */
+var TOTAL = 10034;
+var STAGES = [
+  { label:"Discover",    count:10034, note:"6 sources" },
+  { label:"Analyze",     count:784,   note:"title match" },
+  { label:"Score",       count:106,   note:"fit \u2265 threshold" },
+  { label:"Tailor",      count:10,    note:"r\u00e9sum\u00e9 built" },
+  { label:"Your review", count:10,    note:"nothing auto-submits", gate:true }
+];
+
+/* Beam radius is log(survivors)/log(total). A linear taper would be a
+   drawing; this is the same attrition the table reports. */
+var RMAX = 0.62;
+var RAD  = STAGES.slice(0,4).map(function(s){
+  return RMAX * Math.log(s.count) / Math.log(TOTAL);
+});
+RAD.push(RAD[3]);                       // the gate does not filter, it holds
+
+var X0 = -1.15, X4 = 1.00, SPAN = X4 - X0;
+var PLANE_X = [X0, -0.52, 0.02, 0.56, X4];
+var U = PLANE_X.map(function(x){ return (x - X0) / SPAN; });   // 0 .. 1
+
+var canvas   = document.getElementById("flow");
+var stageEl  = document.getElementById("stage");
+var tagsEl   = document.getElementById("tags");
+var toggleEl = document.getElementById("toggle");
+var fbEl     = document.getElementById("fallback");
+var footEl   = document.querySelector(".stage-foot");
+
+var gl = null;
+try { gl = canvas.getContext("webgl2", { antialias:true, alpha:false, powerPreference:"low-power" }); }
+catch(e){ gl = null; }
+
+if (!gl) {
+  canvas.style.display = "none";
+  fbEl.classList.add("on");
+  fbEl.setAttribute("aria-hidden","false");
+  toggleEl.style.display = "none";
+  return;
+}
+
+/* ---------------------------------------------------------------- shaders */
+var VERT = [
+"#version 300 es",
+"precision highp float;",
+"in vec4 a_seed;",          // phase, angle, radial (sqrt-distributed), jitter
+"in float a_stage;",        // 1..3 = dies at that filter, 4 = survives
+"uniform float u_time;",
+"uniform vec2  u_view;",    // yaw, pitch
+"uniform float u_aspect;",
+"uniform float u_focal;",
+"uniform float u_dpr;",
+"uniform vec3  u_ink;",
+"uniform vec3  u_drop;",
+"uniform vec3  u_hold;",
+"out vec4 v_color;",
+"const float X0=-1.15, SPAN=2.15, CAM=3.30;",
+"const float U1=" + U[1].toFixed(5) + ", U2=" + U[2].toFixed(5) + ", U3=" + U[3].toFixed(5) + ";",
+"const float R0=" + RAD[0].toFixed(5) + ", R1=" + RAD[1].toFixed(5) + ", R2=" + RAD[2].toFixed(5) + ", R3=" + RAD[3].toFixed(5) + ";",
+/* The beam contracts AT a filter, not before it \u2014 so each smoothstep is
+   still zero everywhere upstream and these compose in order. */
+"float radiusAt(float u){",
+"  float r = R0;",
+"  r = mix(r, R1, smoothstep(U1, U1+0.085, u));",
+"  r = mix(r, R2, smoothstep(U2, U2+0.085, u));",
+"  r = mix(r, R3, smoothstep(U3, U3+0.085, u));",
+"  return r;",
+"}",
+"void main(){",
+"  float u = fract(u_time * 0.105 + a_seed.x);",
+"  bool survivor = a_stage > 3.5;",
+"  float deathU = a_stage < 1.5 ? U1 : (a_stage < 2.5 ? U2 : (a_stage < 3.5 ? U3 : 9.0));",
+/* Survivors get their own progress curve, because the waiting IS the
+   subject and it has to hold the screen. They cross all four stages in the
+   first quarter of the cycle, decelerating, then sit at the gate for the
+   remaining three quarters — so roughly seven of the ten are inside the gate
+   ring at any instant. Easing within the last leg only ever parked one. */
+"  float uEff = u;",
+"  float hold = 0.0, holdFade = 1.0;",
+"  if (survivor) {",
+"    float s = clamp(u / 0.26, 0.0, 1.0);",
+"    uEff = 1.0 - pow(1.0 - s, 2.2);",
+"    hold = smoothstep(0.80, 1.0, uEff);",
+"    holdFade = 1.0 - smoothstep(0.94, 1.0, u);",
+"  }",
+"  float dead = max(0.0, u - deathU);",
+"  float ang  = a_seed.y * 6.2831853 + u_time * 0.052 + a_seed.w * 0.35;",
+"  float rad  = radiusAt(min(uEff, deathU)) * a_seed.z;",
+"  rad += dead * 1.35 * (0.35 + a_seed.w);",
+"  float x = X0 + uEff * SPAN;",
+"  if (dead > 0.0) x = X0 + deathU * SPAN + dead * 0.30;",
+"  float y = sin(ang) * rad - dead * dead * 2.4;",
+"  float z = cos(ang) * rad;",
+"  float a = smoothstep(0.0, survivor ? 0.010 : 0.035, u);",
+"  vec3 col = u_ink;",
+"  if (dead > 0.0) {",
+"    a *= max(0.0, 1.0 - dead / 0.125);",
+"    col = mix(u_drop, u_ink, smoothstep(0.0, 0.055, dead));",
+"  } else if (survivor) {",
+"    col = mix(u_ink, u_hold, hold);",
+"    a  *= holdFade * mix(1.0, 1.55, hold);",
+"    a  *= 1.0 - 0.22 * hold * (0.5 + 0.5 * sin(u_time * 1.6 + a_seed.w * 6.283));",
+"  }",
+"  vec3 p = vec3(x, y, z);",
+"  float cy = cos(u_view.x), sy = sin(u_view.x);",
+"  p = vec3(p.x*cy + p.z*sy, p.y, -p.x*sy + p.z*cy);",
+"  float cx = cos(u_view.y), sx = sin(u_view.y);",
+"  p = vec3(p.x, p.y*cx - p.z*sx, p.y*sx + p.z*cx);",
+"  float w = max(p.z + CAM, 0.06);",
+"  gl_Position = vec4(p.x*u_focal/(w*u_aspect), p.y*u_focal/w, 0.0, 1.0);",
+"  float mark = survivor ? 2.4 : 1.0;",
+"  gl_PointSize = clamp(2.85 * mark * u_focal / w, 1.0, 15.0) * u_dpr;",
+"  v_color = vec4(col, a * 0.56);",
+"}"
+].join("\n");
+
+var FRAG = [
+"#version 300 es",
+"precision highp float;",
+"in vec4 v_color;",
+"out vec4 outColor;",
+"void main(){",
+"  vec2 d = gl_PointCoord - vec2(0.5);",
+"  float r2 = dot(d, d);",
+"  if (r2 > 0.25) discard;",
+"  float edge = 1.0 - smoothstep(0.16, 0.25, r2);",
+"  outColor = vec4(v_color.rgb, v_color.a * edge);",
+"}"
+].join("\n");
+
+/* Rings mark the filter planes. Same camera maths, one extra draw call. */
+var RING_VERT = [
+"#version 300 es",
+"precision highp float;",
+"in vec2 a_ring;",          // stage index, angle 0..1
+"uniform vec2  u_view;",
+"uniform float u_aspect;",
+"uniform float u_focal;",
+"uniform float u_planeX[5];",
+"uniform float u_planeR[5];",
+"const float CAM = 3.30;",
+"void main(){",
+"  int i = int(a_ring.x + 0.5);",
+"  float ang = a_ring.y * 6.2831853;",
+"  float r = u_planeR[i];",
+"  vec3 p = vec3(u_planeX[i], sin(ang) * r, cos(ang) * r);",
+"  float cy = cos(u_view.x), sy = sin(u_view.x);",
+"  p = vec3(p.x*cy + p.z*sy, p.y, -p.x*sy + p.z*cy);",
+"  float cx = cos(u_view.y), sx = sin(u_view.y);",
+"  p = vec3(p.x, p.y*cx - p.z*sx, p.y*sx + p.z*cx);",
+"  float w = max(p.z + CAM, 0.06);",
+"  gl_Position = vec4(p.x*u_focal/(w*u_aspect), p.y*u_focal/w, 0.0, 1.0);",
+"}"
+].join("\n");
+
+var RING_FRAG = [
+"#version 300 es",
+"precision highp float;",
+"uniform vec4 u_col;",
+"out vec4 outColor;",
+"void main(){ outColor = u_col; }"
+].join("\n");
+
+function compile(type, src){
+  var s = gl.createShader(type);
+  gl.shaderSource(s, src);
+  gl.compileShader(s);
+  if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+    console.error(gl.getShaderInfoLog(s), src);
+    return null;
+  }
+  return s;
+}
+function link(vs, fs){
+  var p = gl.createProgram();
+  gl.attachShader(p, compile(gl.VERTEX_SHADER, vs));
+  gl.attachShader(p, compile(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(p);
+  if (!gl.getProgramParameter(p, gl.LINK_STATUS)) {
+    console.error(gl.getProgramInfoLog(p));
+    return null;
+  }
+  return p;
+}
+
+var prog = link(VERT, FRAG);
+var ringProg = link(RING_VERT, RING_FRAG);
+if (!prog || !ringProg) {
+  canvas.style.display = "none";
+  fbEl.classList.add("on");
+  fbEl.setAttribute("aria-hidden","false");
+  toggleEl.style.display = "none";
+  return;
+}
+
+/* ------------------------------------------------------------- particles
+   One posting per particle. Death stage is allocated by the real attrition,
+   so the population of red flashes at each ring is the real drop count. */
+var deaths = [
+  STAGES[0].count - STAGES[1].count,    // 9250 fail Analyze
+  STAGES[1].count - STAGES[2].count,    //  678 fail Score
+  STAGES[2].count - STAGES[3].count,    //   96 not tailored this run
+  STAGES[3].count                       //   10 reach the gate
+];
+
+var seeds = new Float32Array(TOTAL * 4);
+var stagesAttr = new Float32Array(TOTAL);
+var i = 0, k, n;
+for (k = 0; k < 4; k++) {
+  for (n = 0; n < deaths[k]; n++) {
+    seeds[i*4+0] = Math.random();
+    seeds[i*4+1] = Math.random();
+    seeds[i*4+2] = Math.sqrt(Math.random());   // uniform over the disc
+    seeds[i*4+3] = Math.random();
+    stagesAttr[i] = k + 1;
+    i++;
+  }
+}
+var COUNT = i;
+
+var vao = gl.createVertexArray();
+gl.bindVertexArray(vao);
+var bSeed = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, bSeed);
+gl.bufferData(gl.ARRAY_BUFFER, seeds, gl.STATIC_DRAW);
+var locSeed = gl.getAttribLocation(prog, "a_seed");
+gl.enableVertexAttribArray(locSeed);
+gl.vertexAttribPointer(locSeed, 4, gl.FLOAT, false, 0, 0);
+var bStage = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, bStage);
+gl.bufferData(gl.ARRAY_BUFFER, stagesAttr, gl.STATIC_DRAW);
+var locStage = gl.getAttribLocation(prog, "a_stage");
+gl.enableVertexAttribArray(locStage);
+gl.vertexAttribPointer(locStage, 1, gl.FLOAT, false, 0, 0);
+gl.bindVertexArray(null);
+
+var SEG = 84;
+var ringData = new Float32Array(5 * SEG * 2);
+for (k = 0; k < 5; k++) {
+  for (n = 0; n < SEG; n++) {
+    ringData[(k*SEG+n)*2+0] = k;
+    ringData[(k*SEG+n)*2+1] = n / SEG;
+  }
+}
+var ringVao = gl.createVertexArray();
+gl.bindVertexArray(ringVao);
+var bRing = gl.createBuffer();
+gl.bindBuffer(gl.ARRAY_BUFFER, bRing);
+gl.bufferData(gl.ARRAY_BUFFER, ringData, gl.STATIC_DRAW);
+var locRing = gl.getAttribLocation(ringProg, "a_ring");
+gl.enableVertexAttribArray(locRing);
+gl.vertexAttribPointer(locRing, 2, gl.FLOAT, false, 0, 0);
+gl.bindVertexArray(null);
+
+var uni = {};
+["u_time","u_view","u_aspect","u_focal","u_dpr","u_ink","u_drop","u_hold"].forEach(function(nm){
+  uni[nm] = gl.getUniformLocation(prog, nm);
+});
+var runi = {};
+["u_view","u_aspect","u_focal","u_col","u_planeX","u_planeR"].forEach(function(nm){
+  runi[nm] = gl.getUniformLocation(ringProg, nm);
+});
+
+/* ----------------------------------------------------------------- theme */
+function rgb(v){
+  v = v.trim();
+  if (v.charAt(0) === "#") {
+    if (v.length === 4) v = "#" + v[1]+v[1] + v[2]+v[2] + v[3]+v[3];
+    return [parseInt(v.substr(1,2),16)/255, parseInt(v.substr(3,2),16)/255, parseInt(v.substr(5,2),16)/255];
+  }
+  var m = v.match(/[\d.]+/g) || [0,0,0];
+  return [m[0]/255, m[1]/255, m[2]/255];
+}
+var theme = {};
+function readTheme(){
+  var cs = getComputedStyle(document.documentElement);
+  theme.ink   = rgb(cs.getPropertyValue("--particle-ink"));
+  theme.drop  = rgb(cs.getPropertyValue("--particle-drop"));
+  theme.hold  = rgb(cs.getPropertyValue("--particle-hold"));
+  theme.paper = rgb(cs.getPropertyValue("--paper"));
+  theme.ring  = rgb(cs.getPropertyValue("--ring"));
+  theme.amber = rgb(cs.getPropertyValue("--amber"));
+}
+readTheme();
+if (window.matchMedia) {
+  var mq = window.matchMedia("(prefers-color-scheme: dark)");
+  var onScheme = function(){ readTheme(); if (!running) draw(clock); };
+  if (mq.addEventListener) mq.addEventListener("change", onScheme);
+  else if (mq.addListener) mq.addListener(onScheme);
+}
+new MutationObserver(function(){ readTheme(); if (!running) draw(clock); })
+  .observe(document.documentElement, { attributes:true, attributeFilter:["data-theme"] });
+
+/* ---------------------------------------------------------------- camera */
+var W = 1, H = 1, DPR = 1, aspect = 1, focal = 4, footReserve = 56;
+var yaw = 0.50, pitch = 0.26, yawT = 0.50, pitchT = 0.26;
+
+function resize(){
+  DPR = Math.min(window.devicePixelRatio || 1, 2);
+  var r = stageEl.getBoundingClientRect();
+  W = Math.max(1, Math.round(r.width));
+  H = Math.max(1, Math.round(r.height));
+  canvas.width  = Math.round(W * DPR);
+  canvas.height = Math.round(H * DPR);
+  aspect = W / H;
+  /* Fit whichever axis binds. On a narrow viewport the spawn end is allowed
+     to bleed off-screen rather than shrinking the whole tube to a thread \u2014
+     but the gate end never clips, because the gate is the point. Tag heights
+     are cached here so the frame loop never reads layout back. */
+  var span = 1.15 + (1.22 - 1.15) * Math.max(0, Math.min(1, (aspect - 0.6) / 0.9));
+  var focalX = 0.80 * 3.30 * aspect / span;
+  var focalY = 0.80 * 3.30 / (RMAX + 0.26);
+  focal = Math.min(focalX, focalY);
+  /* The note line is the first thing to go when the axis gets crowded, and
+     what matters is the PANEL's width, not the window's — the panel is short
+     and wide inside a phone-sized page. */
+  stageEl.classList.toggle("tight", W < 760);
+  /* The legend wraps to two lines on a narrow panel, so the space to keep
+     clear of it has to be measured rather than assumed — a fixed reserve put
+     the Discover count straight through it. */
+  footReserve = footEl.offsetHeight + 26;
+  for (var q = 0; q < tagEls.length; q++) {
+    tagH[q] = tagEls[q].offsetHeight;
+    tagW[q] = tagEls[q].offsetWidth;
+  }
+  gl.viewport(0, 0, canvas.width, canvas.height);
+}
+
+function project(x, y){
+  var p = [x, y, 0];
+  var cy = Math.cos(yaw), sy = Math.sin(yaw);
+  p = [p[0]*cy + p[2]*sy, p[1], -p[0]*sy + p[2]*cy];
+  var cx = Math.cos(pitch), sx = Math.sin(pitch);
+  p = [p[0], p[1]*cx - p[2]*sx, p[1]*sx + p[2]*cx];
+  var w = Math.max(p[2] + 3.30, 0.06);
+  return {
+    x: (p[0]*focal/(w*aspect) * 0.5 + 0.5) * W,
+    y: (0.5 - p[1]*focal/w * 0.5) * H
+  };
+}
+
+/* ----------------------------------------------------------------- labels */
+var tagEls = [], tagH = [], tagW = [];
+function buildTags(){
+  STAGES.forEach(function(s, idx){
+    var el = document.createElement("div");
+    el.className = "tag" + (s.gate ? " tag--gate" : "");
+    el.innerHTML =
+      '<span class="tick"></span>' +
+      '<span class="n">' + s.count.toLocaleString("en-US") + '</span>' +
+      '<span class="l">' + s.label + '</span>' +
+      '<span class="d">' + s.note + '</span>';
+    tagsEl.appendChild(el);
+    tagEls.push(el);
+    tagH.push(0);
+    tagW.push(0);
+  });
+}
+buildTags();
+
+/* Five labels on a narrow axis will collide — at 400px the counts ran into
+   each other and became unreadable. Rather than assume room, pack them into as
+   many rows as they actually need, left to right, and lift the whole set clear
+   of the legend if the last row runs into it. Widths are measured, so this
+   holds for any label text and any panel size. */
+function placeTags(){
+  var pos = [], maxH = 0, t;
+  for (t = 0; t < tagEls.length; t++) {
+    var b = project(PLANE_X[t], -(RAD[t] + 0.02));
+    pos.push({ i:t, x:b.x, y:b.y + 10, row:0 });
+    if (tagH[t] > maxH) maxH = tagH[t];
+  }
+
+  var order = pos.slice().sort(function(a, b){ return a.x - b.x; });
+  var rowRight = [];
+  for (var k = 0; k < order.length; k++) {
+    var p = order[k], half = tagW[p.i] / 2, r = 0;
+    while (r < 3 && rowRight[r] !== undefined && p.x - half < rowRight[r] + 12) r++;
+    rowRight[r] = p.x + half;
+    p.row = r;
+  }
+
+  var step = maxH + 5, lowest = 0;
+  for (t = 0; t < pos.length; t++) {
+    pos[t].y += pos[t].row * step;
+    lowest = Math.max(lowest, pos[t].y + tagH[pos[t].i]);
+  }
+  var lift = Math.max(0, lowest - (H - footReserve));
+
+  for (t = 0; t < pos.length; t++) {
+    var el = tagEls[pos[t].i];
+    el.style.transform = "translate3d(" + Math.round(pos[t].x) + "px," +
+      Math.round(pos[t].y - lift) + "px,0) translateX(-50%)";
+    /* A label whose ring has swung off the panel edge hides rather than
+       piling up against the frame. */
+    el.style.opacity = (pos[t].x < 20 || pos[t].x > W - 20) ? "0" : "1";
+  }
+}
+
+/* ------------------------------------------------------------------- loop */
+var planeXArr = new Float32Array(PLANE_X);
+var planeRArr = new Float32Array(RAD);
+
+function draw(t){
+  gl.clearColor(theme.paper[0], theme.paper[1], theme.paper[2], 1);
+  gl.clear(gl.COLOR_BUFFER_BIT);
+  gl.enable(gl.BLEND);
+  gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+
+  gl.useProgram(ringProg);
+  gl.uniform2f(runi.u_view, yaw, pitch);
+  gl.uniform1f(runi.u_aspect, aspect);
+  gl.uniform1f(runi.u_focal, focal);
+  gl.uniform1fv(runi.u_planeX, planeXArr);
+  gl.uniform1fv(runi.u_planeR, planeRArr);
+  gl.bindVertexArray(ringVao);
+  for (var r = 0; r < 5; r++) {
+    var c = STAGES[r].gate ? theme.amber : theme.ring;
+    gl.uniform4f(runi.u_col, c[0], c[1], c[2], STAGES[r].gate ? 0.85 : 0.5);
+    gl.drawArrays(gl.LINE_LOOP, r * SEG, SEG);
+  }
+
+  gl.useProgram(prog);
+  gl.uniform1f(uni.u_time, t);
+  gl.uniform2f(uni.u_view, yaw, pitch);
+  gl.uniform1f(uni.u_aspect, aspect);
+  gl.uniform1f(uni.u_focal, focal);
+  gl.uniform1f(uni.u_dpr, DPR);
+  gl.uniform3fv(uni.u_ink, theme.ink);
+  gl.uniform3fv(uni.u_drop, theme.drop);
+  gl.uniform3fv(uni.u_hold, theme.hold);
+  gl.bindVertexArray(vao);
+  gl.drawArrays(gl.POINTS, 0, COUNT);
+  gl.bindVertexArray(null);
+
+  placeTags();
+}
+
+var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+var clock = reduce ? 4.2 : 0;     /* a still frame with all four rings populated */
+var running = !reduce;
+var pausedByUser = reduce;   /* scrolling back must not undo a real Pause */
+var last = 0;
+
+function frame(now){
+  if (!running) return;
+  if (last) clock += Math.min((now - last) / 1000, 0.05);
+  last = now;
+  yaw   += (yawT - yaw) * 0.06;
+  pitch += (pitchT - pitch) * 0.06;
+  yawT   = 0.50 + pointer.x * 0.16 + Math.sin(clock * 0.07) * 0.04;
+  pitchT = 0.26 + pointer.y * 0.13;
+  draw(clock);
+  requestAnimationFrame(frame);
+}
+
+var pointer = { x:0, y:0 };
+stageEl.addEventListener("pointermove", function(e){
+  var r = stageEl.getBoundingClientRect();
+  pointer.x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+  pointer.y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+});
+stageEl.addEventListener("pointerleave", function(){ pointer.x = 0; pointer.y = 0; });
+
+toggleEl.textContent = running ? "Pause" : "Play";
+toggleEl.addEventListener("click", function(){
+  running = !running;
+  pausedByUser = !running;
+  toggleEl.textContent = running ? "Pause" : "Play";
+  if (running) { last = 0; requestAnimationFrame(frame); }
+});
+
+/* Stop drawing entirely once the panel has scrolled away. */
+if (window.IntersectionObserver) {
+  new IntersectionObserver(function(entries){
+    var visible = entries[0].isIntersecting;
+    if (!visible && running) { running = false; }
+    else if (visible && !running && !pausedByUser) {
+      running = true; last = 0; requestAnimationFrame(frame);
+    }
+  }, { threshold:0.08 }).observe(stageEl);
+}
+
+var ro = window.ResizeObserver ? new ResizeObserver(function(){
+  resize(); if (!running) draw(clock);
+}) : null;
+if (ro) ro.observe(stageEl); else window.addEventListener("resize", function(){ resize(); if (!running) draw(clock); });
+
+resize();
+draw(clock);
+if (running) requestAnimationFrame(frame);
+})();
+</script>
+</main>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Register Signal - Himanshu Srivastava</title>
+<meta name="description" content="Reads three national medicines registers, 39,130 records, and produces dated reasons to contact a pharmaceutical company. One register returns nothing, on purpose.">
+<link rel="canonical" href="https://himansh97.github.io/work/register-signal.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Himanshu Srivastava">
+<meta property="og:title" content="Register Signal">
+<meta property="og:description" content="Reads three national medicines registers, 39,130 records, and produces dated reasons to contact a pharmaceutical company. One register returns nothing, on purpose.">
+<meta property="og:url" content="https://himansh97.github.io/work/register-signal.html">
+<meta property="og:image" content="https://himansh97.github.io/assets/og/og-register.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Register Signal">
+<meta name="twitter:description" content="Reads three national medicines registers, 39,130 records, and produces dated reasons to contact a pharmaceutical company. One register returns nothing, on purpose.">
+<meta name="twitter:image" content="https://himansh97.github.io/assets/og/og-register.png">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/case.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="sitenav" aria-label="Primary">
+  <div class="wrap">
+    <a class="home" href="/">HIMANSHU SRIVASTAVA</a>
+    <ul>
+      <li><a href="/work/custody.html">Custody</a></li>
+      <li><a href="/work/register-signal.html" aria-current="page">Register Signal</a></li>
+      <li><a href="/work/careeros.html">CareerOS</a></li>
+      <li><a href="/work/optionora.html">Optionora</a></li>
+    </ul>
+  </div>
+</nav>
+<main id="main">
+<div class="wrap">
+
+<header class="hero">
+  <p class="eyebrow">Register Signal</p>
+  <h1>Three public registers. 39,130 records. <em>One of them says nothing.</em></h1>
+  <p class="lede">
+    Regulatory-services business development has no trigger events. Software sales
+    has renewal dates, recruiting has job postings; this has conferences and
+    relationships. So you call to say &ldquo;we do regulatory services&rdquo;, which
+    is what everyone says, and there is no reason to call <em>today</em>.
+    Public medicines registers are full of reasons nobody reads.
+  </p>
+  <p class="cta">
+    <a class="primary" href="https://github.com/Himansh97/row-registration-intelligence" rel="noopener">The code &rarr;</a>
+    <a href="#zero">Why Tanzania returns nothing</a>
+  </p>
+  <p class="hero-note">DuckDB &nbsp;&middot;&nbsp; 35 commits &nbsp;&middot;&nbsp; 10 test files &nbsp;&middot;&nbsp; public regulatory data only</p>
+</header>
+
+<section>
+  <h2>What it produces</h2>
+  <p class="head">Dated, named reasons to contact a specific company.</p>
+  <p class="sub">
+    Four trigger types, ranked in this order because a loss already taken outranks
+    a future obligation, which outranks a sign of momentum.
+  </p>
+
+  <div class="facts">
+    <div class="fact"><b>Expired</b><span>Market access already lost. Recoverable only by re-filing.</span></div>
+    <div class="fact"><b>Renewal due</b><span>A dated obligation. The filing happens or the product leaves the market.</span></div>
+    <div class="fact"><b>Recently granted</b><span>The company is actively spending on regulatory work.</span></div>
+    <div class="fact"><b>First entry</b><span>A company&rsquo;s first registration in this market. They are expanding.</span></div>
+  </div>
+</section>
+
+<section id="sources">
+  <h2>The sources</h2>
+  <p class="head">Every figure traces to a hashed, dated snapshot of the bytes it came from.</p>
+  <p class="sub">
+    Nothing downstream reads a live URL. A number on this page can be tied to a
+    specific retrieval, which is the whole reason the snapshot layer exists.
+  </p>
+
+  <div class="facts">
+    <div class="fact"><b>9,008</b><span>Nigeria, NAFDAC Greenbook</span><cite>4,147 triggers</cite></div>
+    <div class="fact"><b>29,274</b><span>Brazil, ANVISA</span><cite>2,752 triggers</cite></div>
+    <div class="fact"><b>848</b><span>Tanzania, TMDA</span><cite>0 triggers</cite></div>
+    <div class="fact"><b>6,899</b><span>Triggers in total</span><cite>across three registers</cite></div>
+  </div>
+</section>
+
+<section id="zero">
+  <h2>The zero</h2>
+  <p class="head">Tanzania returning nothing is the system working, not failing.</p>
+  <p class="sub">
+    TMDA publishes neither expiry dates nor reliable dates of any kind. Every
+    trigger this system emits carries a date and the evidence for it, so a source
+    that cannot support a dated claim does not get to make one. The alternative
+    was to infer dates from registration numbers, which would have produced 848
+    confident rows that no one could check.
+  </p>
+  <p class="sub">
+    It is the smallest source and the only one that produces nothing, which makes
+    it the honest test of whether the rule is real.
+  </p>
+</section>
+
+<section id="language">
+  <h2>What a gap in a register means</h2>
+  <p class="head">Exactly one reading is supportable, and it is not the interesting one.</p>
+
+  <div class="two">
+    <div class="col is">
+      <h3>What the data supports</h3>
+      <ul>
+        <li>not found in TMDA source, retrieved 2026-08-30</li>
+        <li>registration expired 2026-03-14; recorded inactive in NAFDAC, retrieved 2026-09-01</li>
+      </ul>
+    </div>
+    <div class="col isnt">
+      <h3>What it does not</h3>
+      <ul>
+        <li>not registered in Tanzania</li>
+        <li>failed to renew</li>
+      </ul>
+    </div>
+  </div>
+
+  <p class="sub">
+    Companies discontinue products deliberately. The register records the date and
+    never the reason, so a report that says &ldquo;failed to renew&rdquo; has invented
+    a motive. <code>src/rri/language.py</code> blocks eight phrasings, the generators
+    run it against their own output before returning, and the test suite runs it over
+    every generated artifact. A report that overclaims raises rather than being written.
+  </p>
+</section>
+
+<section id="decisions">
+  <h2>Decisions worth defending</h2>
+  <p class="head">Four places where the obvious approach produces a plausible wrong answer.</p>
+
+  <div class="steps">
+    <div class="step">
+      <div class="num">01</div>
+      <h3>Company matching is token-based, never substring</h3>
+      <p>
+        Searching for <code>"sun pharma"</code> inside applicant names matches
+        <b>Ani<em>sun Pharma</em>ceutical Company Limited</b>, inventing a corporate
+        relationship that does not exist. Substring matching on company names is the
+        single easiest way to fabricate a lead.
+      </p>
+    </div>
+    <div class="step">
+      <div class="num">02</div>
+      <h3>Diffing keys on the register&rsquo;s row id, not the registration number</h3>
+      <p>
+        In NAFDAC, <b>263 registration numbers are shared across 538 records</b>, and
+        one number covers two unrelated products. Keying a diff on the registration
+        number silently merges them and reports movement that never happened.
+      </p>
+    </div>
+    <div class="step">
+      <div class="num">03</div>
+      <h3>No vector database</h3>
+      <p>
+        Structured extraction into DuckDB is auditable line by line. A RAG stack would
+        add embedding drift to explain and buy nothing, on a problem whose entire
+        output is dates and company names.
+      </p>
+    </div>
+    <div class="step">
+      <div class="num">04</div>
+      <h3>TLS verification is never disabled</h3>
+      <p>
+        ANVISA serves an incomplete certificate chain. The fix was to supply the
+        missing intermediate, not to stop checking. A pipeline whose claim is
+        traceability cannot make unauthenticated fetches.
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="build">
+  <h2>How it is built</h2>
+  <p class="sub">
+    Every source is declared in <code>config/sources.yaml</code>; nothing is fetched
+    that is not there. Adding market N+1 is one adapter class, not a new codebase.
+  </p>
+  <pre><span class="c">config/sources.yaml</span>     every source declared
+        <span class="a">&#8595;</span>
+  <span class="g">adapters</span>              fetch, map, and declare limits
+        <span class="a">&#8595;</span>
+  <span class="g">snapshot</span>              raw bytes + sha256 + retrieval date
+        <span class="a">&#8595;</span>
+  <span class="g">normalise</span>             INN &middot; strength &middot; form &middot; company
+        <span class="a">&#8595;</span>
+  <span class="g">triggers</span>              expired &middot; renewal due &middot; granted &middot; first entry
+        <span class="a">&#8595;</span>
+  <span class="g">diff</span>                  suppressed entirely if a snapshot shrank
+        <span class="a">&#8595;</span>
+  <span class="r">output</span>                self-checks its own language before returning</pre>
+  <p class="sub">
+    The diff suppression earned its place: a partial fetch looks exactly like a
+    register that removed a thousand products overnight. When a verified run did
+    remove records, <b>36 registrations</b> came out and reconciled exactly with the
+    record-count shortfall, which is the check that tells the two cases apart.
+  </p>
+</section>
+
+<section>
+  <h2>What it is not</h2>
+  <p class="sub">
+    Registered is not marketed. A product can hold an active registration and never
+    reach a shelf, so a trigger is a reason to make a call and not evidence of
+    revenue. Five further sources were assessed and rejected, and
+    <code>docs/decisions.md</code> records each one and why.
+  </p>
+  <p class="cta">
+    <a class="primary" href="https://github.com/Himansh97/row-registration-intelligence" rel="noopener">Read the code &rarr;</a>
+  </p>
+</section>
+
+<a class="backlink" href="/">&larr; Back to portfolio</a>
+
+</div>
+</main>
+<footer class="sitefoot">
+  <div class="wrap">
+    <p>Open to data, analytics and engineering roles in the United States.
+       The fastest way to reach me is email, and I answer everything.</p>
+    <p><a href="mailto:hsrivast22@gmail.com">hsrivast22@gmail.com</a>
+       &nbsp;/&nbsp; <a href="https://www.linkedin.com/in/himanshu-data-engineer/" rel="noopener">LinkedIn</a>
+       &nbsp;/&nbsp; <a href="https://github.com/Himansh97" rel="noopener">GitHub</a></p>
+    <p>Every figure on this site comes from a command that was run, not an estimate.</p>
+  </div>
+</footer>
+</body>
+</html>

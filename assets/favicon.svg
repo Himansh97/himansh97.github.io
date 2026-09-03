@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- A chain of four links with the third broken: the site's one idea,
+       at 16px. Paper and ink follow the OS theme so the mark stays legible
+       in a dark tab strip. -->
+  <style>
+    rect.bg{fill:#FAFAF8}
+    path{stroke:#16161A}
+    .brk{stroke:#D92906}
+    @media (prefers-color-scheme:dark){
+      rect.bg{fill:#0E0E12}
+      path{stroke:#E9E8E2}
+      .brk{stroke:#FF5232}
+    }
+  </style>
+  <rect class="bg" width="32" height="32" rx="5"/>
+  <g fill="none" stroke-width="2.6" stroke-linecap="round">
+    <path d="M8 9 h16"/>
+    <path d="M8 15 h16"/>
+    <path class="brk" d="M8 21 h6"/>
+    <path class="brk" d="M18 21 h6"/>
+  </g>
+</svg>
