@@ -7,11 +7,13 @@
     <img class="avatar" src="/assets/avatar.jpg" width="88" height="88" alt="Himanshu Srivastava" loading="eager" decoding="async">
     <div>
       <p class="name">Himanshu Srivastava</p>
-      <p class="role">Data and analytics engineering &nbsp;/&nbsp; mortgage and financial services</p>
+      <p class="role">Data and analytics engineering, mortgage and financial services</p>
       <p class="role">Dallas, TX &nbsp;&#183;&nbsp; open to data analyst, analytics engineer and data engineer roles</p>
     </div>
   </div>
 
+  <div class="masthead">
+   <div>
   <h1>I build systems that know what they can&rsquo;t prove. <em>And stop.</em></h1>
 
   <p class="standfirst">
@@ -21,6 +23,16 @@
     to guess, and that hand the decision back to a person at exactly the point
     where a person is needed.
   </p>
+
+   </div>
+
+   <div class="topline">
+    <p class="fig"><b>4</b><span>releases on PyPI</span><cite>custody-ledger</cite></p>
+    <p class="fig"><b>39,130</b><span>records read</span><cite>three national registers</cite></p>
+    <p class="fig"><b>457</b><span>tests passing</span><cite>pytest --collect-only</cite></p>
+    <p class="fig zero"><b>0</b><span>applications sent by the machine</span><cite>structural, not a setting</cite></p>
+   </div>
+  </div>
 
   <p class="links">
     <a class="primary" href="#about">About me <span class="arw">&rarr;</span></a>
@@ -57,14 +69,6 @@
         Outside work I build the same way. Everything in the next section is mine,
         including the parts that did not work &mdash; which are published too.
       </p>
-      <p class="chips">
-        <span class="chip">Python</span><span class="chip">SQL</span><span class="chip">PySpark</span>
-        <span class="chip">Airflow</span><span class="chip">FastAPI</span><span class="chip">Next.js</span>
-        <span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Tableau</span>
-        <span class="chip">Power BI</span><span class="chip">PostgreSQL</span><span class="chip">TensorFlow</span>
-        <span class="chip">PyTorch</span><span class="chip">Azure</span><span class="chip">CI/CD</span>
-        <span class="chip">Lean Six Sigma Green Belt</span>
-      </p>
     </div>
 
     <div>
@@ -90,7 +94,7 @@
       <div class="rec">
         <div class="yr">2026 &ndash; present</div>
         <div>
-          <b>AI Engineer Intern</b>
+          <b>AI Engineer</b>
           <i>Supreme Lending (Everett Financial, Inc.)</i>
           <span>Production systems in a regulated lender: GL reconciliation, Ginnie Mae pool delivery, and the security stage of a five-stage CI/CD platform.</span>
         </div>
@@ -125,91 +129,92 @@
 
 <section id="work">
   <div class="section-head">
-    <h2>Selected work</h2>
-    <p class="section-note">Figures are counted, not estimated &nbsp;&#183;&nbsp; the demos run in your browser</p>
+    <h2>Four claims, and what backs each one.</h2>
+    <p class="section-note">Every figure below names the command that produced it.</p>
   </div>
 
   <div class="works">
 
     <article class="item">
-      <div>
-        <p class="tag">Published &nbsp;&#183;&nbsp; PyPI</p>
-        <h3><a href="/work/custody.html">Custody &mdash; a signed chain of evidence for AI decisions</a></h3>
-        <p>A mortgage lender has to be able to show a regulator what its model produced and
-           what a human did about it. A log asserts that. A hash chain with signatures proves
-           it, and an anchor scheme makes deletion from the end detectable.</p>
-        <p class="go"><a class="open" href="/work/custody.html">Break the chain yourself <span class="arw">&rarr;</span></a>
-           <a class="open" href="https://pypi.org/project/custody-ledger/" rel="noopener">PyPI</a>
-           <a class="open" href="https://github.com/Himansh97/custody" rel="noopener">Code</a></p>
+      <div class="claim">
+        <p class="said">I ship code people actually install.</p>
+        <h3><a href="/work/custody.html">Custody, a signed chain of evidence for AI decisions</a></h3>
+        <p>A mortgage lender has to show a regulator what its model produced and what a
+           human did about it. A log asserts that. A hash chain with signatures proves it,
+           and an anchor scheme makes deletion from the end detectable.</p>
+        <p class="go">
+          <a class="lead" href="/work/custody.html">Break the chain yourself &rarr;</a>
+          <a href="https://pypi.org/project/custody-ledger/" rel="noopener">PyPI</a>
+          <a href="https://github.com/Himansh97/custody" rel="noopener">Code</a>
+        </p>
       </div>
-      <div class="ev">
-        <div><span>Releases</span><b>4</b></div>
-        <div><span>Tests</span><b>92</b></div>
-        <div><span>Test files</span><b>11</b></div>
-        <div><span>Runtime deps</span><b>1</b></div>
-        <span class="note">SQLite and Postgres, both in CI</span>
+      <div class="proof">
+        <p class="fig"><b>4</b><span>releases on PyPI</span><cite>pypi.org/project/custody-ledger</cite></p>
+        <p class="fig"><b>92</b><span>tests, 11 files</span><cite>pytest --collect-only<br>2026-09-03</cite></p>
+        <p class="fig"><b>1</b><span>runtime dependency</span><cite>pyproject.toml</cite></p>
+        <p class="fig"><b>2</b><span>backends, both in CI</span><cite>SQLite and Postgres</cite></p>
       </div>
     </article>
 
     <article class="item">
-      <div>
-        <p class="tag">Data engineering &nbsp;&#183;&nbsp; public registers</p>
-        <h3><a href="/work/register-signal.html">Register Signal &mdash; dated reasons to call a pharma company</a></h3>
+      <div class="claim">
+        <p class="said">I say nothing the data cannot support.</p>
+        <h3><a href="/work/register-signal.html">Register Signal, dated reasons to call a pharma company</a></h3>
         <p>Reads three national medicines registers and turns them into named, dated
-           triggers a salesperson can act on. Tanzania returns nothing, and that is
-           the result rather than a bug: the register carries no dates to reason from,
-           so the honest output is silence.</p>
-        <p class="go"><a class="open" href="/work/register-signal.html">Read the method <span class="arw">&rarr;</span></a>
-           <a class="open" href="https://github.com/Himansh97/row-registration-intelligence" rel="noopener">Code</a></p>
+           triggers. Tanzania publishes neither expiry nor reliable dates, so it produces
+           nothing. That zero is the rule working, not the pipeline failing.</p>
+        <p class="go">
+          <a class="lead" href="/work/register-signal.html">Why one register returns nothing &rarr;</a>
+          <a href="https://github.com/Himansh97/row-registration-intelligence" rel="noopener">Code</a>
+        </p>
       </div>
-      <div class="ev">
-        <div><span>Records read</span><b>39,130</b></div>
-        <div><span>Registers</span><b>3</b></div>
-        <div><span>Triggers</span><b>6,899</b></div>
-        <div><span>Test files</span><b>10</b></div>
-        <span class="note">One register returns 0, on purpose</span>
-      </div>
-    </article>
-
-    <article class="item">
-      <div>
-        <p class="tag">Full stack &nbsp;&#183;&nbsp; two repositories</p>
-        <h3><a href="/work/careeros.html">CareerOS &mdash; a job search that cannot overstate me</a></h3>
-        <p>Every sentence on a generated resume has to trace to a recorded claim. A
-           containment gate discards generated prose whole if it introduces a figure,
-           a proper noun or a seniority the evidence does not carry. It scored a
-           posting 98/100 with &ldquo;no gaps&rdquo; once, because the requirements it
-           did not understand were invisible rather than unmet. That bug is why the
-           gate exists.</p>
-        <p class="go"><a class="open" href="/work/careeros.html">The case study <span class="arw">&rarr;</span></a>
-           <a class="open" href="/work/containment-gate.html">Try to break the gate</a>
-           <a class="open" href="https://github.com/Himansh97/careeros-api" rel="noopener">Code</a></p>
-      </div>
-      <div class="ev">
-        <div><span>Backend tests</span><b>457</b></div>
-        <div><span>API endpoints</span><b>88</b></div>
-        <div><span>Commits</span><b>281</b></div>
-        <div><span>Job boards</span><b>9</b></div>
-        <span class="note">Nothing auto-submits, structurally</span>
+      <div class="proof">
+        <p class="fig"><b>39,130</b><span>records read</span><cite>NAFDAC, ANVISA, TMDA<br>hashed snapshots</cite></p>
+        <p class="fig"><b>6,899</b><span>triggers produced</span><cite>each carries a date</cite></p>
+        <p class="fig zero"><b>0</b><span>from Tanzania</span><cite>no dates published,<br>so nothing dated claimed</cite></p>
+        <p class="fig"><b>10</b><span>test files, two gates</span><cite>ls tests/</cite></p>
       </div>
     </article>
 
     <article class="item">
-      <div>
-        <p class="tag">Private code &nbsp;&#183;&nbsp; live demo</p>
-        <h3><a href="/work/optionora.html">Optionora &mdash; a tool that publishes its own uncertainty</a></h3>
+      <div class="claim">
+        <p class="said">I automate work that costs real hours.</p>
+        <h3><a href="/work/careeros.html">CareerOS, a job search that cannot overstate me</a></h3>
+        <p>Every sentence on a generated resume traces to a recorded claim. A containment
+           gate discards generated prose whole if it introduces a figure, a proper noun or
+           a seniority the evidence does not carry. It once scored a posting 98/100 with
+           &ldquo;no gaps&rdquo;, because the requirements it did not understand were
+           invisible rather than unmet. That bug is why the gate exists.</p>
+        <p class="go">
+          <a class="lead" href="/work/containment-gate.html">Try to make it overstate me &rarr;</a>
+          <a href="/work/careeros.html">Case study</a>
+          <a href="https://github.com/Himansh97/careeros-api" rel="noopener">Code</a>
+        </p>
+      </div>
+      <div class="proof">
+        <p class="fig"><b>457</b><span>backend tests, 60 files</span><cite>pytest --collect-only<br>2026-09-03</cite></p>
+        <p class="fig"><b>88</b><span>API endpoints</span><cite>grep -c &apos;@app.&apos; app/main.py</cite></p>
+        <p class="fig"><b>281</b><span>commits, two repos</span><cite>git rev-list --count</cite></p>
+        <p class="fig zero"><b>0</b><span>applications sent by the machine</span><cite>structural, not a setting</cite></p>
+      </div>
+    </article>
+
+    <article class="item">
+      <div class="claim">
+        <p class="said">I publish the results that did not work.</p>
+        <h3><a href="/work/optionora.html">Optionora, a tool that reports its own uncertainty</a></h3>
         <p>Scores short-dated options strategies net of costs, with bootstrap confidence
-           intervals, and reports a strategy as unproven when the interval spans zero.
-           Seven strategies were measured and none of them cleared. That table is
-           published as it came out.</p>
-        <p class="go"><a class="open" href="/work/optionora.html">See the measured record <span class="arw">&rarr;</span></a></p>
+           intervals, and calls a strategy unproven when the interval spans zero. Seven
+           were measured. None cleared. The table is published as it came out.</p>
+        <p class="go">
+          <a class="lead" href="/work/optionora.html">Read the table that failed &rarr;</a>
+        </p>
       </div>
-      <div class="ev">
-        <div><span>Tests</span><b>801</b></div>
-        <div><span>Test files</span><b>82</b></div>
-        <div><span>Strategies</span><b>7</b></div>
-        <div><span>Proven</span><b>0</b></div>
-        <span class="note">Code is private; the demo is real</span>
+      <div class="proof">
+        <p class="fig"><b>801</b><span>tests, 82 files</span><cite>pytest --collect-only<br>2026-09-03</cite></p>
+        <p class="fig"><b>7</b><span>strategies measured</span><cite>bootstrap CIs, net of costs</cite></p>
+        <p class="fig zero"><b>0</b><span>proven</span><cite>every interval spans zero</cite></p>
+        <p class="fig"><b>215</b><span>commits</span><cite>code private, demo real</cite></p>
       </div>
     </article>
 
@@ -218,56 +223,59 @@
 
 <section id="paid">
   <div class="section-head">
-    <h2>At Supreme Lending</h2>
-    <p class="section-note">Production systems inside a regulated mortgage lender</p>
+    <h2>The same rule, inside a regulated lender.</h2>
+    <p class="section-note">Supreme Lending, production systems that touch loan files regulators read.</p>
   </div>
 
   <div class="works">
 
     <article class="item">
-      <div>
-        <h3>GL reconciliation, from tribal knowledge to sixteen rules</h3>
-        <p>A specialist spent two to three hours a day cross-referencing Power BI, the
-           loan origination system and the A&amp;B ledger to classify and route mortgage
-           GL discrepancies. The process existed only in their head, so the first work
-           was structured interviews and sitting through live sessions; the second was
-           writing it down as rules that could be tested.</p>
+      <div class="claim">
+        <p class="said">A process that lived in one person&rsquo;s head now lives in sixteen rules.</p>
+        <h3>GL reconciliation</h3>
+        <p>A specialist spent two to three hours a day cross-referencing Power BI, the loan
+           origination system and the A&amp;B ledger to classify and route mortgage GL
+           discrepancies. Nothing was written down, so the first work was structured
+           interviews and sitting through live sessions. The second was writing it as rules
+           that could be tested.</p>
       </div>
-      <div class="ev">
-        <div><span>Manual time</span><b>2&ndash;3 hrs/day</b></div>
-        <div><span>Open cases</span><b>100+</b></div>
-        <div><span>Rules codified</span><b>16</b></div>
-        <div><span>Systems joined</span><b>3</b></div>
+      <div class="proof">
+        <p class="fig"><b>2&ndash;3 hrs</b><span>daily, before</span><cite>one specialist, measured</cite></p>
+        <p class="fig"><b>100+</b><span>open cases routed</span><cite>by debit/credit class</cite></p>
+        <p class="fig"><b>16</b><span>rules codified</span><cite>from interviews</cite></p>
+        <p class="fig"><b>3</b><span>systems joined</span><cite>Power BI, LOS, A&amp;B</cite></p>
       </div>
     </article>
 
     <article class="item">
-      <div>
+      <div class="claim">
+        <p class="said">Three loan systems, one valid submission.</p>
         <h3>Ginnie Mae pool delivery</h3>
-        <p>ULDD XML exports from three different loan origination systems, merged into
-           valid Ginnie Mae PDD XML for SFPDM submission, with schema errors corrected
+        <p>ULDD XML exports from three different origination systems, merged into valid
+           Ginnie Mae PDD XML for SFPDM submission, with schema errors corrected
            automatically rather than bounced back to a person.</p>
       </div>
-      <div class="ev">
-        <div><span>Live at first deploy</span><b>4 pools</b></div>
-        <div><span>Loans</span><b>47</b></div>
-        <div><span>UPB</span><b>$18.2M</b></div>
-        <div><span>Source systems</span><b>3</b></div>
+      <div class="proof">
+        <p class="fig"><b>$18.2M</b><span>UPB, first deployment</span><cite>4 pools, 47 loans</cite></p>
+        <p class="fig"><b>3</b><span>source systems</span><cite>Encompass, MeridianLink,<br>Blue Sage</cite></p>
+        <p class="fig wide"><b>ULDD &rarr; PDD</b><span>schema-validated, errors corrected in place</span><cite>MISMO schema checked before anything moves downstream</cite></p>
       </div>
     </article>
 
     <article class="item">
-      <div>
+      <div class="claim">
+        <p class="said">The pipeline cannot grant itself permissions.</p>
         <h3>The security stage of a five-stage CI/CD platform</h3>
         <p>CodeQL, secret scanning and dependency review, run in parallel rather than in
            series. A critical-severity CVE fails the build. The pipeline holds no write
-           access to IAM, because a regulated lender cannot have a deployment system
-           that can grant itself permissions.</p>
+           access to IAM, because a regulated lender cannot run a deployment system that
+           can widen its own access.</p>
       </div>
-      <div class="ev">
-        <div><span>PR check time</span><b>18 &rarr; 9 min</b></div>
-        <div><span>Pipeline stages</span><b>5</b></div>
-        <div><span>Onboarding</span><b>3 files</b></div>
+      <div class="proof">
+        <p class="fig"><b>18 &rarr; 9</b><span>minutes, PR checks</span><cite>parallelised the stage</cite></p>
+        <p class="fig"><b>5</b><span>pipeline stages owned</span><cite>security stage</cite></p>
+        <p class="fig"><b>3</b><span>files to onboard a team</span><cite>reusable workflow contract</cite></p>
+        <p class="fig zero"><b>0</b><span>IAM write access</span><cite>humans provision identities</cite></p>
       </div>
     </article>
 
@@ -307,7 +315,7 @@
     </div>
     <div class="prior">
       <dt>Omnicals Pharma</dt>
-      <dd>Built a standardised data-cleansing pipeline across three inconsistent source systems using statistical modelling and feature engineering, improving data quality by 70%.<span class="kind">Data quality</span></dd>
+      <dd>Built a standardised data-cleansing pipeline across three inconsistent source systems using statistical modelling and feature engineering. The 70% data-quality figure is the client's, on their own measure.<span class="kind">Data quality</span></dd>
     </div>
     <div class="prior">
       <dt>Syracuse University</dt>

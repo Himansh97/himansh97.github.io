@@ -1,135 +1,169 @@
-/* One token system, one identity. Six copies of this had drifted:
-   --panel was #F2F1EC here, #F3F2ED on the case pages and #F2F2EF on the
-   containment gate; --red dark was #FF5232 in five files and #FF5B38 in the
-   sixth; --rule was #CFCEC4 and #C9C9CE. Invisible one at a time and fatal
-   together, because it meant there was no source of truth. The index values
-   won, being the ones the home page was designed against. */
+/* ============================================================================
+   Tokens, type scale, and page chrome. The only place any of these are set.
 
+   The design this replaces declared its intentions in comments and did not put
+   them in the values. It claimed hairline rules and set them at 1.22:1, below
+   the threshold at which anyone sees a line. It claimed one accent and used red
+   as the default link colour twelve times on one page. It claimed "type does
+   the work" and shipped 25 distinct font sizes, seven of them stacked inside a
+   3px band, with h2 at 11px against 17px body -- a section heading smaller than
+   the text it introduces, which is why the page could not be scanned.
+
+   Two voices carry the argument here, because the content has two sources.
+   A claim is written by a person and is set in a serif. A figure is emitted by
+   a machine and is set in mono, with the command that produced it underneath.
+   ==========================================================================*/
+
+/* ------------------------------------------------------------------ colour */
 :root{
   color-scheme:light;
-  --paper:#FAFAF8;
-  --panel:#F2F1EC;
+
+  --paper:#FAFAF8;      /* ground */
+  --proof:#F0EFE9;      /* the proof column's field. --panel was #F2F1EC at
+                           1.08:1 on paper -- invisible, and used exactly once,
+                           behind an avatar. This is darker so the split reads
+                           without a border. */
   --ink:#16161A;
-  --ink-soft:#55554F;
-  /* Was #8C8B84, about 2.9:1 on --paper. It set the "open to roles" line and
-     every caption on the site at 11px, so the most important sentence for a
-     recruiter was the least legible thing on the page. #6E6D66 clears 4.5:1. */
-  --ink-faint:#6E6D66;
-  --rule:#CFCEC4;
-  --rule-soft:#E4E3DB;
-  --red:#D92906;
-  --amber:#8A5D00;
+  --ink-soft:#4A4A45;
+  --ink-faint:#6E6D66;  /* 4.97:1 on paper */
+
+  /* Rules you can actually see. --rule was 1.51:1 and --rule-soft 1.22:1, so
+     every structural separator on the site was at or under the perceptual
+     floor. A hairline that nobody perceives is not restraint. */
+  --rule:#B8B7AC;
+  --rule-soft:#D6D5CB;
+
+  --red:#C42706;        /* 5.4:1 on paper. Was #D92906 at 4.71:1, which is a
+                           0.21 margin at 11px with tracking. */
+
+  /* Compatibility. Four case pages still carry their own inline stylesheets
+     from before the split, and they reference tokens this file used to define.
+     Dropping the names silently unstyled a terminal block, three semantic
+     colours and the pipeline canvas on pages I was not otherwise touching, so
+     they are kept and mapped onto the new palette rather than deleted.
+     They go when those four pages move into src/ properly. */
+  --panel:#F0EFE9;
+  --display:"Newsreader",Georgia,"Times New Roman",serif;
   --green:#1B6B4C;
-  --particle-ink:#20202A;
-  --particle-drop:#D92906;
-  --particle-hold:#B07A0A;
+  --amber:#7A5200;
   --green-wash:#E7F2EC;
   --red-wash:#FBEAE6;
   --amber-wash:#F7EFDF;
   --term-bg:#16161A;
   --term-ink:#E9E8E2;
   --term-faint:#8C8B84;
+  --particle-ink:#20202A;
+  --particle-drop:#C42706;
+  --particle-hold:#B07A0A;
 
-  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
-  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-  --gut:clamp(20px,5vw,64px);
-  --rail:clamp(120px,15vw,196px);
+  --serif:"Newsreader",Georgia,"Times New Roman",serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --sans:"Public Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+
+  --gut:clamp(20px,5vw,72px);
+
+  /* One scale, six steps, each a perceptible jump from the last. Nothing is
+     allowed between these. */
+  --t-claim:clamp(34px,4.6vw,60px);
+  --t-head:clamp(23px,2.7vw,32px);
+  --t-body:19px;
+  --t-figure:clamp(21px,2.1vw,27px);
+  --t-label:13px;
+  --t-stamp:11px;       /* the only surviving 11px role: provenance */
 }
 
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
     --paper:#0E0E12;
-    --panel:#16161C;
-    --ink:#E9E8E2;
-    --ink-soft:#A3A29B;
+    --proof:#191920;
+    --ink:#EDECE6;
+    --ink-soft:#ADACA4;
     --ink-faint:#8A8982;
-    --rule:#26262E;
-    --rule-soft:#1C1C23;
-    --red:#FF5232;
-    --amber:#E0A93B;
+    --rule:#3A3A44;
+    --rule-soft:#282830;
+    --red:#FF6A4D;
+    --panel:#191920;
     --green:#4FBE8B;
+    --amber:#E0A93B;
     --green-wash:#12211A;
     --red-wash:#2A1310;
     --amber-wash:#241C0E;
     --term-bg:#08080B;
     --term-ink:#E9E8E2;
     --term-faint:#6B6A65;
+    --particle-drop:#FF6A4D;
   }
 }
-
 :root[data-theme="dark"]{
   color-scheme:dark;
   --paper:#0E0E12;
-  --panel:#16161C;
-  --ink:#E9E8E2;
-  --ink-soft:#A3A29B;
+  --proof:#191920;
+  --ink:#EDECE6;
+  --ink-soft:#ADACA4;
   --ink-faint:#8A8982;
-  --rule:#26262E;
-  --rule-soft:#1C1C23;
-  --red:#FF5232;
-  --amber:#E0A93B;
+  --rule:#3A3A44;
+  --rule-soft:#282830;
+  --red:#FF6A4D;
+  --panel:#191920;
   --green:#4FBE8B;
+  --amber:#E0A93B;
   --green-wash:#12211A;
   --red-wash:#2A1310;
   --amber-wash:#241C0E;
   --term-bg:#08080B;
   --term-ink:#E9E8E2;
   --term-faint:#6B6A65;
+  --particle-drop:#FF6A4D;
 }
 
+/* ------------------------------------------------------------------- reset */
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{
   margin:0;
   background:var(--paper);
   color:var(--ink);
-  font-family:var(--display);
-  font-size:17px;
+  font-family:var(--serif);
+  font-size:var(--t-body);
   line-height:1.55;
   overflow-x:hidden;
-  -webkit-font-smoothing:antialiased;
+  /* No -webkit-font-smoothing:antialiased. It thins stems on macOS, which hurt
+     the small text this design leans on most. */
 }
 a{color:inherit}
 :focus-visible{outline:2px solid var(--red);outline-offset:3px}
 
-.wrap{max-width:1120px;margin:0 auto;padding:0 var(--gut)}
+/* Wider than the old 1120. At 1920 the previous container left 48% of the
+   screen empty while capping prose at 62ch inside it, so the space read as an
+   unfinished container rather than a margin. */
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--gut)}
 
-/* Skip link. There was none, and no landmarks on six of seven pages. */
 .skip{
   position:absolute;left:-9999px;
   background:var(--ink);color:var(--paper);
-  padding:10px 16px;font-family:var(--mono);font-size:12px;z-index:99;
+  padding:10px 16px;font-family:var(--sans);font-size:var(--t-label);z-index:99;
 }
 .skip:focus{left:var(--gut);top:8px}
 
-/* ------------------------------------------------------------------ nav
-   Every page gets one. containment-gate.html and pipeline-hero.html
-   previously contained zero href attributes and were linked as full-page
-   destinations, so a visitor who arrived had only the back button. */
-.sitenav{
-  border-bottom:1px solid var(--rule-soft);
-  font-family:var(--mono);
-  font-size:11px;
-  letter-spacing:.14em;
-  text-transform:uppercase;
-}
+/* --------------------------------------------------------------------- nav */
+.sitenav{border-bottom:1px solid var(--rule);font-family:var(--sans)}
 .sitenav .wrap{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:16px;padding-top:14px;padding-bottom:14px;
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:16px;padding-top:16px;padding-bottom:16px;
 }
-.sitenav a{text-decoration:none;color:var(--ink-soft)}
+.sitenav a{text-decoration:none;color:var(--ink-soft);font-size:var(--t-label)}
 .sitenav a:hover{color:var(--ink)}
-.sitenav .home{color:var(--ink);font-weight:700;letter-spacing:.2em}
-.sitenav ul{display:flex;gap:18px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
+.sitenav .home{color:var(--ink);font-weight:600;letter-spacing:.02em}
+.sitenav ul{display:flex;gap:20px;list-style:none;margin:0;padding:0;flex-wrap:wrap}
 .sitenav [aria-current="page"]{color:var(--red)}
 
-/* ------------------------------------------------------------- masthead */
+/* ---------------------------------------------------------------- masthead */
 header.top{
   position:relative;
   border-bottom:1px solid var(--rule);
-  padding-top:clamp(30px,6vw,64px);
-  padding-bottom:clamp(38px,6vw,72px);
+  padding-top:clamp(40px,7vw,86px);
+  padding-bottom:clamp(40px,7vw,86px);
 }
 #mast{
   position:absolute;inset:0;width:100%;height:100%;
@@ -137,65 +171,70 @@ header.top{
 }
 #mast.on{opacity:1}
 header.top > *:not(#mast){position:relative;z-index:1}
+
 .name{
-  font-family:var(--mono);font-size:11px;letter-spacing:.24em;
-  text-transform:uppercase;color:var(--ink);margin:0;
+  font-family:var(--sans);font-size:var(--t-label);font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--ink);margin:0;
 }
 .role{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;
-  color:var(--ink-faint);margin:6px 0 0;
+  font-family:var(--sans);font-size:var(--t-label);
+  color:var(--ink-faint);margin:5px 0 0;
 }
+
 h1{
-  font-weight:700;
-  font-size:clamp(31px,5.4vw,62px);
-  line-height:1.02;
-  letter-spacing:-.03em;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:var(--t-claim);
+  line-height:1.04;
+  letter-spacing:-.02em;
   text-wrap:balance;
-  margin:clamp(28px,4vw,46px) 0 0;
-  max-width:17ch;
+  margin:clamp(28px,4vw,48px) 0 0;
+  max-width:18ch;
 }
 h1 em{font-style:normal;color:var(--red)}
+
 .standfirst{
-  max-width:60ch;
-  font-size:clamp(17px,1.5vw,20px);
+  max-width:56ch;      /* was 60ch at up to 20px = ~78 characters, over the
+                          comfortable limit, on the first paragraph anyone reads */
+  font-size:var(--t-body);
   line-height:1.6;
   color:var(--ink-soft);
   margin:24px 0 0;
 }
-.links{display:flex;flex-wrap:wrap;gap:10px 14px;margin:28px 0 0}
+
+.links{display:flex;flex-wrap:wrap;gap:12px;margin:32px 0 0}
 .links a{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.11em;
-  text-transform:uppercase;text-decoration:none;color:var(--ink-soft);
-  border:1px solid var(--rule);padding:10px 14px;
+  font-family:var(--sans);font-size:var(--t-label);
+  text-decoration:none;color:var(--ink-soft);
+  border:1px solid var(--rule);padding:11px 16px;
 }
 .links a:hover{border-color:var(--ink);color:var(--ink)}
 .links a.primary{background:var(--ink);color:var(--paper);border-color:var(--ink)}
 
-/* --------------------------------------------------------------- sections */
-section{padding:clamp(38px,6vw,72px) 0;border-bottom:1px solid var(--rule-soft)}
-.section-head{
-  display:flex;flex-wrap:wrap;gap:6px 20px;
-  align-items:baseline;justify-content:space-between;
-  margin-bottom:clamp(26px,4vw,44px);
-}
+/* ---------------------------------------------------------------- sections
+   A section heading is now larger than the body text it introduces, which is
+   the whole of the scanning fix. It was 11px mono against 17px body. */
+section{padding:clamp(52px,7vw,96px) 0;border-top:1px solid var(--rule)}
+.section-head{margin-bottom:clamp(28px,3.5vw,44px);max-width:56ch}
 h2{
-  font-family:var(--mono);font-size:11px;font-weight:400;
-  letter-spacing:.2em;text-transform:uppercase;
-  color:var(--ink);margin:0;
+  font-family:var(--serif);font-weight:400;
+  font-size:var(--t-head);line-height:1.15;letter-spacing:-.015em;
+  color:var(--ink);margin:0;text-wrap:balance;
 }
 .section-note{
-  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;
-  color:var(--ink-faint);margin:0;
+  font-family:var(--sans);font-size:var(--t-label);
+  color:var(--ink-faint);margin:8px 0 0;
 }
 
-/* ----------------------------------------------------------------- footer */
+/* ------------------------------------------------------------------ footer */
 .sitefoot{
-  padding:clamp(36px,5vw,64px) 0;
-  font-family:var(--mono);font-size:11.5px;
+  padding:clamp(44px,6vw,80px) 0;
+  border-top:1px solid var(--rule);
+  font-family:var(--sans);font-size:var(--t-label);
   color:var(--ink-faint);
 }
 .sitefoot a{color:var(--ink-soft)}
-.sitefoot p{margin:0 0 8px;max-width:64ch}
+.sitefoot p{margin:0 0 10px;max-width:60ch}
 
 @media (prefers-reduced-motion:reduce){
   *{transition:none !important;animation:none !important;scroll-behavior:auto !important}

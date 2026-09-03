@@ -168,9 +168,13 @@ SHELL = """<!doctype html>
 <meta name="twitter:description" content="{description}">
 <meta name="twitter:image" content="{site}/assets/og/{og}">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600&amp;family=IBM+Plex+Mono:wght@400;600&amp;family=Public+Sans:wght@400;600&amp;display=swap">
 <link rel="stylesheet" href="/assets/site.css">
 {extra_head}</head>
 <body{body_class}>
+<script>document.documentElement.className+=" js";</script>
 <a class="skip" href="#main">Skip to content</a>
 <nav class="sitenav" aria-label="Primary">
   <div class="wrap">
@@ -280,8 +284,13 @@ def check(path: Path, text: str) -> list[str]:
         problems.append("no nav")
     if 'href="/"' not in text:
         problems.append("no way home")
-    for ch, name in (("—", "em dash"), ("–", "en dash")):
-        pass  # prose keeps its punctuation here; this is a site, not a resume
+    # Every <p class="fig"> must carry a <cite> naming what produced its number.
+    # A figure with no provenance is exactly the claim this site says it will
+    # not make, so it fails the build rather than shipping.
+    figs = re.findall(r'<p class="fig[^"]*">(.*?)</p>', text, re.S)
+    unsourced = [f for f in figs if "<cite>" not in f]
+    if unsourced:
+        problems.append(f"{len(unsourced)} figure(s) with no provenance stamp")
     return problems
 
 
