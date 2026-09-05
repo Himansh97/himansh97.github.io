@@ -1,18 +1,815 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Moved - Himanshu Srivastava</title>
-<link rel="canonical" href="https://himansh97.github.io/work/custody.html#demo">
-<meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="0; url=/work/custody.html#demo">
-<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="/assets/site.css">
-</head>
-<body>
-<div class="wrap" style="padding-top:18vh">
-<p>This page moved. <a href="/work/custody.html#demo">Continue</a>.</p>
+<title>Custody</title>
+<style>
+/* ---------------------------------------------------------------- tokens
+   Light is the base. Dark redefines only values, twice: once for the
+   unstamped (system) state, once for an explicit data-theme. No colour is
+   ever declared outside :root. */
+:root{
+  color-scheme:light;
+  --paper:#FAFAF8;
+  --panel:#F3F2ED;
+  --ink:#16161A;
+  --ink-soft:#55554F;
+  --ink-faint:#8C8B84;
+  --rule:#CFCEC4;
+  --rule-soft:#E4E3DB;
+  --red:#D92906;
+  --amber:#8A5D00;
+  --green:#1B6B4C;
+  --green-wash:#E8F1EC;
+  --red-wash:#FBEAE6;
+  --amber-wash:#F7F0DE;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#0E0E12;
+    --panel:#16161C;
+    --ink:#E9E8E2;
+    --ink-soft:#A3A29B;
+    --ink-faint:#6B6A65;
+    --rule:#26262E;
+    --rule-soft:#1C1C23;
+    --red:#FF5232;
+    --amber:#E0A93B;
+    --green:#4FBE8B;
+    --green-wash:#12241C;
+    --red-wash:#2A1512;
+    --amber-wash:#251E10;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0E0E12;
+  --panel:#16161C;
+  --ink:#E9E8E2;
+  --ink-soft:#A3A29B;
+  --ink-faint:#6B6A65;
+  --rule:#26262E;
+  --rule-soft:#1C1C23;
+  --red:#FF5232;
+  --amber:#E0A93B;
+  --green:#4FBE8B;
+  --green-wash:#12241C;
+  --red-wash:#2A1512;
+  --amber-wash:#251E10;
+}
+:root{
+  --display:"Helvetica Neue",Helvetica,Arial,sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --gut:clamp(18px,4vw,56px);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body.embed{padding-top:0}
+body.embed .top,
+body.embed footer{display:none}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--display);font-size:16px;line-height:1.55;
+  overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 var(--gut)}
+
+/* ------------------------------------------------------------- masthead */
+header.top{padding:clamp(28px,5vw,58px) 0 clamp(24px,4vw,40px);border-bottom:1px solid var(--rule)}
+.eyebrow{
+  font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0;
+}
+h1{
+  font-weight:700;font-size:clamp(30px,5vw,54px);line-height:1.04;letter-spacing:-.03em;
+  margin:14px 0 0;max-width:20ch;text-wrap:balance;
+}
+.lede{max-width:64ch;font-size:clamp(16px,1.4vw,19px);color:var(--ink-soft);margin:20px 0 0}
+.mandate{
+  margin:26px 0 0;padding:16px 20px;border-left:2px solid var(--red);
+  background:var(--panel);max-width:72ch;
+}
+.mandate p{margin:0;font-size:14px;line-height:1.6}
+.mandate code{font-family:var(--mono);font-size:13px}
+.mandate .cite{
+  display:block;margin-top:10px;font-family:var(--mono);font-size:10px;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);
+}
+
+/* ------------------------------------------------------------ verify bar */
+.verify{
+  display:flex;flex-wrap:wrap;gap:14px 20px;align-items:center;justify-content:space-between;
+  padding:18px 20px;margin:clamp(26px,4vw,40px) 0 0;
+  border:1px solid var(--rule);border-radius:3px;background:var(--panel);
+}
+.status{display:flex;align-items:center;gap:12px;min-width:0}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--ink-faint);flex:none}
+.status.ok .dot{background:var(--green)}
+.status.bad .dot{background:var(--red)}
+.status-text{font-family:var(--mono);font-size:12.5px;line-height:1.45}
+.status.ok .status-text strong{color:var(--green)}
+.status.bad .status-text strong{color:var(--red)}
+.status-text span{display:block;color:var(--ink-faint);font-size:11px;margin-top:3px}
+.controls{display:flex;flex-wrap:wrap;gap:8px}
+button{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-soft);background:transparent;border:1px solid var(--rule);
+  border-radius:2px;padding:9px 14px;cursor:pointer;
+}
+button:hover:not(:disabled){color:var(--ink);border-color:var(--ink-faint)}
+button:disabled{opacity:.4;cursor:default}
+button.danger{color:var(--red);border-color:var(--red)}
+button.primary{color:var(--ink);border-color:var(--ink-faint)}
+
+/* ---------------------------------------------------------------- chain */
+section{padding:clamp(34px,5vw,56px) 0;border-bottom:1px solid var(--rule)}
+h2{
+  font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink-faint);margin:0 0 6px;
+}
+.sub{margin:0 0 24px;color:var(--ink-soft);max-width:66ch;font-size:15px}
+
+.chain{display:grid;gap:1px;background:var(--rule-soft);border:1px solid var(--rule)}
+.rec{
+  display:grid;
+  grid-template-columns:34px 1fr 108px 150px;
+  gap:14px;align-items:center;
+  background:var(--paper);padding:13px 16px;
+  cursor:pointer;text-align:left;width:100%;
+  border:0;border-radius:0;font-family:var(--display);
+  letter-spacing:normal;text-transform:none;font-size:15px;color:var(--ink);
+}
+.rec:hover{background:var(--panel)}
+.rec[aria-selected="true"]{background:var(--panel);box-shadow:inset 2px 0 0 var(--ink)}
+.rec.broken{background:var(--red-wash)}
+.rec .n{font-family:var(--mono);font-size:12px;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.rec .what{min-width:0}
+.rec .what b{display:block;font-weight:600;font-size:15px;letter-spacing:-.005em}
+.rec .what span{
+  display:block;font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+  margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+/* ---- loan selector: only rendered when a ledger holds more than one ---- */
+.loans{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;margin:0 0 16px}
+.loans-label{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);
+}
+.loan-pills{display:flex;flex-wrap:wrap;gap:6px}
+.loan-pill{
+  font-family:var(--mono);font-size:12px;padding:5px 11px;border-radius:2px;
+  border:1px solid var(--rule);background:var(--paper);color:var(--ink-soft);
+  cursor:pointer;
+}
+.loan-pill[aria-selected="true"]{
+  background:var(--ink);color:var(--paper);border-color:var(--ink);
+}
+.loan-pill:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+
+/* ---- disclosure ---- */
+.disclose{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:3px;margin:22px 0 34px}
+.disclose-col{background:var(--paper);padding:18px 20px 20px}
+@media (max-width:680px){.disclose{grid-template-columns:1fr}}
+.dh{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;
+  color:var(--ink-faint);margin:0 0 12px;font-weight:500;
+}
+.dh-wide{margin-top:8px}
+.drow{display:flex;flex-wrap:wrap;gap:2px 10px;padding:7px 0;border-top:1px solid var(--rule-soft)}
+.drow:first-of-type{border-top:0;padding-top:0}
+.drow b{font-size:13.5px;font-weight:600}
+.drow span{font-family:var(--mono);font-size:11.5px;color:var(--ink-faint);
+  width:100%;word-break:break-all}
+.drow em{font-style:normal;font-family:var(--mono);font-size:11.5px;color:var(--ink-soft)}
+
+.table-wrap{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;margin:0 0 18px}
+table.usage{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+table.usage th,table.usage td{
+  text-align:left;padding:10px 14px;border-bottom:1px solid var(--rule-soft);
+  white-space:nowrap;
+}
+table.usage th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-faint);background:var(--panel);font-weight:500;
+}
+table.usage td.p{white-space:normal;font-weight:600}
+table.usage td.n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+table.usage tr:last-child td{border-bottom:0}
+table.usage .z{color:var(--ink-faint)}
+table.usage .g{color:var(--green)}
+table.usage .a{color:var(--amber)}
+table.usage .r{color:var(--red)}
+
+.badge{
+  font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  padding:4px 8px;border-radius:2px;text-align:center;white-space:nowrap;
+}
+.b-pass{background:var(--green-wash);color:var(--green)}
+.b-reject{background:var(--red-wash);color:var(--red)}
+.b-review{background:var(--amber-wash);color:var(--amber)}
+.b-human{background:var(--panel);color:var(--ink-soft);border:1px solid var(--rule)}
+/* A refusal is not a failed output. It is the one badge on this page for a
+   record where no model was called at all, so it does not borrow the gate's
+   colours. */
+.b-denied{background:var(--ink-soft);color:var(--paper)}
+.rec .hash{
+  font-family:var(--mono);font-size:11px;color:var(--ink-faint);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+@media (max-width:720px){
+  .rec{grid-template-columns:26px 1fr auto;gap:10px}
+  .rec .hash{display:none}
+}
+
+/* --------------------------------------------------------------- detail */
+.detail{margin-top:22px;border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.detail-head{
+  padding:14px 18px;background:var(--panel);border-bottom:1px solid var(--rule);
+  display:flex;flex-wrap:wrap;gap:8px 16px;align-items:baseline;justify-content:space-between;
+}
+.detail-head b{font-size:15px}
+.detail-head code{font-family:var(--mono);font-size:11px;color:var(--ink-faint)}
+.fields{display:grid;grid-template-columns:190px 1fr;gap:1px;background:var(--rule-soft)}
+.fields dt,.fields dd{background:var(--paper);margin:0;padding:11px 18px;font-size:14px}
+.fields dt{
+  font-family:var(--mono);font-size:11px;letter-spacing:.06em;color:var(--ink-faint);
+}
+.fields dd{font-family:var(--mono);font-size:12.5px;word-break:break-word}
+.fields dt.req::after{content:" *";color:var(--red)}
+.fields dd.null{color:var(--ink-faint);font-style:italic}
+@media (max-width:640px){
+  .fields{grid-template-columns:1fr}
+  .fields dt{padding-bottom:0;background:var(--paper)}
+}
+.findings{padding:14px 18px;border-top:1px solid var(--rule);background:var(--red-wash)}
+.findings.review{background:var(--amber-wash)}
+.findings.denied{background:var(--panel)}
+.findings p{margin:0;font-size:13.5px;line-height:1.55}
+.findings p+p{margin-top:8px}
+.findings code{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+
+/* --------------------------------------------------------------- packet */
+.grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1px;
+  background:var(--rule-soft);border:1px solid var(--rule);
+}
+.cell{background:var(--paper);padding:18px}
+.cell .k{
+  display:block;font-family:var(--mono);font-size:clamp(20px,2.4vw,28px);
+  letter-spacing:-.02em;font-variant-numeric:tabular-nums;
+}
+.cell .v{display:block;margin-top:6px;font-size:13px;color:var(--ink-soft);line-height:1.4}
+.cell.ok .k{color:var(--green)}
+.cell.warn .k{color:var(--amber)}
+
+.note{margin:24px 0 0;max-width:66ch;color:var(--ink-soft);font-size:15px}
+.note strong{color:var(--ink)}
+
+footer{padding:clamp(30px,5vw,52px) 0 clamp(46px,8vw,80px);max-width:70ch}
+footer h3{
+  font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink-faint);margin:0 0 12px;
+}
+footer p{margin:0 0 14px;font-size:14.5px;color:var(--ink-soft);line-height:1.6}
+footer a{color:inherit}
+.foot-meta{
+  margin-top:26px;padding-top:18px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11px;letter-spacing:.05em;color:var(--ink-faint);
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+<!-- Embedded with ?embed=1, this page drops its own masthead and footer and
+     reports its height to the host, so a case-study page can show the real
+     artifact in an iframe instead of keeping a second copy of it. A forked
+     copy is how the published demo and the shipped library drift apart, which
+     is the one divergence this project cannot afford. -->
+
+<header class="top">
+  <p class="eyebrow">Custody</p>
+  <h1>Prove what your AI did to a loan.</h1>
+  <p class="lede">
+    Every AI decision on a loan file is recorded, gated, and chained &mdash; so when a
+    GSE, an examiner or an investor asks what your AI did and what stopped it going
+    wrong, the answer is an artifact they can verify themselves rather than an
+    assurance they have to accept.
+  </p>
+  <div class="mandate">
+    <p>
+      <strong>Fannie Mae Lender Letter LL-2026-04</strong> took effect on 6 August 2026.
+      Seller/servicers using AI or ML in origination or servicing must govern its
+      development and use, extend no-less-protective governance to their vendors, and
+      <strong>on Fannie Mae&rsquo;s request promptly disclose the types of AI/ML in use, the
+      purpose and manner of that use, and the safeguards implemented</strong> to mitigate
+      the risks.
+    </p>
+    <p style="margin-top:10px">
+      There are two ways to answer that request: a document describing what you intend to
+      happen, or a record of what did happen that the person asking can verify for
+      themselves. This is the second.
+    </p>
+    <span class="cite">
+      The letter specifies no record schema and does not require signed or append-only
+      logs &mdash; that design is ours, not Fannie Mae&rsquo;s. Read the letter:
+      singlefamily.fanniemae.com &rarr; Lender Letter LL-2026-04
+    </span>
+  </div>
+</header>
+
+<section>
+  <h2>The chain</h2>
+  <p class="sub">
+    One synthetic loan file through five AI steps. Everything here &mdash; borrower,
+    employer, documents, loan number &mdash; is fabricated. The hashes are not: your
+    browser recomputes every one of them from the record contents when you press
+    verify.
+  </p>
+
+  <div class="verify">
+    <div class="status" id="status">
+      <span class="dot"></span>
+      <span class="status-text"><strong id="statusMain">Not yet verified</strong>
+        <span id="statusSub">Press verify to recompute the chain in your browser</span></span>
+    </div>
+    <div class="controls">
+      <button class="primary" id="btnVerify">Verify chain</button>
+      <button class="danger" id="btnTamper">Tamper with record 1</button>
+      <button id="btnRestore" disabled>Restore</button>
+    </div>
+  </div>
+
+  <div class="loans" id="loans" hidden>
+    <span class="loans-label">Loan</span>
+    <div class="loan-pills" id="loanPills" role="tablist" aria-label="Loans in this ledger"></div>
+  </div>
+
+  <div class="chain" id="chain" role="listbox" aria-label="Ledger records"></div>
+
+  <div class="detail" id="detail" hidden>
+    <div class="detail-head">
+      <b id="dTitle"></b>
+      <code id="dId"></code>
+    </div>
+    <dl class="fields" id="dFields"></dl>
+    <div class="findings" id="dFindings" hidden></div>
+  </div>
+
+  <p class="note" id="tamperNote" hidden></p>
+</section>
+
+<section>
+  <h2>What Fannie Mae is told</h2>
+  <p class="sub">
+    The disclosure clause is not about one loan. It asks what types of AI/ML are in
+    use, for what purpose and in what manner, and what safeguards are implemented
+    &mdash; of the whole business, on request. This is assembled from the records
+    above rather than from a register somebody maintains.
+  </p>
+
+  <div class="disclose">
+    <div class="disclose-col">
+      <h3 class="dh">Types of AI/ML in use</h3>
+      <div id="dModels"></div>
+    </div>
+    <div class="disclose-col">
+      <h3 class="dh">Safeguards implemented</h3>
+      <div id="dSafeguards"></div>
+    </div>
+  </div>
+
+  <h3 class="dh dh-wide">Purpose and manner of use</h3>
+  <div class="table-wrap">
+    <table class="usage" id="dPurposes"></table>
+  </div>
+
+  <p class="note" id="discloseLimits"></p>
+</section>
+
+<section>
+  <h2>What an examiner receives</h2>
+  <p class="sub">
+    The packet for one loan: every decision, in order, including the ones that were
+    rejected. It carries the public key and the records, so the recipient verifies it
+    without access to any of the lender&rsquo;s systems &mdash; which is what turns a
+    disclosure into evidence.
+  </p>
+  <div class="grid" id="packet"></div>
+  <p class="note" id="packetNote"></p>
+</section>
+
+<footer>
+  <h3>What this is, and what it is not</h3>
+  <p>
+    <strong>It is</strong> a Python library and an append-only, hash-chained,
+    Ed25519-signed ledger of AI decisions, plus a deterministic gate &mdash; a live
+    safeguard, and the evidence that one ran &mdash; deciding the
+    <code>response_treatment</code> on each output:
+    figures must appear in a source document, fields must cite one, classifications must
+    land in a closed set, and anything under the confidence floor goes to a person.
+  </p>
+  <p>
+    <strong>It is not</strong> legal advice, does not certify compliance, and is not a
+    statement of what Fannie Mae requires &mdash; the letter mandates governance and
+    disclosure, not this schema. It does no bias or fair-lending testing, writes to no
+    loan origination system, and cannot inventory models it never sees. There is no
+    model anywhere in the verification path: a model judging another model is not
+    evidence.
+  </p>
+  <p class="foot-meta" id="footMeta"></p>
+</footer>
+
 </div>
-<script>location.replace("/work/custody.html#demo");</script>
-</body>
-</html>
+
+<script id="ledger-data" type="application/json">{"generated_at":"2026-09-05T00:07:26+00:00","policy_version":"NORTHGATE-UW-001@3.2","public_key":"6e3021a12cb64d260e4fdd5bd724277dbcea5d2fa653efe87ab75f45db397317","sig_alg":"ed25519","chain":{"verified":true,"records":7},"records":[{"completed_at":"2026-09-05T00:07:26.181+00:00","data_classes":[],"decision_outcome":{"doc_type":"paystub"},"disposition":"committed","endpoint":"anthropic:messages:claude-haiku-4-5","event":"ai_decision","findings":[],"hash":"7df6417f89a8da97c2503ba6a40dd053ccc1f6cd09be2b66e7c68d73f41a2e76","loan":"1000254","model":"claude-haiku-4-5","note":null,"policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"0000000000000000000000000000000000000000000000000000000000000000","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Classify each document in this bundle.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Emp...","purpose":"document_classification","record_id":"dec_bf46974253ff4254","response_treatment":"pass","sig_alg":"ed25519","signature":"0db249821643f6ff022ad4a3dea64090da339f0eb1e81eea47f427bee54eb613b944c166ebfb54e7605d57171b680985da9115f92c1bd600ed26966cc0bd3b0e","sources_seen":3,"timestamp":"2026-09-05T00:07:26.176+00:00"},{"completed_at":"2026-09-05T00:07:26.181+00:00","data_classes":["income","employment","paystub","w2"],"decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"figure_binding","detail":"'6842' appears in no source document supplied to the model","treatment":"reject"}],"hash":"ce84fed0c15e1f472b840eef6a919f1e56a0efb9c7e2197a381298ed397b30bf","loan":"1000254","model":"claude-sonnet-5","note":"figure binding rejected the extracted income","policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"7df6417f89a8da97c2503ba6a40dd053ccc1f6cd09be2b66e7c68d73f41a2e76","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Borrower [BORROWER], loan 1000254. Compute qualifying monthly income from the attached paystub and W-2.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Employee ID: E-40881\nPay period: [DOB] - [DOB]      Pay date: [DOB]\n------------------------------------------------------------------\n                       CURRENT        YEAR TO DATE\nRegular              3,846.15            50,000.00\nOvertime               359.85             4,672.00\nGross pay            4,206.00            54,672.00\n------------------------------------------------------------------\nFederal income tax     694.00             9,022.00\nSocial Security        260.77             3,389.66\nMedicare                60.99               792.74\n------------------------------------------------------------------\nNet pay              3,190.24            41,467.60\n\n\nFORM W-2 WAGE AND TAX STATEMENT \u2014 TAX YEAR 2025\nEmployer: ACME LOGISTICS LLC        EIN: 75-3310042\n------------------------------------------------------------------\nBox  1  Wages, tips, other compensation          98,410.00\nBox  2  Federal income tax withheld              16,229.00\nBox  3  Social Security wages                    98,410.00\nBox  5  Medicare wages and tips                  98,410.00\nBox 12  D  401(k) elective deferrals              7,200.00\n","purpose":"income_calculation","record_id":"dec_15db0380db554da7","response_treatment":"reject","sig_alg":"ed25519","signature":"434658bbcade8eeee27452d092bc615f78ea070a90d70f7965411709323d739fb5c29d46e48150531401eb3bc9a9d1108d8b7a011e8e1770869e8dfa69686209","sources_seen":2,"timestamp":"2026-09-05T00:07:26.181+00:00"},{"action":"corrected","data_classes":[],"decision_outcome":{"basis":"W-2 box 1 98,410.00 / 12","monthly_income":8200.83},"disposition":"human_corrected","endpoint":null,"event":"human_review","findings":[],"hash":"eefd1e3dd12d8c69d6e608821acc6330ddd5b75cd74f98d6cd330f6a519e54c2","loan":"1000254","model":null,"note":"Model figure appears in no document. Recomputed from the W-2 and verified against the paystub YTD.","policy_decision":"not_applicable","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"ce84fed0c15e1f472b840eef6a919f1e56a0efb9c7e2197a381298ed397b30bf","principal":"sam.okafor@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_e85c06fc1b124cdc","response_treatment":"human_decision","reviews":"dec_15db0380db554da7","sig_alg":"ed25519","signature":"9be7c241ab5a524b1111b0c090a42edcb228c88acdf98600da6da7f964ac4dfe2159104ab241e1ff8f82ca8f72a3cf99d04d6a0ee551d0e5080f99fb03956e05","timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.182+00:00","data_classes":[],"decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"confidence_floor","detail":"confidence 0.62 is below the 0.80 floor for this policy","treatment":"review"}],"hash":"a0c832aeb7924025fd5b597ff06272aa22783e50194005046b4d5447b6e21f83","loan":"1000254","model":"claude-sonnet-5","note":"confidence below the policy floor","policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"eefd1e3dd12d8c69d6e608821acc6330ddd5b75cd74f98d6cd330f6a519e54c2","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Does the bank statement evidence the payroll deposits?\n\nNORTHWIND CREDIT UNION \u2014 STATEMENT OF ACCOUNT\nStatement period: [DOB] - [DOB]\nAccount ending: 4471\n------------------------------------------------------------------\nBeginning balance                                18,204.11\nTotal deposits                                    6,380.48\nTotal withdrawals                                 4,912.30\nEnding balance                                   19,672.29\n------------------------------------------------------------------\n06/15  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n06/30  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n","purpose":"condition_clearing","record_id":"dec_db60bbcd911a45c2","response_treatment":"review","sig_alg":"ed25519","signature":"1538ef5e2a41ceacbcff2e4d4af6c446742006c4c9bf5cacfed2424a474b5876a880c17e791f9f5b2f70477f935c4c9abb503b4082c91049dd9846d5ec3c240a","sources_seen":2,"timestamp":"2026-09-05T00:07:26.182+00:00"},{"action":"approved","data_classes":[],"decision_outcome":{"condition_status":"satisfied"},"disposition":"human_approved","endpoint":null,"event":"human_review","findings":[],"hash":"23ab6b86f5fb219f5bb4b8414dbc1718c3b6cebcefba1a3eeb2c703a8e366d1c","loan":"1000254","model":null,"note":"Two payroll deposits of 3,190.24 visible on the June statement.","policy_decision":"not_applicable","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"a0c832aeb7924025fd5b597ff06272aa22783e50194005046b4d5447b6e21f83","principal":"jane.mireles@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_9c27ce12c75d4032","response_treatment":"human_decision","reviews":"dec_db60bbcd911a45c2","sig_alg":"ed25519","signature":"1d27b55e82db2689c8e3a0a173a59fe1a3081117694fd6eabc3171beab7aec1dddfc4df5a644ecb8bb8ef88ac9b79106b5b80066b77f297daa713d5e0c587e07","timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.182+00:00","data_classes":[],"decision_outcome":{"annual_income":98410.0,"qualifying_monthly_income":8200.83},"disposition":"committed","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[],"hash":"4ec4e7d4b5679f4427b42722f63c6a7e670e68bbc9c01a02497116009e606880","loan":"1000254","model":"claude-sonnet-5","note":null,"policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"23ab6b86f5fb219f5bb4b8414dbc1718c3b6cebcefba1a3eeb2c703a8e366d1c","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Assemble the verified income figures for the LOS write.","purpose":"los_write","record_id":"dec_93dc7de0e10443d9","response_treatment":"pass","sig_alg":"ed25519","signature":"49bb53b2a11122b10a6ec3c45f5ca85ce2ceec187444ddcca45ad025ac93241a96e6a287f998083623852e6c83bded1bfa839aaf43839bc66baec2cf4f3c080f","sources_seen":3,"timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.183+00:00","data_classes":[],"decision_outcome":null,"disposition":"denied_by_policy","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_denied","findings":[],"hash":"bfa84a27620a7f0bc9e50fb840895d04eb983c3c9c11fa9a0b7d246b99cbef5c","loan":"1000254","model":"claude-sonnet-5","note":"use case 'adverse_action_reasoning' is present in NORTHGATE-UW-001@3.2 but not approved","policy_decision":"deny","policy_id":"NORTHGATE-UW-001","policy_reason":"use case 'adverse_action_reasoning' is present in NORTHGATE-UW-001@3.2 but not approved","policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"4ec4e7d4b5679f4427b42722f63c6a7e670e68bbc9c01a02497116009e606880","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Draft the adverse action reason for loan 1000254.","purpose":"adverse_action_reasoning","record_id":"dec_8e9f79daec3a49d9","response_treatment":"denied","sig_alg":"ed25519","signature":"4178d6a0b43dbf2bf11f4cc88ec7b2e49101757b677d507d18d6414b2496302987f116f136baf7ceda7d587c61ee998d7064d815c4ed30763918478de3db970d","sources_seen":1,"timestamp":"2026-09-05T00:07:26.182+00:00"}],"packets":{"1000254":{"loan":"1000254","generated_at":"2026-09-05T00:07:26+00:00","requested_by":"examiner","policy_version":"NORTHGATE-UW-001@3.2","summary":{"ai_decisions":4,"human_reviews":2,"committed":2,"overrides":0,"rejected":1,"routed_to_human":2,"models_used":["claude-haiku-4-5","claude-sonnet-5"],"denied_by_policy":1},"chain":{"verified":true,"records":7},"policy_review":{"policy":"NORTHGATE-UW-001@3.2","owner":"compliance@northgate-lending.example","reviewed":true,"last_reviewed":"2026-06-15","due":"2027-06-15","overdue":false,"overdue_days":0,"detail":"next review due 2027-06-15"},"mandate_coverage":{"complete":true,"missing":{}},"records":[{"completed_at":"2026-09-05T00:07:26.181+00:00","data_classes":[],"decision_outcome":{"doc_type":"paystub"},"disposition":"committed","endpoint":"anthropic:messages:claude-haiku-4-5","event":"ai_decision","findings":[],"hash":"7df6417f89a8da97c2503ba6a40dd053ccc1f6cd09be2b66e7c68d73f41a2e76","loan":"1000254","model":"claude-haiku-4-5","note":null,"policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"0000000000000000000000000000000000000000000000000000000000000000","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Classify each document in this bundle.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Emp...","purpose":"document_classification","record_id":"dec_bf46974253ff4254","response_treatment":"pass","sig_alg":"ed25519","signature":"0db249821643f6ff022ad4a3dea64090da339f0eb1e81eea47f427bee54eb613b944c166ebfb54e7605d57171b680985da9115f92c1bd600ed26966cc0bd3b0e","sources_seen":3,"timestamp":"2026-09-05T00:07:26.176+00:00"},{"completed_at":"2026-09-05T00:07:26.181+00:00","data_classes":["income","employment","paystub","w2"],"decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"figure_binding","detail":"'6842' appears in no source document supplied to the model","treatment":"reject"}],"hash":"ce84fed0c15e1f472b840eef6a919f1e56a0efb9c7e2197a381298ed397b30bf","loan":"1000254","model":"claude-sonnet-5","note":"figure binding rejected the extracted income","policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"7df6417f89a8da97c2503ba6a40dd053ccc1f6cd09be2b66e7c68d73f41a2e76","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Borrower [BORROWER], loan 1000254. Compute qualifying monthly income from the attached paystub and W-2.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Employee ID: E-40881\nPay period: [DOB] - [DOB]      Pay date: [DOB]\n------------------------------------------------------------------\n                       CURRENT        YEAR TO DATE\nRegular              3,846.15            50,000.00\nOvertime               359.85             4,672.00\nGross pay            4,206.00            54,672.00\n------------------------------------------------------------------\nFederal income tax     694.00             9,022.00\nSocial Security        260.77             3,389.66\nMedicare                60.99               792.74\n------------------------------------------------------------------\nNet pay              3,190.24            41,467.60\n\n\nFORM W-2 WAGE AND TAX STATEMENT \u2014 TAX YEAR 2025\nEmployer: ACME LOGISTICS LLC        EIN: 75-3310042\n------------------------------------------------------------------\nBox  1  Wages, tips, other compensation          98,410.00\nBox  2  Federal income tax withheld              16,229.00\nBox  3  Social Security wages                    98,410.00\nBox  5  Medicare wages and tips                  98,410.00\nBox 12  D  401(k) elective deferrals              7,200.00\n","purpose":"income_calculation","record_id":"dec_15db0380db554da7","response_treatment":"reject","sig_alg":"ed25519","signature":"434658bbcade8eeee27452d092bc615f78ea070a90d70f7965411709323d739fb5c29d46e48150531401eb3bc9a9d1108d8b7a011e8e1770869e8dfa69686209","sources_seen":2,"timestamp":"2026-09-05T00:07:26.181+00:00"},{"action":"corrected","data_classes":[],"decision_outcome":{"basis":"W-2 box 1 98,410.00 / 12","monthly_income":8200.83},"disposition":"human_corrected","endpoint":null,"event":"human_review","findings":[],"hash":"eefd1e3dd12d8c69d6e608821acc6330ddd5b75cd74f98d6cd330f6a519e54c2","loan":"1000254","model":null,"note":"Model figure appears in no document. Recomputed from the W-2 and verified against the paystub YTD.","policy_decision":"not_applicable","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"ce84fed0c15e1f472b840eef6a919f1e56a0efb9c7e2197a381298ed397b30bf","principal":"sam.okafor@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_e85c06fc1b124cdc","response_treatment":"human_decision","reviews":"dec_15db0380db554da7","sig_alg":"ed25519","signature":"9be7c241ab5a524b1111b0c090a42edcb228c88acdf98600da6da7f964ac4dfe2159104ab241e1ff8f82ca8f72a3cf99d04d6a0ee551d0e5080f99fb03956e05","timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.182+00:00","data_classes":[],"decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"confidence_floor","detail":"confidence 0.62 is below the 0.80 floor for this policy","treatment":"review"}],"hash":"a0c832aeb7924025fd5b597ff06272aa22783e50194005046b4d5447b6e21f83","loan":"1000254","model":"claude-sonnet-5","note":"confidence below the policy floor","policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"eefd1e3dd12d8c69d6e608821acc6330ddd5b75cd74f98d6cd330f6a519e54c2","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Does the bank statement evidence the payroll deposits?\n\nNORTHWIND CREDIT UNION \u2014 STATEMENT OF ACCOUNT\nStatement period: [DOB] - [DOB]\nAccount ending: 4471\n------------------------------------------------------------------\nBeginning balance                                18,204.11\nTotal deposits                                    6,380.48\nTotal withdrawals                                 4,912.30\nEnding balance                                   19,672.29\n------------------------------------------------------------------\n06/15  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n06/30  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n","purpose":"condition_clearing","record_id":"dec_db60bbcd911a45c2","response_treatment":"review","sig_alg":"ed25519","signature":"1538ef5e2a41ceacbcff2e4d4af6c446742006c4c9bf5cacfed2424a474b5876a880c17e791f9f5b2f70477f935c4c9abb503b4082c91049dd9846d5ec3c240a","sources_seen":2,"timestamp":"2026-09-05T00:07:26.182+00:00"},{"action":"approved","data_classes":[],"decision_outcome":{"condition_status":"satisfied"},"disposition":"human_approved","endpoint":null,"event":"human_review","findings":[],"hash":"23ab6b86f5fb219f5bb4b8414dbc1718c3b6cebcefba1a3eeb2c703a8e366d1c","loan":"1000254","model":null,"note":"Two payroll deposits of 3,190.24 visible on the June statement.","policy_decision":"not_applicable","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"a0c832aeb7924025fd5b597ff06272aa22783e50194005046b4d5447b6e21f83","principal":"jane.mireles@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_9c27ce12c75d4032","response_treatment":"human_decision","reviews":"dec_db60bbcd911a45c2","sig_alg":"ed25519","signature":"1d27b55e82db2689c8e3a0a173a59fe1a3081117694fd6eabc3171beab7aec1dddfc4df5a644ecb8bb8ef88ac9b79106b5b80066b77f297daa713d5e0c587e07","timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.182+00:00","data_classes":[],"decision_outcome":{"annual_income":98410.0,"qualifying_monthly_income":8200.83},"disposition":"committed","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[],"hash":"4ec4e7d4b5679f4427b42722f63c6a7e670e68bbc9c01a02497116009e606880","loan":"1000254","model":"claude-sonnet-5","note":null,"policy_decision":"allow","policy_id":"NORTHGATE-UW-001","policy_reason":null,"policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"23ab6b86f5fb219f5bb4b8414dbc1718c3b6cebcefba1a3eeb2c703a8e366d1c","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Assemble the verified income figures for the LOS write.","purpose":"los_write","record_id":"dec_93dc7de0e10443d9","response_treatment":"pass","sig_alg":"ed25519","signature":"49bb53b2a11122b10a6ec3c45f5ca85ce2ceec187444ddcca45ad025ac93241a96e6a287f998083623852e6c83bded1bfa839aaf43839bc66baec2cf4f3c080f","sources_seen":3,"timestamp":"2026-09-05T00:07:26.182+00:00"},{"completed_at":"2026-09-05T00:07:26.183+00:00","data_classes":[],"decision_outcome":null,"disposition":"denied_by_policy","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_denied","findings":[],"hash":"bfa84a27620a7f0bc9e50fb840895d04eb983c3c9c11fa9a0b7d246b99cbef5c","loan":"1000254","model":"claude-sonnet-5","note":"use case 'adverse_action_reasoning' is present in NORTHGATE-UW-001@3.2 but not approved","policy_decision":"deny","policy_id":"NORTHGATE-UW-001","policy_reason":"use case 'adverse_action_reasoning' is present in NORTHGATE-UW-001@3.2 but not approved","policy_version":"NORTHGATE-UW-001@3.2","prev_hash":"4ec4e7d4b5679f4427b42722f63c6a7e670e68bbc9c01a02497116009e606880","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Draft the adverse action reason for loan 1000254.","purpose":"adverse_action_reasoning","record_id":"dec_8e9f79daec3a49d9","response_treatment":"denied","sig_alg":"ed25519","signature":"4178d6a0b43dbf2bf11f4cc88ec7b2e49101757b677d507d18d6414b2496302987f116f136baf7ceda7d587c61ee998d7064d815c4ed30763918478de3db970d","sources_seen":1,"timestamp":"2026-09-05T00:07:26.182+00:00"}],"public_key":"6e3021a12cb64d260e4fdd5bd724277dbcea5d2fa653efe87ab75f45db397317","sig_alg":"ed25519"}},"disclosure":{"generated_at":"2026-09-05T00:07:26+00:00","requested_by":"Fannie Mae","period":{"first":"2026-09-05T00:07:26.176+00:00","last":"2026-09-05T00:07:26.182+00:00"},"totals":{"decisions_attempted":5,"decisions_made":4,"denied_by_policy":1,"human_reviews":2,"loans":1},"models":[{"model":"claude-haiku-4-5","endpoints":["anthropic:messages:claude-haiku-4-5"],"purposes":["document_classification"],"decisions":1},{"model":"claude-sonnet-5","endpoints":["anthropic:messages:claude-sonnet-5"],"purposes":["adverse_action_reasoning","condition_clearing","income_calculation","los_write"],"decisions":4}],"purposes":[{"purpose":"document_classification","decisions":1,"pass":1,"review":0,"reject":0,"denied":0,"committed":1,"routed_to_human":0,"overrides":0,"models":["claude-haiku-4-5"],"policies":["NORTHGATE-UW-001@3.2"]},{"purpose":"income_calculation","decisions":1,"pass":0,"review":0,"reject":1,"denied":0,"committed":0,"routed_to_human":1,"overrides":0,"models":["claude-sonnet-5"],"policies":["NORTHGATE-UW-001@3.2"]},{"purpose":"condition_clearing","decisions":1,"pass":0,"review":1,"reject":0,"denied":0,"committed":0,"routed_to_human":1,"overrides":0,"models":["claude-sonnet-5"],"policies":["NORTHGATE-UW-001@3.2"]},{"purpose":"los_write","decisions":1,"pass":1,"review":0,"reject":0,"denied":0,"committed":1,"routed_to_human":0,"overrides":0,"models":["claude-sonnet-5"],"policies":["NORTHGATE-UW-001@3.2"]},{"purpose":"adverse_action_reasoning","decisions":1,"pass":0,"review":0,"reject":0,"denied":1,"committed":0,"routed_to_human":0,"overrides":0,"models":["claude-sonnet-5"],"policies":["NORTHGATE-UW-001@3.2"]}],"safeguards":{"gate":"deterministic; no model is used to judge another model","checks_that_fired":{"confidence_floor":1,"figure_binding":1},"policies_in_force":["NORTHGATE-UW-001@3.2"],"decisions_under_no_evaluated_policy":0,"policy_review":{"policy":"NORTHGATE-UW-001@3.2","owner":"compliance@northgate-lending.example","reviewed":true,"last_reviewed":"2026-06-15","due":"2027-06-15","overdue":false,"overdue_days":0,"detail":"next review due 2027-06-15"}},"integrity":{"chain":{"verified":true,"records":7},"anchor":"custody-anchor:v1:7:bfa84a27620a7f0bc9e50fb840895d04eb983c3c9c11fa9a0b7d246b99cbef5c","mandate_coverage":{"complete":true,"missing":{}}},"limits":["Covers only AI routed through this ledger. It cannot inventory models it never saw, and must not be read as a complete list for the organisation.","Proves the records were not altered. Does not prove they are true, and cannot show a decision that was never recorded.","No bias or fair-lending testing is performed or claimed."]}}</script>
+<script>
+(function(){
+"use strict";
+
+var BUNDLE = JSON.parse(document.getElementById("ledger-data").textContent);
+var LOANS = Object.keys(BUNDLE.packets);
+var LOAN = LOANS[0];
+
+/* The eight fields Custody records on every AI decision. These are this
+   library's design, not a schema LL-2026-04 dictates -- the letter requires
+   governance and disclosure on request and names no fields at all. They are
+   marked in the detail view so a reader can see exactly what is captured. */
+var MANDATE = ["principal","model","endpoint","prompt_redacted",
+               "response_treatment","policy_version","decision_outcome","timestamp"];
+
+var CHAIN_FIELDS = {prev_hash:1, hash:1, signature:1};
+var GENESIS = "0000000000000000000000000000000000000000000000000000000000000000";
+/* Built from an ASCII string so this file carries no literal control characters. */
+var NON_ASCII = new RegExp("[\\u0080-\\uFFFF]", "g");
+
+/* ---- canonical form -------------------------------------------------------
+   Must match custody/chain.py byte for byte. A cross-language test in the repo
+   diffs the two against every shipped record, because if they ever drift this
+   page reports tampering on an honest ledger \u2014 which would discredit the only
+   thing it is here to demonstrate. */
+function canon(v){
+  if (v === null || typeof v !== "object") return JSON.stringify(v);
+  if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
+  return "{" + Object.keys(v).sort().map(function(k){
+    return JSON.stringify(k) + ":" + canon(v[k]);
+  }).join(",") + "}";
+}
+function canonicalBody(rec){
+  var body = {};
+  Object.keys(rec).forEach(function(k){ if (!CHAIN_FIELDS[k]) body[k] = rec[k]; });
+  return canon(body).replace(NON_ASCII, function(c){
+    return "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0");
+  });
+}
+function hex(buf){
+  return Array.prototype.map.call(new Uint8Array(buf), function(b){
+    return b.toString(16).padStart(2, "0");
+  }).join("");
+}
+async function sha256(str){
+  return hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)));
+}
+
+/* ---- verification ---------------------------------------------------------
+   Walks from genesis and stops at the first break. Naming which record broke is
+   the point: "verification failed" tells an examiner nothing about where to
+   look, and everything after the break is unreliable rather than separately
+   suspect. */
+async function verifyChain(records){
+  var prev = GENESIS;
+  for (var i = 0; i < records.length; i++){
+    var r = records[i];
+    if (r.prev_hash !== prev){
+      return {ok:false, index:i, id:r.record_id,
+              reason:"its prev_hash does not match the record before it \u2014 something was altered, removed or inserted"};
+    }
+    var expected = await sha256(prev + canonicalBody(r));
+    if (expected !== r.hash){
+      return {ok:false, index:i, id:r.record_id,
+              reason:"its contents no longer hash to the value stored with it \u2014 this record was edited"};
+    }
+    prev = r.hash;
+  }
+  return {ok:true, count:records.length};
+}
+
+/* ---- state ---- */
+var records = BUNDLE.records.map(function(r){ return JSON.parse(JSON.stringify(r)); });
+var pristine = JSON.stringify(BUNDLE.records);
+var selected = 0;
+var brokenAt = null;
+/* null shows the whole ledger; a loan number shows one file. The chain is
+   verified across every record either way -- a per-loan slice has gaps in it by
+   construction, and verifying the slice alone would report an honest ledger as
+   broken. */
+var loanFilter = null;
+
+var $ = function(id){ return document.getElementById(id); };
+
+function verdictBadge(r){
+  if (r.event === "human_review") return ["b-human", "human"];
+  var t = r.response_treatment;
+  if (t === "pass")   return ["b-pass", "pass"];
+  if (t === "reject") return ["b-reject", "reject"];
+  if (t === "denied") return ["b-denied", "denied"];
+  return ["b-review", "review"];
+}
+
+function title(r){
+  if (r.event === "human_review"){
+    return (r.action === "corrected" ? "Human correction" : "Human approval");
+  }
+  if (r.event === "ai_denied"){
+    return "Refused: " + r.purpose.replace(/_/g, " ");
+  }
+  return r.purpose.replace(/_/g, " ").replace(/^./, function(c){ return c.toUpperCase(); });
+}
+
+function visible(r){
+  return loanFilter === null || r.loan === loanFilter;
+}
+
+function renderLoans(){
+  var host = $("loans");
+  if (LOANS.length < 2){ host.hidden = true; return; }
+  host.hidden = false;
+  var pills = $("loanPills");
+  pills.innerHTML = "";
+  ["All loans"].concat(LOANS).forEach(function(label, index){
+    var value = index === 0 ? null : label;
+    var b = document.createElement("button");
+    b.className = "loan-pill";
+    b.type = "button";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", loanFilter === value ? "true" : "false");
+    b.textContent = label;
+    b.addEventListener("click", function(){
+      loanFilter = value;
+      if (value !== null){
+        LOAN = value;
+        /* Move the detail pane to the first record of the loan just chosen,
+           rather than leaving it on a record no longer in the list. */
+        for (var i = 0; i < records.length; i++){
+          if (records[i].loan === value){ selected = i; break; }
+        }
+      }
+      render();
+    });
+    pills.appendChild(b);
+  });
+}
+
+function renderChain(){
+  var host = $("chain");
+  host.innerHTML = "";
+  records.forEach(function(r, i){
+    if (!visible(r)) return;
+    var b = document.createElement("button");
+    b.className = "rec" + (brokenAt !== null && i >= brokenAt ? " broken" : "");
+    b.setAttribute("role", "option");
+    b.setAttribute("aria-selected", i === selected ? "true" : "false");
+    var badge = verdictBadge(r);
+    b.innerHTML =
+      '<span class="n">' + i + '</span>' +
+      '<span class="what"><b></b><span></span></span>' +
+      '<span class="badge ' + badge[0] + '">' + badge[1] + '</span>' +
+      '<span class="hash">' + r.hash.slice(0, 16) + '\u2026</span>';
+    b.querySelector(".what b").textContent = title(r);
+    b.querySelector(".what span").textContent =
+      (r.model || "human") + " \u00b7 " + r.principal.split("@")[0] +
+      " \u00b7 " + (r.disposition || "").replace(/_/g, " ");
+    b.addEventListener("click", function(){ selected = i; render(); });
+    host.appendChild(b);
+  });
+}
+
+function renderDetail(){
+  var r = records[selected];
+  if (!r){ $("detail").hidden = true; return; }
+  $("detail").hidden = false;
+  $("dTitle").textContent = title(r);
+  $("dId").textContent = r.record_id;
+
+  var dl = $("dFields");
+  dl.innerHTML = "";
+  MANDATE.forEach(function(f){
+    var dt = document.createElement("dt");
+    dt.className = "req";
+    dt.textContent = f;
+    var dd = document.createElement("dd");
+    var v = r[f];
+    if (v === null || v === undefined || v === ""){
+      dd.className = "null";
+      dd.textContent = f === "decision_outcome"
+        ? "null \u2014 nothing was written downstream"
+        : "null";
+    } else {
+      dd.textContent = typeof v === "object" ? JSON.stringify(v) : String(v);
+    }
+    dl.appendChild(dt); dl.appendChild(dd);
+  });
+  [["hash","hash"],["prev_hash","prev_hash"]].forEach(function(pair){
+    var dt = document.createElement("dt"); dt.textContent = pair[0];
+    var dd = document.createElement("dd"); dd.textContent = r[pair[1]];
+    dl.appendChild(dt); dl.appendChild(dd);
+  });
+
+  var box = $("dFindings");
+  if (r.findings && r.findings.length){
+    box.hidden = false;
+    box.className = "findings" + (r.response_treatment === "review" ? " review" : "");
+    box.innerHTML = r.findings.map(function(f){
+      return "<p><code>" + f.check + "</code> &mdash; " + f.detail + "</p>";
+    }).join("");
+  } else if (r.note){
+    box.hidden = false;
+    box.className = "findings" + (r.event === "ai_denied" ? " denied" : " review");
+    box.innerHTML = "<p>" + r.note + "</p>";
+  } else {
+    box.hidden = true;
+  }
+}
+
+function renderPacket(){
+  var p = BUNDLE.packets[LOAN];
+  if (!p) return;
+  var s = p.summary;
+  var cells = [
+    [s.ai_decisions, "AI decisions on this loan", ""],
+    [s.human_reviews, "recorded human reviews", "ok"],
+    [s.rejected, "outputs the gate refused", "warn"],
+    [s.routed_to_human, "routed to a person", "warn"],
+    [s.denied_by_policy, "calls the policy refused", "ok"],
+    [p.mandate_coverage.complete ? "8 / 8" : "gaps", "recorded fields present on every record",
+      p.mandate_coverage.complete ? "ok" : "warn"]
+  ];
+  $("packet").innerHTML = cells.map(function(c){
+    return '<div class="cell ' + c[2] + '"><span class="k">' + c[0] +
+           '</span><span class="v">' + c[1] + '</span></div>';
+  }).join("");
+  $("packetNote").innerHTML =
+    "Loan <b>" + p.loan + "</b> under policy <b>" + p.policy_version + "</b>. " +
+    "The rejected income extraction is in this packet, not filtered out of it \u2014 " +
+    "an audit trail that shows only the successes is a brochure.";
+}
+
+function renderDisclosure(){
+  var d = BUNDLE.disclosure;
+  if (!d){ return; }
+
+  $("dModels").innerHTML = (d.models.length ? d.models : []).map(function(m){
+    return '<div class="drow"><b></b><em></em><span></span></div>';
+  }).join("") || '<div class="drow"><b>None recorded</b></div>';
+  var modelRows = $("dModels").querySelectorAll(".drow");
+  d.models.forEach(function(m, i){
+    var row = modelRows[i];
+    if (!row) return;
+    row.querySelector("b").textContent = m.model;
+    row.querySelector("em").textContent =
+      m.decisions + (m.decisions === 1 ? " decision" : " decisions");
+    row.querySelector("span").textContent = m.endpoints.join("  \u00b7  ");
+  });
+
+  var s = d.safeguards, integrity = d.integrity;
+  var rows = [
+    ["Gate", "deterministic", "no model judges another model"],
+    ["Checks fired", Object.keys(s.checks_that_fired).length
+      ? Object.keys(s.checks_that_fired).map(function(k){
+          return k + " x" + s.checks_that_fired[k]; }).join(", ")
+      : "none", ""],
+    ["Policies in force", s.policies_in_force.join(", ") || "none", ""],
+    ["Chain", integrity.chain.verified ? "verified" : "BROKEN", ""],
+    ["Mandate coverage", integrity.mandate_coverage.complete ? "complete" : "gaps", ""]
+  ];
+  if (s.decisions_under_no_evaluated_policy){
+    rows.splice(3, 0, ["Ungoverned",
+      s.decisions_under_no_evaluated_policy + " decision(s)",
+      "ran with no policy evaluated"]);
+  }
+  if (s.policy_review){
+    rows.splice(3, 0, ["Policy review",
+      s.policy_review.overdue ? "OVERDUE" : "current", s.policy_review.detail]);
+  }
+  $("dSafeguards").innerHTML = rows.map(function(){
+    return '<div class="drow"><b></b><em></em><span></span></div>';
+  }).join("");
+  var sRows = $("dSafeguards").querySelectorAll(".drow");
+  rows.forEach(function(r, i){
+    sRows[i].querySelector("b").textContent = r[0];
+    sRows[i].querySelector("em").textContent = r[1];
+    sRows[i].querySelector("span").textContent = r[2];
+  });
+
+  var head = ["Purpose", "Total", "Pass", "Review", "Reject", "Denied",
+              "Committed", "To a person"];
+  var html = "<thead><tr>" + head.map(function(h){
+    return "<th>" + h + "</th>"; }).join("") + "</tr></thead><tbody>";
+  d.purposes.forEach(function(p){
+    function cell(n, cls){
+      return '<td class="n ' + (n ? cls : "z") + '">' + n + "</td>";
+    }
+    html += "<tr>" +
+      '<td class="p"></td>' +
+      '<td class="n">' + p.decisions + "</td>" +
+      cell(p.pass, "g") + cell(p.review, "a") + cell(p.reject, "r") +
+      cell(p.denied, "") +
+      '<td class="n' + (p.overrides ? ' a' : '') + '">' + p.committed +
+        (p.overrides ? " (" + p.overrides + " over an objection)" : "") + "</td>" +
+      '<td class="n">' + p.routed_to_human + "</td>" +
+      "</tr>";
+  });
+  var table = $("dPurposes");
+  table.innerHTML = html + "</tbody>";
+  /* Purpose names come from a policy file, so they are set as text rather than
+     interpolated into the markup above. */
+  var cells = table.querySelectorAll("td.p");
+  d.purposes.forEach(function(p, i){
+    if (cells[i]) cells[i].textContent = p.purpose.replace(/_/g, " ");
+  });
+
+  $("discloseLimits").textContent = d.limits.join("  ");
+}
+
+function render(){ renderLoans(); renderChain(); renderDetail(); renderPacket(); }
+
+/* ---- controls ---- */
+async function runVerify(){
+  var el = $("status");
+  el.className = "status";
+  $("statusMain").textContent = "Verifying\u2026";
+  $("statusSub").textContent = "recomputing SHA-256 over each record";
+
+  var result = await verifyChain(records);
+  if (result.ok){
+    brokenAt = null;
+    el.className = "status ok";
+    $("statusMain").textContent = "Chain verified \u2014 " + result.count + " records";
+    $("statusSub").textContent =
+      "every hash recomputed in your browser from the record contents";
+  } else {
+    brokenAt = result.index;
+    el.className = "status bad";
+    $("statusMain").textContent = "Chain broken at record " + result.index;
+    $("statusSub").textContent = result.id + " \u2014 " + result.reason;
+  }
+  render();
+}
+
+$("btnVerify").addEventListener("click", runVerify);
+
+$("btnTamper").addEventListener("click", function(){
+  /* The most consequential edit somebody could make: quietly turning the
+     rejection of a fabricated income figure into a pass, so the file looks like
+     the AI was right all along. */
+  records[1].response_treatment = "pass";
+  records[1].disposition = "committed";
+  records[1].findings = [];
+  selected = 1;
+  $("btnRestore").disabled = false;
+  $("tamperNote").hidden = false;
+  $("tamperNote").innerHTML =
+    "<strong>Record 1 has been edited</strong> \u2014 its rejection is now recorded as a " +
+    "pass, and the finding that named the invented figure is gone. The record reads " +
+    "as though the model was right. Press <b>Verify chain</b>.";
+  $("status").className = "status";
+  $("statusMain").textContent = "Not yet verified";
+  $("statusSub").textContent = "a record was changed since the last check";
+  render();
+});
+
+$("btnRestore").addEventListener("click", function(){
+  records = JSON.parse(pristine);
+  brokenAt = null;
+  selected = 1;
+  $("btnRestore").disabled = true;
+  $("tamperNote").hidden = true;
+  render();
+  runVerify();
+});
+
+/* ---- embed ---- */
+var EMBEDDED = /(?:^|[?&])embed=1(?:&|$)/.test(location.search);
+if (EMBEDDED){
+  document.body.className = (document.body.className + " embed").trim();
+  // Same-origin, so the host can size the frame to the content rather than
+  // guessing and leaving a scrollbar inside a scrollbar.
+  var post = function(){
+    parent.postMessage(
+      {custodyHeight: document.documentElement.scrollHeight}, "*");
+  };
+  if (typeof ResizeObserver === "function"){
+    new ResizeObserver(post).observe(document.documentElement);
+  }
+  post();
+}
+
+/* ---- init ---- */
+renderDisclosure();
+renderPacket();
+render();
+$("footMeta").textContent =
+  "policy " + BUNDLE.policy_version + " \u00b7 signing key " +
+  BUNDLE.public_key.slice(0, 16) + "\u2026 \u00b7 ledger generated " + BUNDLE.generated_at;
+runVerify();
+})();
+</script>

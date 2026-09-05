@@ -4,19 +4,19 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Custody - Himanshu Srivastava</title>
-<meta name="description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 92 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
+<meta name="description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 177 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
 <link rel="canonical" href="https://himansh97.github.io/work/custody.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Himanshu Srivastava">
 <meta property="og:title" content="Custody">
-<meta property="og:description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 92 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
+<meta property="og:description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 177 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
 <meta property="og:url" content="https://himansh97.github.io/work/custody.html">
 <meta property="og:image" content="https://himansh97.github.io/assets/og/og-custody.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Custody">
-<meta name="twitter:description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 92 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
+<meta name="twitter:description" content="A signed chain of evidence for AI decisions in mortgage lending. Published to PyPI, 177 tests, and a demo in your browser that lets you break the chain and watch verification fail.">
 <meta name="twitter:image" content="https://himansh97.github.io/assets/og/og-custody.png">
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -225,6 +225,10 @@ footer p{max-width:62ch;color:var(--ink-soft);margin:0 0 16px}
   margin:18px 0 0;font-family:var(--mono);font-size:11px;
   letter-spacing:.05em;color:var(--ink-faint);
 }
+.demo-frame{
+  display:block;width:100%;border:1px solid var(--rule,#d8d8d4);border-radius:4px;
+  min-height:640px;background:var(--paper,#fff);
+}
 </style>
 <main id="main">
 <div class="wrap">
@@ -384,52 +388,23 @@ $ <b>custody verify custody.db --public-key ee1ffe7f...</b>
     every hash locally, so a broken chain is something you observe rather than something
     we assert. Press <b>Tamper</b>, then verify again.
   </p>
-  <div>
-  <p class="sub">
-    One synthetic loan file through five AI steps. Everything here &mdash; borrower,
-    employer, documents, loan number &mdash; is fabricated. The hashes are not: your
-    browser recomputes every one of them from the record contents when you press
-    verify.
+
+  <!-- The demo below is `custody-ledger.html`, built from the repository by
+       `demo/build_page.py` and embedded here rather than copied. This page used
+       to carry its own fork of it, which is how it came to be showing a ledger
+       four months of releases out of date while claiming to be the current one.
+       A case study about evidence cannot be the thing that drifts. -->
+  <iframe id="demoFrame" class="demo-frame"
+          src="/custody-ledger.html?embed=1"
+          title="Custody ledger demo"
+          loading="lazy"></iframe>
+
+  <p class="note">
+    Not rendering? The demo is a standalone page &mdash;
+    <a href="/custody-ledger.html">open it directly</a>. It is the same file the
+    library builds, so what you see here and what you get after installing cannot
+    disagree.
   </p>
-
-  <div class="verify">
-    <div class="status" id="status">
-      <span class="dot"></span>
-      <span class="status-text"><strong id="statusMain">Not yet verified</strong>
-        <span id="statusSub">Press verify to recompute the chain in your browser</span></span>
-    </div>
-    <div class="controls">
-      <button class="primary" id="btnVerify">Verify chain</button>
-      <button class="danger" id="btnTamper">Tamper with record 1</button>
-      <button id="btnRestore" disabled>Restore</button>
-    </div>
-  </div>
-
-  <div class="chain" id="chain" role="listbox" aria-label="Ledger records"></div>
-
-  <div class="detail" id="detail" hidden>
-    <div class="detail-head">
-      <b id="dTitle"></b>
-      <code id="dId"></code>
-    </div>
-    <dl class="fields" id="dFields"></dl>
-    <div class="findings" id="dFindings" hidden></div>
-  </div>
-
-  <p class="note" id="tamperNote" hidden></p>
-  </div>
-
-  <h3 class="demo-h">What an examiner receives</h3>
-  <p class="sub">
-    The packet for one loan: every decision, in order, including the ones that were
-    rejected. It carries the public key and the records, so the recipient verifies it
-    without access to any of the lender&rsquo;s systems &mdash; which is what turns a
-    disclosure into evidence.
-  </p>
-  <div class="grid" id="packet"></div>
-  <p class="note" id="packetNote"></p>
-
-  <p class="ledger-meta" id="footMeta"></p>
 </section>
 
 <section>
@@ -627,260 +602,23 @@ $ export CUSTODY_KEY_VAULT=https://v.vault.azure.net/ CUSTODY_KEY_NAME=custody</
 
 </div>
 
-<script id="ledger-data" type="application/json">{"generated_at":"2026-08-19T18:11:16+00:00","policy_version":"northgate-uw-policy-v3.2","public_key":"6e3021a12cb64d260e4fdd5bd724277dbcea5d2fa653efe87ab75f45db397317","sig_alg":"ed25519","chain":{"verified":true,"records":6},"records":[{"completed_at":"2026-08-19T18:11:16.855+00:00","decision_outcome":{"doc_type":"paystub"},"disposition":"committed","endpoint":"anthropic:messages:claude-haiku-4-5","event":"ai_decision","findings":[],"hash":"588858f3f91fd7084a47cd38df81f152a7428663f4666b03f6ace9404b0ebadb","loan":"1000254","model":"claude-haiku-4-5","note":null,"policy_version":"northgate-uw-policy-v3.2","prev_hash":"0000000000000000000000000000000000000000000000000000000000000000","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Classify each document in this bundle.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Emp...","purpose":"document_classification","record_id":"dec_56b7dd6194f94d60","response_treatment":"pass","sig_alg":"ed25519","signature":"7cf9c9417a82e6234bd9ad876afa7c8991c34e651d70a8030327b37f91bd4d222ab4c129dad97969c1af8154e2385be6596c135d133ace9a003d813abfbf0400","sources_seen":3,"timestamp":"2026-08-19T18:11:16.854+00:00"},{"completed_at":"2026-08-19T18:11:16.856+00:00","decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"figure_binding","detail":"'6842' appears in no source document supplied to the model","treatment":"reject"}],"hash":"efc79478254a3f05c3c8725671775ba73b7c6928b6c6c2b483502d21ae9cefeb","loan":"1000254","model":"claude-sonnet-5","note":"figure binding rejected the extracted income","policy_version":"northgate-uw-policy-v3.2","prev_hash":"588858f3f91fd7084a47cd38df81f152a7428663f4666b03f6ace9404b0ebadb","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Borrower [BORROWER], loan 1000254. Compute qualifying monthly income from the attached paystub and W-2.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Employee ID: E-40881\nPay period: [DOB] - [DOB]      Pay date: [DOB]\n------------------------------------------------------------------\n                       CURRENT        YEAR TO DATE\nRegular              3,846.15            50,000.00\nOvertime               359.85             4,672.00\nGross pay            4,206.00            54,672.00\n------------------------------------------------------------------\nFederal income tax     694.00             9,022.00\nSocial Security        260.77             3,389.66\nMedicare                60.99               792.74\n------------------------------------------------------------------\nNet pay              3,190.24            41,467.60\n\n\nFORM W-2 WAGE AND TAX STATEMENT \u2014 TAX YEAR 2025\nEmployer: ACME LOGISTICS LLC        EIN: 75-3310042\n------------------------------------------------------------------\nBox  1  Wages, tips, other compensation          98,410.00\nBox  2  Federal income tax withheld              16,229.00\nBox  3  Social Security wages                    98,410.00\nBox  5  Medicare wages and tips                  98,410.00\nBox 12  D  401(k) elective deferrals              7,200.00\n","purpose":"income_calculation","record_id":"dec_f62065df714e4088","response_treatment":"reject","sig_alg":"ed25519","signature":"c418781ba478d54d30141d43c98130b6bb9e74cfa0f58ce6e9ee077c186e40cc95fc845e5bf7bdb61bf713c9870ba1be57b33a9eac73f3dd407e183288715e02","sources_seen":2,"timestamp":"2026-08-19T18:11:16.855+00:00"},{"action":"corrected","decision_outcome":{"basis":"W-2 box 1 98,410.00 / 12","monthly_income":8200.83},"disposition":"human_corrected","endpoint":null,"event":"human_review","findings":[],"hash":"92cd4ddc60f491b7bf7f4432fd8f31fafb6c187df4e57503d4e3bfff1be3cfba","loan":"1000254","model":null,"note":"Model figure appears in no document. Recomputed from the W-2 and verified against the paystub YTD.","policy_version":"northgate-uw-policy-v3.2","prev_hash":"efc79478254a3f05c3c8725671775ba73b7c6928b6c6c2b483502d21ae9cefeb","principal":"sam.okafor@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_0c9fe95d50d04dcb","response_treatment":"human_decision","reviews":"dec_f62065df714e4088","sig_alg":"ed25519","signature":"2eb77a961bef14038bc56c4c041b90a8e6a0b41978fab9fdf0628ba86eec5f89db767769175861121783d56272f20d916e04b7cc355c923fa1cd0ac46a63eb04","timestamp":"2026-08-19T18:11:16.856+00:00"},{"completed_at":"2026-08-19T18:11:16.856+00:00","decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"confidence_floor","detail":"confidence 0.62 is below the 0.80 floor for this policy","treatment":"review"}],"hash":"f001921ccb18cdc1434ca300fb850370c5a3d88f8910fe237fef51ada72735b5","loan":"1000254","model":"claude-sonnet-5","note":"confidence below the policy floor","policy_version":"northgate-uw-policy-v3.2","prev_hash":"92cd4ddc60f491b7bf7f4432fd8f31fafb6c187df4e57503d4e3bfff1be3cfba","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Does the bank statement evidence the payroll deposits?\n\nNORTHWIND CREDIT UNION \u2014 STATEMENT OF ACCOUNT\nStatement period: [DOB] - [DOB]\nAccount ending: 4471\n------------------------------------------------------------------\nBeginning balance                                18,204.11\nTotal deposits                                    6,380.48\nTotal withdrawals                                 4,912.30\nEnding balance                                   19,672.29\n------------------------------------------------------------------\n06/15  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n06/30  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n","purpose":"condition_clearing","record_id":"dec_31eed598c4a84b11","response_treatment":"review","sig_alg":"ed25519","signature":"4f4c0464e1011727b7c6bfeea6e742fc63289b67c622314c3039c6b00d02ab4d204afbd747755f478ed4453f6938ecacaaf2d5f161e9772c90d094a37bf81d0b","sources_seen":2,"timestamp":"2026-08-19T18:11:16.856+00:00"},{"action":"approved","decision_outcome":{"condition_status":"satisfied"},"disposition":"human_approved","endpoint":null,"event":"human_review","findings":[],"hash":"0eb319d21793fa0e1181afd443eef106734edd116dca6d7781b33c35a6a1dc90","loan":"1000254","model":null,"note":"Two payroll deposits of 3,190.24 visible on the June statement.","policy_version":"northgate-uw-policy-v3.2","prev_hash":"f001921ccb18cdc1434ca300fb850370c5a3d88f8910fe237fef51ada72735b5","principal":"jane.mireles@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_23e423585d3148ac","response_treatment":"human_decision","reviews":"dec_31eed598c4a84b11","sig_alg":"ed25519","signature":"b583ae84574802a8f34c7f8253ff57875e9a2c93298359c57ae8a4ed4c3fe132e5a57c8995eaac0fbfbea76da1482dc7cf05bb2a14844d8202a8a8751fa12303","timestamp":"2026-08-19T18:11:16.857+00:00"},{"completed_at":"2026-08-19T18:11:16.857+00:00","decision_outcome":{"annual_income":98410.0,"qualifying_monthly_income":8200.83},"disposition":"committed","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[],"hash":"0cf2c799d2d5a25dc29857eac3724cb3f11e36d3b50764038b33f34dda870cd9","loan":"1000254","model":"claude-sonnet-5","note":null,"policy_version":"northgate-uw-policy-v3.2","prev_hash":"0eb319d21793fa0e1181afd443eef106734edd116dca6d7781b33c35a6a1dc90","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Assemble the verified income figures for the LOS write.","purpose":"los_write","record_id":"dec_05c41fce5d5f4edf","response_treatment":"pass","sig_alg":"ed25519","signature":"58facb2a56b70ebbe9164000340da964be9f96e175bb735085a68822c197c58c9403354739ede55558e52282f15111ae96b519d7723df2fafe46a1eaa7bb6003","sources_seen":3,"timestamp":"2026-08-19T18:11:16.857+00:00"}],"packets":{"1000254":{"loan":"1000254","generated_at":"2026-08-19T18:11:16+00:00","requested_by":"examiner","policy_version":"northgate-uw-policy-v3.2","summary":{"ai_decisions":4,"human_reviews":2,"committed":2,"rejected":1,"routed_to_human":2,"models_used":["claude-haiku-4-5","claude-sonnet-5"]},"chain":{"verified":true,"records":6},"mandate_coverage":{"complete":true,"missing":{}},"records":[{"completed_at":"2026-08-19T18:11:16.855+00:00","decision_outcome":{"doc_type":"paystub"},"disposition":"committed","endpoint":"anthropic:messages:claude-haiku-4-5","event":"ai_decision","findings":[],"hash":"588858f3f91fd7084a47cd38df81f152a7428663f4666b03f6ace9404b0ebadb","loan":"1000254","model":"claude-haiku-4-5","note":null,"policy_version":"northgate-uw-policy-v3.2","prev_hash":"0000000000000000000000000000000000000000000000000000000000000000","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Classify each document in this bundle.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Emp...","purpose":"document_classification","record_id":"dec_56b7dd6194f94d60","response_treatment":"pass","sig_alg":"ed25519","signature":"7cf9c9417a82e6234bd9ad876afa7c8991c34e651d70a8030327b37f91bd4d222ab4c129dad97969c1af8154e2385be6596c135d133ace9a003d813abfbf0400","sources_seen":3,"timestamp":"2026-08-19T18:11:16.854+00:00"},{"completed_at":"2026-08-19T18:11:16.856+00:00","decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"figure_binding","detail":"'6842' appears in no source document supplied to the model","treatment":"reject"}],"hash":"efc79478254a3f05c3c8725671775ba73b7c6928b6c6c2b483502d21ae9cefeb","loan":"1000254","model":"claude-sonnet-5","note":"figure binding rejected the extracted income","policy_version":"northgate-uw-policy-v3.2","prev_hash":"588858f3f91fd7084a47cd38df81f152a7428663f4666b03f6ace9404b0ebadb","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Borrower [BORROWER], loan 1000254. Compute qualifying monthly income from the attached paystub and W-2.\n\nACME LOGISTICS LLC                       EARNINGS STATEMENT\n1400 Corporate Drive, Irving TX 75038\n------------------------------------------------------------------\nEmployee: [BORROWER]            Employee ID: E-40881\nPay period: [DOB] - [DOB]      Pay date: [DOB]\n------------------------------------------------------------------\n                       CURRENT        YEAR TO DATE\nRegular              3,846.15            50,000.00\nOvertime               359.85             4,672.00\nGross pay            4,206.00            54,672.00\n------------------------------------------------------------------\nFederal income tax     694.00             9,022.00\nSocial Security        260.77             3,389.66\nMedicare                60.99               792.74\n------------------------------------------------------------------\nNet pay              3,190.24            41,467.60\n\n\nFORM W-2 WAGE AND TAX STATEMENT \u2014 TAX YEAR 2025\nEmployer: ACME LOGISTICS LLC        EIN: 75-3310042\n------------------------------------------------------------------\nBox  1  Wages, tips, other compensation          98,410.00\nBox  2  Federal income tax withheld              16,229.00\nBox  3  Social Security wages                    98,410.00\nBox  5  Medicare wages and tips                  98,410.00\nBox 12  D  401(k) elective deferrals              7,200.00\n","purpose":"income_calculation","record_id":"dec_f62065df714e4088","response_treatment":"reject","sig_alg":"ed25519","signature":"c418781ba478d54d30141d43c98130b6bb9e74cfa0f58ce6e9ee077c186e40cc95fc845e5bf7bdb61bf713c9870ba1be57b33a9eac73f3dd407e183288715e02","sources_seen":2,"timestamp":"2026-08-19T18:11:16.855+00:00"},{"action":"corrected","decision_outcome":{"basis":"W-2 box 1 98,410.00 / 12","monthly_income":8200.83},"disposition":"human_corrected","endpoint":null,"event":"human_review","findings":[],"hash":"92cd4ddc60f491b7bf7f4432fd8f31fafb6c187df4e57503d4e3bfff1be3cfba","loan":"1000254","model":null,"note":"Model figure appears in no document. Recomputed from the W-2 and verified against the paystub YTD.","policy_version":"northgate-uw-policy-v3.2","prev_hash":"efc79478254a3f05c3c8725671775ba73b7c6928b6c6c2b483502d21ae9cefeb","principal":"sam.okafor@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_0c9fe95d50d04dcb","response_treatment":"human_decision","reviews":"dec_f62065df714e4088","sig_alg":"ed25519","signature":"2eb77a961bef14038bc56c4c041b90a8e6a0b41978fab9fdf0628ba86eec5f89db767769175861121783d56272f20d916e04b7cc355c923fa1cd0ac46a63eb04","timestamp":"2026-08-19T18:11:16.856+00:00"},{"completed_at":"2026-08-19T18:11:16.856+00:00","decision_outcome":null,"disposition":"routed_to_human","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[{"check":"confidence_floor","detail":"confidence 0.62 is below the 0.80 floor for this policy","treatment":"review"}],"hash":"f001921ccb18cdc1434ca300fb850370c5a3d88f8910fe237fef51ada72735b5","loan":"1000254","model":"claude-sonnet-5","note":"confidence below the policy floor","policy_version":"northgate-uw-policy-v3.2","prev_hash":"92cd4ddc60f491b7bf7f4432fd8f31fafb6c187df4e57503d4e3bfff1be3cfba","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Does the bank statement evidence the payroll deposits?\n\nNORTHWIND CREDIT UNION \u2014 STATEMENT OF ACCOUNT\nStatement period: [DOB] - [DOB]\nAccount ending: 4471\n------------------------------------------------------------------\nBeginning balance                                18,204.11\nTotal deposits                                    6,380.48\nTotal withdrawals                                 4,912.30\nEnding balance                                   19,672.29\n------------------------------------------------------------------\n06/15  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n06/30  DIRECT DEP  ACME LOGISTICS PAYROLL         3,190.24\n","purpose":"condition_clearing","record_id":"dec_31eed598c4a84b11","response_treatment":"review","sig_alg":"ed25519","signature":"4f4c0464e1011727b7c6bfeea6e742fc63289b67c622314c3039c6b00d02ab4d204afbd747755f478ed4453f6938ecacaaf2d5f161e9772c90d094a37bf81d0b","sources_seen":2,"timestamp":"2026-08-19T18:11:16.856+00:00"},{"action":"approved","decision_outcome":{"condition_status":"satisfied"},"disposition":"human_approved","endpoint":null,"event":"human_review","findings":[],"hash":"0eb319d21793fa0e1181afd443eef106734edd116dca6d7781b33c35a6a1dc90","loan":"1000254","model":null,"note":"Two payroll deposits of 3,190.24 visible on the June statement.","policy_version":"northgate-uw-policy-v3.2","prev_hash":"f001921ccb18cdc1434ca300fb850370c5a3d88f8910fe237fef51ada72735b5","principal":"jane.mireles@northgate-lending.example","prompt_redacted":null,"purpose":"human_review","record_id":"hum_23e423585d3148ac","response_treatment":"human_decision","reviews":"dec_31eed598c4a84b11","sig_alg":"ed25519","signature":"b583ae84574802a8f34c7f8253ff57875e9a2c93298359c57ae8a4ed4c3fe132e5a57c8995eaac0fbfbea76da1482dc7cf05bb2a14844d8202a8a8751fa12303","timestamp":"2026-08-19T18:11:16.857+00:00"},{"completed_at":"2026-08-19T18:11:16.857+00:00","decision_outcome":{"annual_income":98410.0,"qualifying_monthly_income":8200.83},"disposition":"committed","endpoint":"anthropic:messages:claude-sonnet-5","event":"ai_decision","findings":[],"hash":"0cf2c799d2d5a25dc29857eac3724cb3f11e36d3b50764038b33f34dda870cd9","loan":"1000254","model":"claude-sonnet-5","note":null,"policy_version":"northgate-uw-policy-v3.2","prev_hash":"0eb319d21793fa0e1181afd443eef106734edd116dca6d7781b33c35a6a1dc90","principal":"jane.mireles@northgate-lending.example","prompt_redacted":"Assemble the verified income figures for the LOS write.","purpose":"los_write","record_id":"dec_05c41fce5d5f4edf","response_treatment":"pass","sig_alg":"ed25519","signature":"58facb2a56b70ebbe9164000340da964be9f96e175bb735085a68822c197c58c9403354739ede55558e52282f15111ae96b519d7723df2fafe46a1eaa7bb6003","sources_seen":3,"timestamp":"2026-08-19T18:11:16.857+00:00"}],"public_key":"6e3021a12cb64d260e4fdd5bd724277dbcea5d2fa653efe87ab75f45db397317","sig_alg":"ed25519"}}}</script>
+</main>
+
 <script>
+/* Size the demo frame to its content. Same origin, so the frame can tell us
+   how tall it is instead of us guessing and leaving a scrollbar inside a
+   scrollbar. If the message never arrives the CSS min-height still gives a
+   usable frame, so this degrades to "slightly too short" rather than "blank". */
 (function(){
-"use strict";
-
-var BUNDLE = JSON.parse(document.getElementById("ledger-data").textContent);
-var LOAN = Object.keys(BUNDLE.packets)[0];
-
-/* The eight fields Custody records on every AI decision. These are this
-   library's design, not a schema LL-2026-04 dictates -- the letter requires
-   governance and disclosure on request and names no fields at all. They are
-   marked in the detail view so a reader can see exactly what is captured. */
-var MANDATE = ["principal","model","endpoint","prompt_redacted",
-               "response_treatment","policy_version","decision_outcome","timestamp"];
-
-var CHAIN_FIELDS = {prev_hash:1, hash:1, signature:1};
-var GENESIS = "0000000000000000000000000000000000000000000000000000000000000000";
-/* Built from an ASCII string so this file carries no literal control characters. */
-var NON_ASCII = new RegExp("[\\u0080-\\uFFFF]", "g");
-
-/* ---- canonical form -------------------------------------------------------
-   Must match custody/chain.py byte for byte. A cross-language test in the repo
-   diffs the two against every shipped record, because if they ever drift this
-   page reports tampering on an honest ledger \u2014 which would discredit the only
-   thing it is here to demonstrate. */
-function canon(v){
-  if (v === null || typeof v !== "object") return JSON.stringify(v);
-  if (Array.isArray(v)) return "[" + v.map(canon).join(",") + "]";
-  return "{" + Object.keys(v).sort().map(function(k){
-    return JSON.stringify(k) + ":" + canon(v[k]);
-  }).join(",") + "}";
-}
-function canonicalBody(rec){
-  var body = {};
-  Object.keys(rec).forEach(function(k){ if (!CHAIN_FIELDS[k]) body[k] = rec[k]; });
-  return canon(body).replace(NON_ASCII, function(c){
-    return "\\u" + c.charCodeAt(0).toString(16).padStart(4, "0");
+  var frame = document.getElementById("demoFrame");
+  if (!frame) return;
+  window.addEventListener("message", function(e){
+    if (e.source !== frame.contentWindow) return;
+    var h = e.data && e.data.custodyHeight;
+    if (typeof h === "number" && h > 200) frame.style.height = (h + 8) + "px";
   });
-}
-function hex(buf){
-  return Array.prototype.map.call(new Uint8Array(buf), function(b){
-    return b.toString(16).padStart(2, "0");
-  }).join("");
-}
-async function sha256(str){
-  return hex(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str)));
-}
-
-/* ---- verification ---------------------------------------------------------
-   Walks from genesis and stops at the first break. Naming which record broke is
-   the point: "verification failed" tells an examiner nothing about where to
-   look, and everything after the break is unreliable rather than separately
-   suspect. */
-async function verifyChain(records){
-  var prev = GENESIS;
-  for (var i = 0; i < records.length; i++){
-    var r = records[i];
-    if (r.prev_hash !== prev){
-      return {ok:false, index:i, id:r.record_id,
-              reason:"its prev_hash does not match the record before it \u2014 something was altered, removed or inserted"};
-    }
-    var expected = await sha256(prev + canonicalBody(r));
-    if (expected !== r.hash){
-      return {ok:false, index:i, id:r.record_id,
-              reason:"its contents no longer hash to the value stored with it \u2014 this record was edited"};
-    }
-    prev = r.hash;
-  }
-  return {ok:true, count:records.length};
-}
-
-/* ---- state ---- */
-var records = BUNDLE.records.map(function(r){ return JSON.parse(JSON.stringify(r)); });
-var pristine = JSON.stringify(BUNDLE.records);
-var selected = 0;
-var brokenAt = null;
-
-var $ = function(id){ return document.getElementById(id); };
-
-function verdictBadge(r){
-  if (r.event === "human_review") return ["b-human", "human"];
-  var t = r.response_treatment;
-  if (t === "pass")   return ["b-pass", "pass"];
-  if (t === "reject") return ["b-reject", "reject"];
-  return ["b-review", "review"];
-}
-
-function title(r){
-  if (r.event === "human_review"){
-    return (r.action === "corrected" ? "Human correction" : "Human approval");
-  }
-  return r.purpose.replace(/_/g, " ")
-    .replace(/^./, function(c){ return c.toUpperCase(); })
-    .replace(/\bLos\b/, "LOS");        /* los_write is the LOS, not a place */
-}
-
-function renderChain(){
-  var host = $("chain");
-  host.innerHTML = "";
-  records.forEach(function(r, i){
-    var b = document.createElement("button");
-    b.className = "rec" + (brokenAt !== null && i >= brokenAt ? " broken" : "");
-    b.setAttribute("role", "option");
-    b.setAttribute("aria-selected", i === selected ? "true" : "false");
-    var badge = verdictBadge(r);
-    b.innerHTML =
-      '<span class="n">' + i + '</span>' +
-      '<span class="what"><b></b><span></span></span>' +
-      '<span class="badge ' + badge[0] + '">' + badge[1] + '</span>' +
-      '<span class="hash">' + r.hash.slice(0, 16) + '\u2026</span>';
-    b.querySelector(".what b").textContent = title(r);
-    b.querySelector(".what span").textContent =
-      (r.model || "human") + " \u00b7 " + r.principal.split("@")[0] +
-      " \u00b7 " + (r.disposition || "").replace(/_/g, " ");
-    b.addEventListener("click", function(){ selected = i; render(); });
-    host.appendChild(b);
-  });
-}
-
-function renderDetail(){
-  var r = records[selected];
-  if (!r){ $("detail").hidden = true; return; }
-  $("detail").hidden = false;
-  $("dTitle").textContent = title(r);
-  $("dId").textContent = r.record_id;
-
-  var dl = $("dFields");
-  dl.innerHTML = "";
-  MANDATE.forEach(function(f){
-    var dt = document.createElement("dt");
-    dt.className = "req";
-    dt.textContent = f;
-    var dd = document.createElement("dd");
-    var v = r[f];
-    if (v === null || v === undefined || v === ""){
-      dd.className = "null";
-      dd.textContent = f === "decision_outcome"
-        ? "null \u2014 nothing was written downstream"
-        : "null";
-    } else {
-      dd.textContent = typeof v === "object" ? JSON.stringify(v) : String(v);
-    }
-    dl.appendChild(dt); dl.appendChild(dd);
-  });
-  [["hash","hash"],["prev_hash","prev_hash"]].forEach(function(pair){
-    var dt = document.createElement("dt"); dt.textContent = pair[0];
-    var dd = document.createElement("dd"); dd.textContent = r[pair[1]];
-    dl.appendChild(dt); dl.appendChild(dd);
-  });
-
-  var box = $("dFindings");
-  if (r.findings && r.findings.length){
-    box.hidden = false;
-    box.className = "findings" + (r.response_treatment === "review" ? " review" : "");
-    box.innerHTML = r.findings.map(function(f){
-      return "<p><code>" + f.check + "</code> &mdash; " + f.detail + "</p>";
-    }).join("");
-  } else if (r.note){
-    box.hidden = false;
-    box.className = "findings review";
-    box.innerHTML = "<p>" + r.note + "</p>";
-  } else {
-    box.hidden = true;
-  }
-}
-
-function renderPacket(){
-  var p = BUNDLE.packets[LOAN];
-  var s = p.summary;
-  var cells = [
-    [s.ai_decisions, "AI decisions on this loan", ""],
-    [s.human_reviews, "recorded human reviews", "ok"],
-    [s.rejected, "outputs the gate refused", "warn"],
-    [s.routed_to_human, "routed to a person", "warn"],
-    [p.mandate_coverage.complete ? "8 / 8" : "gaps", "recorded fields present on every record",
-      p.mandate_coverage.complete ? "ok" : "warn"]
-  ];
-  $("packet").innerHTML = cells.map(function(c){
-    return '<div class="cell ' + c[2] + '"><span class="k">' + c[0] +
-           '</span><span class="v">' + c[1] + '</span></div>';
-  }).join("");
-  $("packetNote").innerHTML =
-    "Loan <b>" + p.loan + "</b> under policy <b>" + p.policy_version + "</b>. " +
-    "The rejected income extraction is in this packet, not filtered out of it \u2014 " +
-    "an audit trail that shows only the successes is a brochure.";
-}
-
-function render(){ renderChain(); renderDetail(); }
-
-/* ---- controls ---- */
-async function runVerify(){
-  var el = $("status");
-  el.className = "status";
-  $("statusMain").textContent = "Verifying\u2026";
-  $("statusSub").textContent = "recomputing SHA-256 over each record";
-
-  var result = await verifyChain(records);
-  if (result.ok){
-    brokenAt = null;
-    el.className = "status ok";
-    $("statusMain").textContent = "Chain verified \u2014 " + result.count + " records";
-    $("statusSub").textContent =
-      "every hash recomputed in your browser from the record contents";
-  } else {
-    brokenAt = result.index;
-    el.className = "status bad";
-    $("statusMain").textContent = "Chain broken at record " + result.index;
-    $("statusSub").textContent = result.id + " \u2014 " + result.reason;
-  }
-  render();
-}
-
-$("btnVerify").addEventListener("click", runVerify);
-
-$("btnTamper").addEventListener("click", function(){
-  /* The most consequential edit somebody could make: quietly turning the
-     rejection of a fabricated income figure into a pass, so the file looks like
-     the AI was right all along. */
-  records[1].response_treatment = "pass";
-  records[1].disposition = "committed";
-  records[1].findings = [];
-  selected = 1;
-  $("btnRestore").disabled = false;
-  $("tamperNote").hidden = false;
-  $("tamperNote").innerHTML =
-    "<strong>Record 1 has been edited</strong> \u2014 its rejection is now recorded as a " +
-    "pass, and the finding that named the invented figure is gone. The record reads " +
-    "as though the model was right. Press <b>Verify chain</b>.";
-  $("status").className = "status";
-  $("statusMain").textContent = "Not yet verified";
-  $("statusSub").textContent = "a record was changed since the last check";
-  render();
-});
-
-$("btnRestore").addEventListener("click", function(){
-  records = JSON.parse(pristine);
-  brokenAt = null;
-  selected = 1;
-  $("btnRestore").disabled = true;
-  $("tamperNote").hidden = true;
-  render();
-  runVerify();
-});
-
-/* ---- init ---- */
-renderPacket();
-render();
-$("footMeta").textContent =
-  "policy " + BUNDLE.policy_version + " \u00b7 signing key " +
-  BUNDLE.public_key.slice(0, 16) + "\u2026 \u00b7 ledger generated " + BUNDLE.generated_at;
-runVerify();
 })();
 </script>
-</main>
 <footer class="sitefoot">
   <div class="wrap">
     <p>Open to data, analytics and engineering roles in the United States.

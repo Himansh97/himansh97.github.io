@@ -18,7 +18,9 @@ build toolchain to solve a problem that is really "the header was copied".
 
 from __future__ import annotations
 
+import hashlib
 import html
+import json
 import re
 import sys
 from dataclasses import dataclass, field
@@ -77,7 +79,7 @@ PAGES: list[Page] = [
         title="Custody - Himanshu Srivastava",
         description=(
             "A signed chain of evidence for AI decisions in mortgage lending. "
-            "Published to PyPI, 92 tests, and a demo in your browser that lets "
+            "Published to PyPI, 177 tests, and a demo in your browser that lets "
             "you break the chain and watch verification fail."
         ),
         og="og-custody.png",
@@ -210,8 +212,14 @@ REDIRECTS = {
     "optionora.html": "/work/optionora.html",
     "containment-gate.html": "/work/containment-gate.html",
     "pipeline-hero.html": "/work/pipeline-hero.html",
-    "custody-ledger.html": "/work/custody.html#demo",
 }
+
+# Built by the custody repository (`python demo/build_page.py --site`) and
+# embedded by work/custody.html in an iframe. It is a real page, not a redirect:
+# it used to be listed above, which meant every deploy replaced the freshly
+# built demo with a redirect stub and the case study quietly kept showing a
+# months-old snapshot of the ledger.
+DEMO = "custody-ledger.html"
 
 STUB = """<!doctype html>
 <html lang="en">
@@ -267,6 +275,59 @@ def build(page: Page) -> str:
     )
 
 
+def verify_demo() -> list[str]:
+    """Recompute the embedded demo ledger's hash chain before publishing it.
+
+    The page's entire claim is that a visitor's browser can recompute these
+    hashes. The build should be at least as demanding: a ledger that does not
+    verify must not be published under a heading that says it does. Written
+    against the standard library so this file keeps no dependency on the custody
+    package -- if the two ever disagree about canonical bytes, that is itself
+    the defect worth failing on.
+    """
+    demo = ROOT / DEMO
+    if not demo.exists():
+        return [f"{DEMO} is missing -- run `python demo/build_page.py --site` "
+                "in the custody repo"]
+
+    text = demo.read_text()
+    m = re.search(r'<script id="ledger-data"[^>]*>(.*?)</script>', text, re.S)
+    if not m:
+        return [f"{DEMO} carries no ledger"]
+    try:
+        bundle = json.loads(m.group(1))
+    except json.JSONDecodeError as exc:
+        return [f"{DEMO} ledger is not valid JSON: {exc}"]
+
+    def portable(v):
+        if isinstance(v, bool):
+            return v
+        if isinstance(v, float) and v.is_integer():
+            return int(v)
+        if isinstance(v, dict):
+            return {k: portable(x) for k, x in v.items()}
+        if isinstance(v, (list, tuple)):
+            return [portable(x) for x in v]
+        return v
+
+    chain_fields = {"prev_hash", "hash", "signature"}
+    prev = "0" * 64
+    for i, record in enumerate(bundle.get("records", [])):
+        if record.get("prev_hash") != prev:
+            return [f"{DEMO}: record {i} does not follow record {i - 1}"]
+        body = {k: portable(v) for k, v in record.items() if k not in chain_fields}
+        canonical = json.dumps(body, sort_keys=True, separators=(",", ":"),
+                               ensure_ascii=True, default=str).encode()
+        digest = hashlib.sha256(prev.encode("ascii") + canonical).hexdigest()
+        if record.get("hash") != digest:
+            return [f"{DEMO}: record {i} does not match its hash"]
+        prev = record["hash"]
+
+    n = len(bundle.get("records", []))
+    print(f"  {DEMO:34} {len(text)//1024:3} KB  ok, {n} records rehashed")
+    return []
+
+
 def check(path: Path, text: str) -> list[str]:
     """The defects this build exists to prevent, asserted rather than assumed."""
     problems = []
@@ -284,6 +345,11 @@ def check(path: Path, text: str) -> list[str]:
         problems.append("no nav")
     if 'href="/"' not in text:
         problems.append("no way home")
+    # The case study embeds the built demo rather than keeping a copy. If that
+    # embed ever goes missing the page still reads fine, which is exactly why it
+    # has to fail the build instead of being noticed by someone eventually.
+    if path.name == "custody.html" and "/custody-ledger.html?embed=1" not in text:
+        problems.append("the custody page no longer embeds the built demo")
     # Every <p class="fig"> must carry a <cite> naming what produced its number.
     # A figure with no provenance is exactly the claim this site says it will
     # not make, so it fails the build rather than shipping.
@@ -312,6 +378,11 @@ def main() -> int:
         failed |= bool(problems)
         status = "FAIL " + ", ".join(problems) if problems else "ok"
         print(f"  {page.out:34} {len(text)//1024:3} KB  {status}")
+
+    demo_problems = verify_demo()
+    for problem in demo_problems:
+        print(f"  FAIL  {problem}")
+    failed |= bool(demo_problems)
 
     write_redirects()
     (ROOT / ".nojekyll").write_text("")
