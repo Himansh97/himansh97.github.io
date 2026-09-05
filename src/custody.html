@@ -207,7 +207,7 @@ footer p{max-width:62ch;color:var(--ink-soft);margin:0 0 16px}
     <a href="#install">Install it</a>
     <a href="https://github.com/Himansh97/custody" rel="noopener">Source</a>
   </p>
-  <p class="hero-note">Python library and CLI &nbsp;&middot;&nbsp; one dependency &nbsp;&middot;&nbsp; MIT &nbsp;&middot;&nbsp; 92 tests across 11 files &nbsp;&middot;&nbsp; four releases on PyPI</p>
+  <p class="hero-note">Python library and CLI &nbsp;&middot;&nbsp; one dependency &nbsp;&middot;&nbsp; MIT &nbsp;&middot;&nbsp; 151 tests across 15 files &nbsp;&middot;&nbsp; five releases on PyPI</p>
 </header>
 
 <section>
@@ -249,7 +249,47 @@ footer p{max-width:62ch;color:var(--ink-soft);margin:0 0 16px}
 
   <div class="steps">
     <div class="step">
-      <div class="num">01 / Check</div>
+      <div class="num">01 / Refuse</div>
+      <div>
+        <h3>The call your policy never approved does not happen</h3>
+        <p>
+          Compliance writes the policy as a versioned file, not as a branch buried in
+          somebody's code. Which use cases are approved, which models may serve them,
+          what confidence floor applies, whether AI may decide or only recommend, and
+          which categories of data it may touch. Loading is strict: a misspelled control
+          that silently keeps its default is indistinguishable from a control nobody
+          wrote.
+        </p>
+        <p>
+          An unapproved purpose is refused before the model is contacted, and the refusal
+          is a signed record of its own. That matters more than it sounds. A ledger
+          holding only the AI you permitted is a record of your successes. The refusals
+          are what make it a record of your controls.
+        </p>
+        <pre>{
+  <b>"policy_id"</b>: "NORTHGATE-UW-001", <b>"version"</b>: "3.2",
+  <b>"owner"</b>: "compliance@lender.example", <b>"last_reviewed"</b>: "2026-06-15",
+  <b>"use_cases"</b>: {
+    <b>"income_calculation"</b>: {
+      "approved": true, "models": ["claude-sonnet-5"],
+      "confidence_floor": 0.85, "ai_can_decide": false,
+      "prohibited_data": ["ssn", "bank_account_number"]
+    },
+    <b>"adverse_action_reasoning"</b>: { "approved": false, "models": [] }
+  }
+}</pre>
+        <p class="note">
+          Data rules are enforced two ways. You declare what a decision touches, because
+          &ldquo;income&rdquo; has no shape and nothing can find it in a document. Classes
+          that do have a shape, an SSN or an account number, are found in the documents
+          themselves, so declaring the right thing cannot launder a file full of the
+          wrong one.
+        </p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="num">02 / Check</div>
       <div>
         <h3>Every number must be in a document you supplied</h3>
         <p>
@@ -265,7 +305,7 @@ verdict = d.gate(output, citations=cites, confidence=0.91)
     </div>
 
     <div class="step">
-      <div class="num">02 / Record</div>
+      <div class="num">03 / Record</div>
       <div>
         <h3>The call is the log entry</h3>
         <p>
@@ -287,7 +327,7 @@ verdict = d.gate(output, citations=cites, confidence=0.91)
     </div>
 
     <div class="step">
-      <div class="num">03 / Seal</div>
+      <div class="num">04 / Seal</div>
       <div>
         <h3>Edit a record afterwards and it shows</h3>
         <p>
